@@ -1,0 +1,31 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:pages="clr-namespace:PoolControl.Pages;assembly=PoolControl"
+			 Width="480" Height="320" Design.Width="480" Design.Height="320"
+			 x:Class="PoolControl.Views.MainView"
+			 FontSize="12">
+	<Panel>
+		<TabControl x:Name="TabControl" Classes="sidebar">
+			<TabItem Header="Übersicht">
+				<pages:Overview />
+			</TabItem>
+			<TabItem Header="Filterpumpe">
+				<pages:Filterpumpe />
+			</TabItem>
+			<TabItem Header="Solarheizung">
+				<pages:Solarheizung />
+			</TabItem>
+			<TabItem Header="pH-Steuerung">
+				<pages:PhWert />
+			</TabItem>
+			<TabItem Header="Salzanlage">
+				<pages:Salzanlage />
+			</TabItem>
+			<TabItem Header="Zisterne">
+				<pages:Zisterne />
+			</TabItem>
+		</TabControl>
+	</Panel>
+</UserControl>

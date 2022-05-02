@@ -1,0 +1,46 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="clr-namespace:PoolControl.ViewModels"
+             x:Class="PoolControl.Pages.Filterpumpe">
+	<Design.DataContext>
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
+	<StackPanel Orientation="Vertical">
+		<StackPanel Orientation="Horizontal">
+			<ToggleButton Classes="Switch" Content="{Binding Data.Switches[0].Name}" IsChecked="{Binding Data.Switches[0].On}" />
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+				<StackPanel Classes="Measurement">
+					<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[0].Label}"/>
+					<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[0].ValueWithUnit}"/>
+				</StackPanel>
+				<StackPanel Classes="Measurement">
+					<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[3].Label}"/>
+					<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[3].ValueWithUnit}"/>
+				</StackPanel>
+			</StackPanel>
+		</StackPanel>
+		<Grid Classes="Numeric">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="160"/>
+			</Grid.ColumnDefinitions>
+			<Label Classes="SpinnerLabel" Grid.Column="0">Filterbasislaufzeit</Label>
+			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.Filterpumpe.StandardFilterlaufzeit}" ClipValueToMinMax="True" Minimum="60" Maximum="180" FormatString="0 min" Increment="10"></NumericUpDown>
+		</Grid>
+		<StackPanel Classes="Time">
+			<TextBlock Classes="Time">Start Filterpumpe</TextBlock>
+			<TimePicker Classes="Time" SelectedTime="{Binding Data.Filterpumpe.StartVormittags}" MinuteIncrement="1" Header="Morgens" />
+			<TimePicker Classes="Time" SelectedTime="{Binding Data.Filterpumpe.StartNachmittags}" MinuteIncrement="1" Header="Nachmittags" />
+		</StackPanel>
+		<StackPanel Orientation="Horizontal">
+			<Label Classes="Time" Content="Nächster Start: "/>
+			<Label Classes="Time" Content="{Binding Data.Filterpumpe.NextStart}"/>
+		</StackPanel>
+		<StackPanel Orientation="Horizontal">
+			<Label Classes="Time" Content="Nächstes Ende: "/>
+			<Label Classes="Time" Content="{Binding Data.Filterpumpe.NextEnd}"/>
+		</StackPanel>
+	</StackPanel>
+</UserControl>

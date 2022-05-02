@@ -1,0 +1,19 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:PoolControl.UserControls">
+  <Design.PreviewWith>
+    <controls:NumericControl />
+  </Design.PreviewWith>
+
+  <Style Selector="controls|NumericControl">
+    <!-- Set Defaults -->
+    <Setter Property="Template">
+      <ControlTemplate>
+		  <StackPanel Background="DarkCyan" Orientation="Horizontal">
+			  <Label VerticalContentAlignment="Center" HorizontalAlignment="Left">Max pH</Label>
+			  <NumericUpDown Classes="pH" Value="{Binding Data.MaxPhValue}" MinWidth="140" HorizontalAlignment="Right" x:Name="maxph" ClipValueToMinMax="True" Minimum="6.9" Maximum="7.8" FormatString="0.0 pH" Increment="0.1"></NumericUpDown>
+		  </StackPanel>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+</Styles>

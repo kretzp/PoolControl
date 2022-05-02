@@ -1,0 +1,176 @@
+{
+  "Temperatures": {
+    "Pool": {
+      "Key": "Pool",
+      "Name": "Pool",
+      "Value": "NaN",
+      "Address": "28-0317600537ff",
+      "UnitSign": "°C",
+      "ViewFormat": "#0.00",
+      "InterfaceFormat": "#0.00",
+      "TimeStamp": "0001-01-01T00:00:00",
+      "IntervalInSec": 10
+    },
+    "Solarzulauf": {
+      "Key": "Solarzulauf",
+      "Name": "Solarzulauf",
+      "Value": "NaN",
+      "Address": "28-ff7d557016458",
+      "UnitSign": "°C",
+      "ViewFormat": "#0.00",
+      "InterfaceFormat": "#0.00",
+      "TimeStamp": "0001-01-01T00:00:00",
+      "IntervalInSec": 10
+    },
+    "Solarheizung": {
+      "Key": "Solarheizung",
+      "Name": "Solarheizung",
+      "Value": "NaN",
+      "Address": "28-0315a43260ff",
+      "UnitSign": "°C",
+      "ViewFormat": "#0.00",
+      "InterfaceFormat": "#0.00",
+      "TimeStamp": "0001-01-01T00:00:00",
+      "IntervalInSec": 10
+    },
+    "Technikraum": {
+      "Key": "Technikraum",
+      "Name": "Technikraum",
+      "Value": "NaN",
+      "Address": "28-ff28916017325",
+      "UnitSign": "°C",
+      "ViewFormat": "#0.00",
+      "InterfaceFormat": "#0.00",
+      "TimeStamp": "0001-01-01T00:00:00",
+      "IntervalInSec": 60
+    },
+    "Frostwaechter": {
+      "Key": "Frostwaechter",
+      "Name": "Frostwächter",
+      "Value": "NaN",
+      "Address": "28-ff9658701646f",
+      "UnitSign": "°C",
+      "ViewFormat": "#0.00",
+      "InterfaceFormat": "#0.00",
+      "TimeStamp": "0001-01-01T00:00:00",
+      "IntervalInSec": 60
+    }
+  },
+  "Switches": {
+    "Filterpumpe": {
+      "Key": "Filterpumpe",
+      "Name": "Filterpumpe",
+      "RelayNumber": 8,
+      "HighIsOn": false,
+      "On": false
+    },
+    "Solarheizung": {
+      "Key": "Solarheizung",
+      "Name": "Solarheizung",
+      "RelayNumber": 7,
+      "HighIsOn": false,
+      "On": false
+    },
+    "Ph": {
+      "Key": "Ph",
+      "Name": "pH-Pumpe",
+      "RelayNumber": 6,
+      "HighIsOn": false,
+      "On": false
+    },
+    "Redox": {
+      "Key": "Redox",
+      "Name": "Salzanlage",
+      "RelayNumber": 5,
+      "HighIsOn": false,
+      "On": false
+    },
+    "Poollampe": {
+      "Key": "Poollampe",
+      "Name": "Poollampe",
+      "RelayNumber": 4,
+      "HighIsOn": false,
+      "On": false
+    }
+  },
+  "RelayConfig": {
+    "RelayToLogicLevelConverter": {
+      "1": 1,
+      "2": 2,
+      "3": 3,
+      "4": 4,
+      "5": 5,
+      "6": 6,
+      "7": 7,
+      "8": 8
+    },
+    "LogicLevelConverterToGpio": {
+      "1": 19,
+      "2": 13,
+      "3": 5,
+      "4": 22,
+      "5": 27,
+      "6": 23,
+      "7": 20,
+      "8": 21
+    }
+  },
+  "Filterpumpe": {
+    "StandardFilterlaufzeit": 180,
+    "StartVormittags": "08:00:00",
+    "StartNachmittags": "14:00:00",
+    "NextStart": "2022-05-02T08:00:00+02:00",
+    "NextEnd": "2022-05-02T11:00:00+02:00"
+  },
+  "Solarheizung": {
+    "Spuelzeitpunkt": "21:30:00",
+    "EinschaltDiff": 6.0,
+    "AusschaltDiff": 3.0,
+    "MaxPoolTemp": 29.5,
+    "Spueldauer": 180,
+    "NextStart": "2022-05-02T21:30:00+02:00",
+    "NextEnd": "2022-05-02T21:33:00+02:00"
+  },
+  "Ph": {
+    "MaxValue": 7.4,
+    "Einlaufdauer": 5,
+    "EinlaufdauerInterval": 1,
+    "LedOn": true,
+    "Name": "pH-Wert",
+    "Value": "NaN",
+    "Address": "99",
+    "UnitSign": "pH",
+    "ViewFormat": "#0.0",
+    "InterfaceFormat": "#0.000",
+    "TimeStamp": "0001-01-01T00:00:00",
+    "IntervalInSec": 5
+  },
+  "Redox": {
+    "Ein": 750,
+    "Aus": 840,
+    "LedOn": true,
+    "Name": "Redox-Wert",
+    "Value": "NaN",
+    "Address": "98",
+    "UnitSign": "mV",
+    "ViewFormat": "#0",
+    "InterfaceFormat": "#0.0",
+    "TimeStamp": "0001-01-01T00:00:00",
+    "IntervalInSec": 5
+  },
+  "Distance": {
+    "Name": "Abstand",
+    "Value": "NaN",
+    "Address": "16/26",
+    "UnitSign": "cm",
+    "ViewFormat": "#0.00",
+    "InterfaceFormat": "#0.00",
+    "TimeStamp": "0001-01-01T00:00:00",
+    "IntervalInSec": 10,
+    "NameL": "Volumen",
+    "ViewFormatL": "#0",
+    "InterfaceFormatL": "#0",
+    "UnitSignL": "L",
+    "NumberOfMeasurements": 5
+  }
+}

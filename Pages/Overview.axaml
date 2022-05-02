@@ -1,0 +1,82 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="clr-namespace:PoolControl.ViewModels"
+             x:Class="PoolControl.Pages.Overview">
+	<Design.DataContext>
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
+	<StackPanel Orientation="Horizontal">
+		<!--ListBox HorizontalAlignment="Left" Name="Temperaturen" Items="{Binding Data.Temperatures}" Width="225" Background="Black" IsHitTestVisible="False">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<Grid Classes="TemperatureGrid">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="100"/>
+						</Grid.ColumnDefinitions>
+						<TextBlock Classes="TemperatureLabel" Grid.Column="0" Text="{Binding Label}"/>
+						<TextBlock Classes="Temperature" Grid.Column="1" Text="{Binding ValueWithUnit}" />
+					</Grid>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox-->
+		<StackPanel Classes="Wide">
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+				<StackPanel Classes="Measurement">
+					<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[0].Label}"/>
+					<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[0].ValueWithUnit}"/>
+				</StackPanel>
+				<StackPanel Classes="Measurement">
+					<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[1].Label}"/>
+					<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[1].ValueWithUnit}"/>
+				</StackPanel>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+				<StackPanel Classes="Measurement">
+					<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[2].Label}"/>
+					<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[2].ValueWithUnit}"/>
+				</StackPanel>
+				<StackPanel Classes="Measurement" Background="Black">
+					<Button Padding="4" Content="Exit" Height="55" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding CloseWindow}" Background="Black" Foreground="Black"/>
+				</StackPanel>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+				<StackPanel Classes="Measurement" Background="#000060">
+					<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[3].Label}"/>
+					<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[3].ValueWithUnit}"/>
+				</StackPanel>
+				<StackPanel Classes="Measurement" Background="#000060">
+					<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[4].Label}"/>
+					<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[4].ValueWithUnit}"/>
+				</StackPanel>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+				<StackPanel Classes="Measurement" Background="DarkCyan">
+					<TextBlock Classes="TLabel" Text="{Binding Data.Ph.Label}"/>
+					<TextBlock Classes="TMeasurement" Text="{Binding Data.Ph.ValueWithUnit}"/>
+				</StackPanel>
+				<StackPanel Classes="Measurement" Background="DarkGoldenrod">
+					<TextBlock Classes="TLabel" Text="{Binding Data.Redox.Label}"/>
+					<TextBlock Classes="TMeasurement" Text="{Binding Data.Redox.ValueWithUnit}"/>
+				</StackPanel>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+				<StackPanel Classes="Measurement" Background="DarkMagenta">
+					<TextBlock Classes="TLabel" Text="{Binding Data.Distance.LabelL}"/>
+					<TextBlock Classes="TMeasurement" Text="{Binding Data.Distance.ValueWithUnitL}"/>
+				</StackPanel>
+			</StackPanel>
+		</StackPanel>
+		<ListBox Items="{Binding Data.Switches}">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<Border>
+						<ToggleButton Classes="Switch" Content="{Binding Name}" IsChecked="{Binding On}" />
+					</Border>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+	</StackPanel>
+</UserControl>

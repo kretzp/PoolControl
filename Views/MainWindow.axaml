@@ -1,0 +1,21 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:PoolControl.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:PoolControl.Views"
+        Width="480" Height="320" Design.Width="480" Design.Height="320"
+        x:Class="PoolControl.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+		HasSystemDecorations="False"
+        Title="PoolControl">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+	<Panel Margin="{Binding #MainWindow.OffScreenMargin}">
+		<local:MainView />
+	</Panel>
+
+</Window>

@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="clr-namespace:PoolControl.ViewModels"
+			 xmlns:uc="clr-namespace:PoolControl.UserControls"
+             x:Class="PoolControl.Pages.Zisterne">
+	<Design.DataContext>
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
+	<StackPanel Orientation="Vertical">
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+			<StackPanel Classes="Measurement" Background="DarkMagenta">
+				<TextBlock Classes="TLabel" Text="{Binding Data.Distance.Label}"/>
+				<TextBlock Classes="TMeasurement" Text="{Binding Data.Distance.ValueWithUnit}"/>
+			</StackPanel>
+			<StackPanel Classes="Measurement" Background="DarkMagenta">
+				<TextBlock Classes="TLabel" Text="{Binding Data.Distance.LabelL}"/>
+				<TextBlock Classes="TMeasurement" Text="{Binding Data.Distance.ValueWithUnitL}"/>
+			</StackPanel>
+		</StackPanel>
+	</StackPanel>
+</UserControl>

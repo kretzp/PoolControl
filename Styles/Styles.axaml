@@ -1,0 +1,152 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<Design.PreviewWith>
+		<Border Padding="20">
+			<StackPanel Spacing="5">
+				<TextBlock Classes="Temperature" Text="Code Font Family" FontFamily="{StaticResource CodeFontFamily}" />
+				<ToggleButton Classes="Switch" Content="Pumpe"/>
+				<StackPanel Classes="Measurement">
+					<TextBlock Classes="TLabel" Text="Abstand:"/>
+					<TextBlock Classes="TMeasurement" Text="15 cm"/>
+				</StackPanel>
+				<ListBox Classes="Temperature">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<Grid Background="DarkBlue">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition/>
+									<ColumnDefinition/>
+								</Grid.ColumnDefinitions>
+								<TextBlock Classes="Temperature" Text="Hallo"/>
+							</Grid>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+					<TextBlock>fsdfsdsdf</TextBlock>
+				</ListBox>
+				<StackPanel Background="DarkCyan" Orientation="Horizontal">
+					<NumericUpDown Text="lkfjsdjf" Classes="pH" Value="7.6" MinWidth="140" HorizontalAlignment="Right" x:Name="maxph" ClipValueToMinMax="True" Minimum="6.9" Maximum="7.8" FormatString="0.0 pH" Increment="0.1"></NumericUpDown>
+				</StackPanel>
+				<NumericUpDown Text="fdsfdfsdf" Classes="pH" Value="5.8" MinWidth="140" HorizontalAlignment="Right" x:Name="maxph2" ClipValueToMinMax="True" Minimum="6.9" Maximum="7.8" FormatString="0.0 pH" Increment="0.1"/>
+			</StackPanel>
+		</Border>
+	</Design.PreviewWith>
+	<Styles.Resources>
+		<Thickness x:Key="PageMargin">40 0 40 0</Thickness>
+		<FontFamily x:Key="CodeFontFamily">avares://PoolControl/Assets/Fonts#Source Code Pro</FontFamily>
+	</Styles.Resources>
+
+	<Style Selector="Grid.TemperatureGrid">
+		<Setter Property="Background" Value="DarkBlue" />
+		<Setter Property="Height" Value="55" />
+		<Setter Property="Margin" Value="4 4 4 4" />
+	</Style>
+	<Style Selector="TextBlock.Temperature">
+		<!--Setter Property="FontFamily" Value="{StaticResource CodeFontFamily}" /-->
+		<Setter Property="FontSize" Value="22" />
+		<Setter Property="FontWeight" Value="Normal" />
+		<Setter Property="VerticalAlignment" Value="Center" />
+		<Setter Property="HorizontalAlignment" Value="Right" />
+		<Setter Property="Padding" Value="5" />
+	</Style>
+	<Style Selector="TextBlock.TemperatureLabel">
+		<!--Setter Property="FontFamily" Value="{StaticResource CodeFontFamily}" /-->
+		<Setter Property="FontSize" Value="16" />
+		<Setter Property="FontWeight" Value="Light" />
+		<Setter Property="Background" Value="DarkBlue" />
+		<Setter Property="Foreground" Value="LightGray" />
+		<Setter Property="HorizontalAlignment" Value="Left" />
+		<Setter Property="Padding" Value="5" />
+	</Style>
+	<Style Selector="ToggleButton.Switch">
+		<!--Setter Property="FontFamily" Value="{StaticResource CodeFontFamily}" /-->
+		<Setter Property="FontSize" Value="18" />
+		<Setter Property="FontWeight" Value="Normal" />
+		<Setter Property="Background" Value="DarkRed" />
+		<Setter Property="Height" Value="55" />
+		<Setter Property="Margin" Value="4" />
+		<Setter Property="Padding" Value="0 16 0 0" />
+		<Setter Property="MinWidth" Value="133" />
+		<Setter Property="HorizontalContentAlignment" Value="Center" />
+	</Style>
+	<Style Selector="ToggleButton:checked /template/ ContentPresenter">
+		<Setter Property="Background" Value="DarkGreen" />
+	</Style>
+	<Style Selector="ToggleButton:pointerover /template/ ContentPresenter">
+		<Setter Property="Background" Value="{Binding this.On}" />
+	</Style>
+	<Style Selector="NumericUpDown.pH">
+		<Setter Property="Background" Value="DarkCyan" />
+		<Setter Property="FontSize" Value="18" />
+		<Setter Property="Margin" Value="4 4 4 4" />
+		<Setter Property="Height" Value="55" />
+		<Setter Property="Padding" Value="10 16 10 0" />
+		<Setter Property="BorderThickness" Value="2"/>
+	</Style>
+	<Style Selector="Label.pH">
+		<Setter Property="Background" Value="DarkCyan" />
+		<Setter Property="FontSize" Value="40" />
+		<Setter Property="Margin" Value="4 4 4 4" />
+		<Setter Property="Height" Value="55" />
+	</Style>
+	<Style Selector="ListBox">
+		<Setter Property="Margin" Value="0" />
+		<Setter Property="Padding" Value="0" />
+		<Setter Property="Background" Value="Black" />
+	</Style>
+	<Style Selector="ListBoxItem"> 
+		<Setter Property="Padding" Value="0" />
+	</Style>
+	<Style Selector="StackPanel.Wide">
+		<Setter Property="Width" Value="226"/>
+		<Setter Property="Margin" Value="0"/>
+	</Style>
+	<Style Selector="StackPanel.Measurement">
+		<Setter Property="Width" Value="105"/>
+		<Setter Property="Height" Value="55"/>
+		<Setter Property="Margin" Value="4"/>
+		<Setter Property="Background" Value="Blue"/>
+		<Setter Property="Orientation" Value="Vertical"/>
+	</Style>
+	<Style Selector="TextBlock.TMeasurement">
+		<Setter Property="Padding" Value="4"/>
+		<Setter Property="FontSize" Value="18"/>
+		<Setter Property="HorizontalAlignment" Value="Right"/>
+	</Style>
+	<Style Selector="TextBlock.TLabel">
+		<Setter Property="FontSize" Value="12"/>
+		<Setter Property="Padding" Value="4"/>
+		<Setter Property="Foreground" Value="LightGray"/>
+	</Style>
+	<Style Selector="Label.SpinnerLabel">
+		<Setter Property="FontSize" Value="14"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<Setter Property="HorizontalAlignment" Value="Left"/>
+	</Style>
+	<Style Selector="TimePicker.Time">
+		<Setter Property="FontWeight" Value="Normal"/>
+		<Setter Property="HorizontalAlignment" Value="Stretch"/>
+		<Setter Property="Margin" Value="4 4 4 4"/>
+		<Setter Property="FontSize" Value="14"/>
+	</Style>
+	<Style Selector="TextBlock.Time">
+		<Setter Property="FontWeight" Value="Normal"/>
+		<Setter Property="Margin" Value="4 4 4 4"/>
+		<Setter Property="FontSize" Value="14"/>
+	</Style>
+	<Style Selector="Grid.Numeric">
+		<Setter Property="Margin" Value="4 4 4 4"/>
+		<Setter Property="Background" Value="#303030"/>
+	</Style>
+	<Style Selector="StackPanel.Time">
+		<Setter Property="Margin" Value="4 4 4 4"/>
+		<Setter Property="Background" Value="#303030"/>
+	</Style>
+	<Style Selector="NumericUpDown.Numeric">
+		<Setter Property="HorizontalContentAlignment" Value="Right"/>
+		<Setter Property="FontSize" Value="18"/>
+	</Style>
+	<Style Selector="Label.Time">
+		<Setter Property="FontSize" Value="11"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+	</Style>
+</Styles>
