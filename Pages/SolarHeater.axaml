@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="clr-namespace:PoolControl.ViewModels"
 			 xmlns:uc="clr-namespace:PoolControl.UserControls"
-             x:Class="PoolControl.Pages.Solarheizung">
+             x:Class="PoolControl.Pages.SolarHeater">
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
 	</Design.DataContext>

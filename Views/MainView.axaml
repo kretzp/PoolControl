@@ -12,19 +12,19 @@
 				<pages:Overview />
 			</TabItem>
 			<TabItem Header="Filterpumpe">
-				<pages:Filterpumpe />
+				<pages:FilterPump />
 			</TabItem>
 			<TabItem Header="Solarheizung">
-				<pages:Solarheizung />
+				<pages:SolarHeater />
 			</TabItem>
 			<TabItem Header="pH-Steuerung">
-				<pages:PhWert />
+				<pages:PhValue />
 			</TabItem>
 			<TabItem Header="Salzanlage">
-				<pages:Salzanlage />
+				<pages:Redox />
 			</TabItem>
 			<TabItem Header="Zisterne">
-				<pages:Zisterne />
+				<pages:Cistern />
 			</TabItem>
 		</TabControl>
 	</Panel>

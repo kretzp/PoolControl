@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace PoolControl.Pages
 {
-    public partial class PhWert : UserControl
+    public partial class PhValue : UserControl
     {
-        public PhWert()
+        public PhValue()
         {
             InitializeComponent();
         }

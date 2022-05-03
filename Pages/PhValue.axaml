@@ -7,7 +7,7 @@
 			 VerticalAlignment="Top"
 			 HorizontalContentAlignment="Stretch"
 			 VerticalContentAlignment="Stretch"
-             x:Class="PoolControl.Pages.PhWert">
+             x:Class="PoolControl.Pages.PhValue">
 
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>

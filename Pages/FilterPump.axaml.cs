@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace PoolControl.Pages
 {
-    public partial class Filterpumpe : UserControl
+    public partial class FilterPump : UserControl
     {
-        public Filterpumpe()
+        public FilterPump()
         {
             InitializeComponent();
         }

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="clr-namespace:PoolControl.ViewModels"
 			 xmlns:uc="clr-namespace:PoolControl.UserControls"
-             x:Class="PoolControl.Pages.Zisterne">
+             x:Class="PoolControl.Pages.Cistern">
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
 	</Design.DataContext>

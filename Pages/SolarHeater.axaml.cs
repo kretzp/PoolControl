@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace PoolControl.Pages
 {
-    public partial class Solarheizung : UserControl
+    public partial class SolarHeater : UserControl
     {
-        public Solarheizung()
+        public SolarHeater()
         {
             InitializeComponent();
         }

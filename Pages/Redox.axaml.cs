@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace PoolControl.Pages
 {
-    public partial class Salzanlage : UserControl
+    public partial class Redox : UserControl
     {
-        public Salzanlage()
+        public Redox()
         {
             InitializeComponent();
         }

@@ -7,7 +7,7 @@
 			 VerticalAlignment="Top"
 			 HorizontalContentAlignment="Stretch"
 			 VerticalContentAlignment="Stretch"
-             x:Class="PoolControl.Pages.Salzanlage">
+             x:Class="PoolControl.Pages.Redox">
 
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
