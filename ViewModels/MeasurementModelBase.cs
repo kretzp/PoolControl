@@ -19,8 +19,8 @@ namespace PoolControl.ViewModels
         public MeasurementModelBase()
         {
             // Send InotifyChanged to View for Label, FullText and Temperature with Unit
-            this.WhenAnyValue(ds => ds.Name, ds => ds.Value, ds => ds.ViewFormat, ds => ds.UnitSign, (name, temperature, viewFormat, unitSign) => $"{name}: {temperature.ToString(viewFormat)} {unitSign}").ToPropertyEx(this, ds => ds.FullText, deferSubscription: true);
-            this.WhenAnyValue(ds => ds.Name, ds => ds.Value, (name, value) => $"{name}:").ToPropertyEx(this, ds => ds.Label, deferSubscription: true);
+            this.WhenAnyValue(ds => ds.Name, ds => ds.Value, ds => ds.ViewFormat, ds => ds.UnitSign, (name, temperature, viewFormat, unitSign) => $"{LocationName}: {temperature.ToString(viewFormat)} {unitSign}").ToPropertyEx(this, ds => ds.FullText, deferSubscription: true);
+            this.WhenAnyValue(ds => ds.Name, ds => ds.Value, (name, value) => $"{LocationName}:").ToPropertyEx(this, ds => ds.Label, deferSubscription: true);
             this.WhenAnyValue(ds => ds.Value, ds => ds.ViewFormat, ds => ds.UnitSign, (value, viewFormat, unitSign) => $"{value.ToString(viewFormat)} {unitSign}").ToPropertyEx(this, ds => ds.ValueWithUnit, deferSubscription: true);
 
             // publish Value
@@ -41,10 +41,6 @@ namespace PoolControl.ViewModels
 
         [JsonIgnore]
         protected Timer? Timer { get; private set; }
-
-        [Reactive]
-        [JsonProperty]
-        public string Name { get; set; }
 
         [Reactive]
         [JsonProperty]

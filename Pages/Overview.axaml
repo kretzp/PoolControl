@@ -59,7 +59,7 @@
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<Border>
-						<ToggleButton Classes="Switch" Content="{Binding Name}" IsChecked="{Binding On}" />
+						<ToggleButton Classes="Switch" Content="{Binding LocationName}" IsChecked="{Binding On}" />
 					</Border>
 				</DataTemplate>
 			</ListBox.ItemTemplate>

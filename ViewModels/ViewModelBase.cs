@@ -1,5 +1,6 @@
-using Newtonsoft.Json;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+using Newtonsoft.Json;
 using System;
 using PoolControl.Communication;
 using Serilog;
@@ -7,8 +8,10 @@ using System.Reflection;
 using System.Collections;
 using PoolControl.Helper;
 
+
 namespace PoolControl.ViewModels
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public abstract class ViewModelBase : ReactiveObject, IDisposable
     {
         private bool disposedValue;
@@ -18,6 +21,25 @@ namespace PoolControl.ViewModels
         public ViewModelBase()
         {
             Logger = Log.Logger?.ForContext<ViewModelBase>() ?? throw new ArgumentNullException(nameof(Logger));
+        }
+
+        [Reactive]
+        [JsonProperty]
+        public string Name { get; set; }
+
+        public string LocationName
+        {
+            get
+            {
+                string ret = "Nix";
+                try
+                {
+                    ret = (string)typeof(Resource).GetProperty(Name).GetValue(null);
+                }
+                catch (Exception) { }
+
+                return ret;
+            }
         }
 
         public void publishMessage(string propertyName, string value, int qos, bool retain, bool reallySend)

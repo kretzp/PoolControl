@@ -24,9 +24,6 @@ namespace PoolControl.ViewModels
         public string Key { get; set; }
 
         [Reactive]
-        public string Name { get; set; }
-
-        [Reactive]
         public int RelayNumber { get; set; }
 
         [Reactive]

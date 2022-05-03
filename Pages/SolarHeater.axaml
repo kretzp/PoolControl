@@ -3,14 +3,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="clr-namespace:PoolControl.ViewModels"
-			 xmlns:uc="clr-namespace:PoolControl.UserControls"
+			 xmlns:p="clr-namespace:PoolControl"
              x:Class="PoolControl.Pages.SolarHeater">
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
 	</Design.DataContext>
 	<StackPanel>
 		<StackPanel Orientation="Horizontal">
-			<ToggleButton Classes="Switch" Content="{Binding Data.Switches[1].Name}" IsChecked="{Binding Data.Switches[1].On}" />
+			<ToggleButton Classes="Switch" Content="{Binding Data.Switches[1].LocationName}" IsChecked="{Binding Data.Switches[1].On}" />
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 				<StackPanel Classes="Measurement">
 					<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[1].Label}"/>
@@ -27,7 +27,7 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="160"/>
 			</Grid.ColumnDefinitions>
-			<Label Grid.Column="0" Classes="SpinnerLabel">Einschaltdifferenz</Label>
+			<Label Grid.Column="0" Classes="SpinnerLabel" Content="{x:Static p:Resource.DiffOn}"/>
 			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.SolarHeater.TurnOnDiff}" ClipValueToMinMax="True" Minimum="0" Maximum="10" FormatString="0.0 °C" Increment="0.1"></NumericUpDown>
 		</Grid>
 		<Grid Classes="Numeric" Background="#500000">
@@ -35,7 +35,7 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="160"/>
 			</Grid.ColumnDefinitions>
-			<Label Grid.Column="0" Classes="SpinnerLabel">Ausschaltdifferenz</Label>
+			<Label Grid.Column="0" Classes="SpinnerLabel" Content="{x:Static p:Resource.DiffOff}"/>
 			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.SolarHeater.TurnOffDiff}" ClipValueToMinMax="True" Minimum="0" Maximum="10" FormatString="0.0 °C" Increment="0.1"></NumericUpDown>
 		</Grid>
 		<Grid Classes="Numeric" Background="#500000">
@@ -43,7 +43,7 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="160"/>
 			</Grid.ColumnDefinitions>
-			<Label Grid.Column="0" Classes="SpinnerLabel">Max. Wassertemperatur</Label>
+			<Label Grid.Column="0" Classes="SpinnerLabel" Content="{x:Static p:Resource.MaxPoolTemp}"/>
 			<NumericUpDown Grid.Column="1" Classes="Numeric" Value="{Binding Data.SolarHeater.MaxPoolTemp}" ClipValueToMinMax="True" Minimum="10" Maximum="32" FormatString="0.0 °C" Increment="0.1"></NumericUpDown>
 		</Grid>
 		<Grid Classes="Numeric">
@@ -51,14 +51,14 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="160"/>
 			</Grid.ColumnDefinitions>
-			<Label Grid.Column="0" Classes="SpinnerLabel">Spüldauer</Label>
+			<Label Grid.Column="0" Classes="SpinnerLabel" Content="{x:Static p:Resource.CleaningDuration}"/>
 			<NumericUpDown Grid.Column="1" Classes="Numeric" Value="{Binding Data.SolarHeater.SolarHeaterCleaningDuration}" ClipValueToMinMax="True" Minimum="10" Maximum="500" FormatString="0 sec" Increment="10"></NumericUpDown>
 		</Grid>
 		<StackPanel Classes="Time">
-			<TimePicker Classes="Time" SelectedTime="{Binding Data.SolarHeater.SolarHeaterCleaningTime}" MinuteIncrement="1" Header="Spülzeitpunkt" />
+			<TimePicker Classes="Time" SelectedTime="{Binding Data.SolarHeater.SolarHeaterCleaningTime}" MinuteIncrement="1" Header="{x:Static p:Resource.CleaningTime}" />
 		</StackPanel>
 		<StackPanel Orientation="Horizontal">
-			<Label Classes="Time" Content="Nächster Start: " FontSize="11" VerticalContentAlignment="Center"/>
+			<Label Classes="Time" Content="{x:Static p:Resource.NextStart}" FontSize="11" VerticalContentAlignment="Center"/>
 			<Label Classes="Time" Content="{Binding Data.SolarHeater.NextStart}" FontSize="11" VerticalContentAlignment="Center"/>
 		</StackPanel>
 	</StackPanel>

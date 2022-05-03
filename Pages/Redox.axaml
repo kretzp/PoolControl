@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="clr-namespace:PoolControl.ViewModels"
+			 xmlns:p="clr-namespace:PoolControl"
 			 HorizontalAlignment="Left"
 			 VerticalAlignment="Top"
 			 HorizontalContentAlignment="Stretch"
@@ -14,7 +15,7 @@
 	</Design.DataContext>
 	<StackPanel>
 		<StackPanel Orientation="Horizontal">
-			<ToggleButton Classes="Switch" Content="{Binding Data.Switches[3].Name}" IsChecked="{Binding Data.Switches[3].On}" />
+			<ToggleButton Classes="Switch" Content="{Binding Data.Switches[3].LocationName}" IsChecked="{Binding Data.Switches[3].On}" />
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 				<StackPanel Classes="Measurement" Background="DarkGoldenrod">
 					<TextBlock Classes="TLabel" Text="{Binding Data.Redox.Label}"/>
@@ -34,7 +35,7 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="160"/>
 			</Grid.ColumnDefinitions>
-			<Label Grid.Column="0" Classes="SpinnerLabel">Messinterval</Label>
+			<Label Grid.Column="0" Classes="SpinnerLabel" Content="{x:Static p:Resource.MeasurementInterval}" />
 			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.Redox.IntervalInSec}" ClipValueToMinMax="True" Minimum="0" Maximum="500" FormatString="0 sec" Increment="1"></NumericUpDown>
 		</Grid>
 		<Grid Classes="Numeric" Background="DarkGoldenrod">
@@ -42,7 +43,7 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="160"/>
 			</Grid.ColumnDefinitions>
-			<Label Grid.Column="0" Classes="SpinnerLabel">Salzanlage An</Label>
+			<Label Grid.Column="0" Classes="SpinnerLabel" Content="{x:Static p:Resource.RedoxOn}"/>
 			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.Redox.On}" ClipValueToMinMax="True" Minimum="100" Maximum="1000" FormatString="0 mV" Increment="10"></NumericUpDown>
 		</Grid>
 		<Grid Classes="Numeric" Background="DarkGoldenrod">
@@ -50,9 +51,9 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="160"/>
 			</Grid.ColumnDefinitions>
-			<Label Grid.Column="0" Classes="SpinnerLabel">Salzanlage Aus</Label>
+			<Label Grid.Column="0" Classes="SpinnerLabel" Content="{x:Static p:Resource.RedoxOff}"/>
 			<NumericUpDown Grid.Column="1" Classes="Numeric" Value="{Binding Data.Redox.Off}" ClipValueToMinMax="True" Minimum="100" Maximum="1000" FormatString="0 mV" Increment="10"></NumericUpDown>
 		</Grid>
-		<CheckBox IsChecked="{Binding Data.Redox.LedOn}" Background="DarkGoldenrod" Margin="4" Padding="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right">LED</CheckBox>
+		<CheckBox IsChecked="{Binding Data.Redox.LedOn}" Background="DarkGoldenrod" Margin="4" Padding="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" Content="{x:Static p:Resource.LED}"/>
 	</StackPanel>
 </UserControl>

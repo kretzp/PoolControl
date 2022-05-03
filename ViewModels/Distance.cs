@@ -26,8 +26,8 @@ namespace PoolControl.ViewModels
             this.WhenAnyValue(ds => ds.ValueL).Subscribe(valuel => publishMessageValueL());
 
             // Create view
-            this.WhenAnyValue(ds => ds.NameL, ds => ds.ValueL, ds => ds.ViewFormatL, ds => ds.UnitSignL, (name, temperature, viewFormat, unitSign) => $"{name}: {temperature.ToString(viewFormat)} {unitSign}").ToPropertyEx(this, ds => ds.FullTextL, deferSubscription: true);
-            this.WhenAnyValue(ds => ds.NameL, ds => ds.ValueL, (name, value) => $"{name}:").ToPropertyEx(this, ds => ds.LabelL, deferSubscription: true);
+            this.WhenAnyValue(ds => ds.NameL, ds => ds.ValueL, ds => ds.ViewFormatL, ds => ds.UnitSignL, (name, temperature, viewFormat, unitSign) => $"{LocationNameL}: {temperature.ToString(viewFormat)} {unitSign}").ToPropertyEx(this, ds => ds.FullTextL, deferSubscription: true);
+            this.WhenAnyValue(ds => ds.NameL, ds => ds.ValueL, (name, value) => $"{LocationNameL}:").ToPropertyEx(this, ds => ds.LabelL, deferSubscription: true);
             this.WhenAnyValue(ds => ds.ValueL, ds => ds.ViewFormatL, ds => ds.UnitSignL, (value, viewFormat, unitSign) => $"{value.ToString(viewFormat)} {unitSign}").ToPropertyEx(this, ds => ds.ValueWithUnitL, deferSubscription: true);
         }
 
@@ -44,6 +44,21 @@ namespace PoolControl.ViewModels
         [Reactive]
         [JsonProperty]
         public string NameL { get; set; }
+
+        public string LocationNameL
+        {
+            get
+            {
+                string ret = "Nix";
+                try
+                {
+                    ret = (string)typeof(Resource).GetProperty(NameL).GetValue(null);
+                }
+                catch (Exception) { }
+
+                return ret;
+            }
+        }
 
         [Reactive]
         [JsonProperty]

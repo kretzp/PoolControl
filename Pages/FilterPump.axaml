@@ -3,13 +3,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="clr-namespace:PoolControl.ViewModels"
+			 xmlns:p="clr-namespace:PoolControl"
              x:Class="PoolControl.Pages.FilterPump">
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
 	</Design.DataContext>
 	<StackPanel Orientation="Vertical">
 		<StackPanel Orientation="Horizontal">
-			<ToggleButton Classes="Switch" Content="{Binding Data.Switches[0].Name}" IsChecked="{Binding Data.Switches[0].On}" />
+			<ToggleButton Classes="Switch" Content="{Binding Data.Switches[0].LocationName}" IsChecked="{Binding Data.Switches[0].On}" />
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 				<StackPanel Classes="Measurement">
 					<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[0].Label}"/>
@@ -26,20 +27,20 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="160"/>
 			</Grid.ColumnDefinitions>
-			<Label Classes="SpinnerLabel" Grid.Column="0">Filterbasislaufzeit</Label>
+			<Label Classes="SpinnerLabel" Grid.Column="0" Content="{x:Static p:Resource.FilterBaseRuntime}" />
 			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.FilterPump.StandardFilterRunTime}" ClipValueToMinMax="True" Minimum="60" Maximum="180" FormatString="0 min" Increment="10"></NumericUpDown>
 		</Grid>
 		<StackPanel Classes="Time">
-			<TextBlock Classes="Time">Start Filterpumpe</TextBlock>
-			<TimePicker Classes="Time" SelectedTime="{Binding Data.FilterPump.StartMorning}" MinuteIncrement="1" Header="Morgens" />
-			<TimePicker Classes="Time" SelectedTime="{Binding Data.FilterPump.StartNoon}" MinuteIncrement="1" Header="Nachmittags" />
+			<TextBlock Classes="Time" Text="{x:Static p:Resource.StartFilterPump}"/>
+			<TimePicker Classes="Time" SelectedTime="{Binding Data.FilterPump.StartMorning}" MinuteIncrement="1" Header="{x:Static p:Resource.Morning}" />
+			<TimePicker Classes="Time" SelectedTime="{Binding Data.FilterPump.StartNoon}" MinuteIncrement="1" Header="{x:Static p:Resource.Noon}" />
 		</StackPanel>
 		<StackPanel Orientation="Horizontal">
-			<Label Classes="Time" Content="Nächster Start: "/>
+			<Label Classes="Time" Content="{x:Static p:Resource.NextStart}"/>
 			<Label Classes="Time" Content="{Binding Data.FilterPump.NextStart}"/>
 		</StackPanel>
 		<StackPanel Orientation="Horizontal">
-			<Label Classes="Time" Content="Nächstes Ende: "/>
+			<Label Classes="Time" Content="{x:Static p:Resource.NextEnd}"/>
 			<Label Classes="Time" Content="{Binding Data.FilterPump.NextEnd}"/>
 		</StackPanel>
 	</StackPanel>

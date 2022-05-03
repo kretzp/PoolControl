@@ -3,7 +3,7 @@
 	<Design.PreviewWith>
 		<Border Padding="1">
 			<TabControl Classes="sidebar">
-				<TabItem Header="Item1"/>
+				<TabItem Header="Item1gfdgfdg"/>
 				<TabItem Header="Item2"/>
 				<TabItem Header="Item3"/>
 			</TabControl>
@@ -59,6 +59,8 @@
 		<Setter Property="Margin" Value="4 0 0 4"/>
 		<Setter Property="Padding" Value="2"/>
 		<Setter Property="Height" Value="30"/>
+		<Setter Property="MinWidth" Value="107"/>
+		<Setter Property="MaxWidth" Value="107"/>
 		<Setter Property="HorizontalContentAlignment" Value="Stretch" />
 		<Setter Property="(ScrollViewer.HorizontalScrollBarVisibility)" Value="Auto"/>
 		<Setter Property="(ScrollViewer.VerticalScrollBarVisibility)" Value="Auto"/>
