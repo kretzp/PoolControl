@@ -58,6 +58,23 @@
     <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4" />
    </ItemGroup>
   <ItemGroup>
+    <Compile Update="Pages\FilterPump.axaml.cs">
+      <DependentUpon>FilterPump.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\PhValue.axaml.cs">
+      <DependentUpon>PhValue.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Redox.axaml.cs">
+      <DependentUpon>Redox.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\SolarHeater.axaml.cs">
+      <DependentUpon>SolarHeater.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Cistern.axaml.cs">
+      <DependentUpon>Cistern.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

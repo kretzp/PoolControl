@@ -8,6 +8,9 @@ using PoolControl.Helper;
 
 namespace PoolControl.ViewModels
 {
+    /// <summary>
+    /// All PoolData which will be loaded via json at the beginning
+    /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
     public class PoolData : ViewModelBase
     {
@@ -35,11 +38,11 @@ namespace PoolControl.ViewModels
 
         [Reactive]
         [JsonProperty]
-        public Filterpumpe Filterpumpe { get; set; }
+        public FilterPump FilterPump { get; set; }
 
         [Reactive]
         [JsonProperty]
-        public Solarheizung Solarheizung { get; set; }
+        public SolarHeater SolarHeater { get; set; }
 
         [Reactive]
         [JsonProperty]

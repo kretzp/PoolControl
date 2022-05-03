@@ -8,20 +8,6 @@
 		<vm:MainWindowViewModel/>
 	</Design.DataContext>
 	<StackPanel Orientation="Horizontal">
-		<!--ListBox HorizontalAlignment="Left" Name="Temperaturen" Items="{Binding Data.Temperatures}" Width="225" Background="Black" IsHitTestVisible="False">
-			<ListBox.ItemTemplate>
-				<DataTemplate>
-					<Grid Classes="TemperatureGrid">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="100"/>
-						</Grid.ColumnDefinitions>
-						<TextBlock Classes="TemperatureLabel" Grid.Column="0" Text="{Binding Label}"/>
-						<TextBlock Classes="Temperature" Grid.Column="1" Text="{Binding ValueWithUnit}" />
-					</Grid>
-				</DataTemplate>
-			</ListBox.ItemTemplate>
-		</ListBox-->
 		<StackPanel Classes="Wide">
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 				<StackPanel Classes="Measurement">

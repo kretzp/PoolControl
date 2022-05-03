@@ -28,7 +28,7 @@ namespace PoolControl.Hardware
                 i++;
                 double retValue = pooltemp;
 
-                if (ModelBase.Name.Equals("Solarheizung"))
+                if (ModelBase.Name.Equals("SolarHeater"))
                 {
                     int a = i % 10;
                     if (a == 0) add = !add;

@@ -1,4 +1,4 @@
-#define CREATEN
+#define CREATE
 using MQTTnet.Client;
 using ReactiveUI.Fody.Helpers;
 using System;
@@ -42,22 +42,22 @@ namespace PoolControl.ViewModels
 #if CREATE
             Data = new PoolData();
             Data.TemperaturesDict = new Dictionary<string, Temperature>();
-            Data.TemperaturesDict.Add("Pool", new Temperature { Key = "Pool", Address = "28-0317600537ff", Name = "Pool", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN});
+            Data.TemperaturesDict.Add("Pool", new Temperature { Address = "28-0317600537ff"/*28-aaeb6e53141b4*/, Name = "Pool", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN});
             Data.TemperaturesDict.Add("Solarzulauf", new Temperature { Address = "28-ff7d557016458", Name = "Solarzulauf", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN });
-            Data.TemperaturesDict.Add("Solarheizung", new Temperature { Address = "28-0315a43260ff", Name = "Solarheizung", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN });
+            Data.TemperaturesDict.Add("SolarHeater", new Temperature { Address = "28-0315a43260ff", Name = "Solarheizung", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN });
             Data.TemperaturesDict.Add("Technikraum", new Temperature { Address = "28-ff28916017325", Name = "Technikraum", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 60, Value = double.NaN });
-            Data.TemperaturesDict.Add("Frostwaechter", new Temperature { Key = "Frostwaechter", Address = "28-ff9658701646f", Name = "Frostwächter", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 60, Value = double.NaN });
+            Data.TemperaturesDict.Add("Frostwaechter", new Temperature { Address = "28-ff9658701646f", Name = "Frostwächter", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 60, Value = double.NaN });
             Data.SwitchesDict = new Dictionary<string, Switch>();
-            Data.SwitchesDict.Add("Filterpumpe", new Switch{ RelayNumber = 8, Name = "Filterpumpe", HighIsOn = false, On = false });
-            Data.SwitchesDict.Add("Solarheizung", new Switch { RelayNumber = 7, Name = "Solarheizung", HighIsOn = false, On = false });
+            Data.SwitchesDict.Add("FilterPump", new Switch{ RelayNumber = 8, Name = "Filterpumpe", HighIsOn = false, On = false });
+            Data.SwitchesDict.Add("SolarHeater", new Switch { RelayNumber = 7, Name = "SolarHeater", HighIsOn = false, On = false });
             Data.SwitchesDict.Add("Ph", new Switch { RelayNumber = 6, Name = "pH-Pumpe", HighIsOn = false, On = false });
             Data.SwitchesDict.Add("Redox", new Switch { RelayNumber = 5, Name = "Salzanlage", HighIsOn = false, On = false });
             Data.SwitchesDict.Add("Poollampe", new Switch { RelayNumber = 4, Name = "Poollampe", HighIsOn = false, On = false });
-            Data.Filterpumpe = new Filterpumpe { StandardFilterlaufzeit = 180, StartVormittags = new TimeSpan(8, 0, 0), StartNachmittags = new TimeSpan(14, 0, 0) };
-            Data.Solarheizung = new Solarheizung { Spuelzeitpunkt = new TimeSpan(21, 30, 0), Spueldauer = 180, EinschaltDiff = 6.0, AusschaltDiff = 3.0, MaxPoolTemp = 29.5 };
-            Data.Ph = new Ph { Name="pH-Wert", MaxValue = 7.4, Einlaufdauer = 20, EinlaufdauerInterval = 10, IntervalInSec = 60, Address = "99", LedOn = true, ViewFormat = "#0.0", InterfaceFormat = "#0.000", UnitSign = "pH", Value = double.NaN };
-            Data.Redox = new Redox { Name="Redox-Wert", Ein = 750, Aus = 840, IntervalInSec = 60, Address = "98", LedOn = true, ViewFormat = "#0", InterfaceFormat = "#0.0", UnitSign = "mV", Value = double.NaN };
-            Data.Distance = new Distance { Address = "16/26", Name = "Abstand", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "cm", NameL = "Volumen", ViewFormatL = "#0", InterfaceFormatL = "#0", UnitSignL = "L", IntervalInSec = 10, Value = double.NaN, NumberOfMeasurements = 5 };
+            Data.FilterPump = new FilterPump { StandardFilterRunTime = 180, StartMorning = new TimeSpan(8, 0, 0), StartNoon = new TimeSpan(14, 0, 0) };
+            Data.SolarHeater = new SolarHeater { SolarHeaterCleaningTime = new TimeSpan(21, 30, 0), SolarHeaterCleaningDuration = 180, TurnOnDiff = 6.0, TurnOffDiff = 3.0, MaxPoolTemp = 29.5 };
+            Data.Ph = new Ph { Name="pH-Wert", MaxValue = 7.3, AcidInjectionDuration = 20, AcidInjectionRecurringPeriod = 10, IntervalInSec = 60, Address = "99", LedOn = true, ViewFormat = "#0.0", InterfaceFormat = "#0.000", UnitSign = "pH", Value = double.NaN };
+            Data.Redox = new Redox { Name="Redox-Wert", On = 750, Off = 840, IntervalInSec = 60, Address = "98", LedOn = true, ViewFormat = "#0", InterfaceFormat = "#0.0", UnitSign = "mV", Value = double.NaN };
+            Data.Distance = new Distance { Address = "16/26", Name = "Abstand", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "cm", NameL = "Volumen", ViewFormatL = "#0", InterfaceFormatL = "#0", UnitSignL = "L", IntervalInSec = 60, Value = double.NaN, NumberOfMeasurements = 5 };
             Data.RelayConfig = RelayConfig.Instance;
             Data.RelayConfig.RelayToLogicLevelConverterDict = new Dictionary<int, int>();
             for (int i = 1; i < 9; i++)
@@ -89,8 +89,8 @@ namespace PoolControl.ViewModels
                 Data.SwitchesObj.Add(swi.Key, swi);
             }
 
-            Data.Filterpumpe.Switch = Data.SwitchesDict[Data.Filterpumpe.GetType().Name];
-            Data.Solarheizung.Switch = Data.SwitchesDict[Data.Solarheizung.GetType().Name];
+            Data.FilterPump.Switch = Data.SwitchesDict[Data.FilterPump.GetType().Name];
+            Data.SolarHeater.Switch = Data.SwitchesDict[Data.SolarHeater.GetType().Name];
             Data.Redox.Switch = Data.SwitchesDict[Data.Redox.GetType().Name];
             Data.Ph.Switch = Data.SwitchesDict[Data.Ph.GetType().Name];
 
@@ -109,11 +109,11 @@ namespace PoolControl.ViewModels
             Data.Ph.PoolTemperature = Data.TemperaturesDict["Pool"];
 
             // Fire Event for Pool Temperature change for calculationg Filterlaufzeit
-            Data.TemperaturesDict["Pool"].MeasurmentTaken += Data.Filterpumpe.OnTemperatureChange;
+            Data.TemperaturesDict["Pool"].MeasurmentTaken += Data.FilterPump.OnTemperatureChange;
             
-            // Fire Event for Solarheizung Temperature change für calculation Solarheizung Switch On/Off
-            Data.TemperaturesDict["Solarzulauf"].MeasurmentTaken += Data.Solarheizung.OnTemperatureChange;
-            Data.TemperaturesDict[Data.Solarheizung.GetType().Name].MeasurmentTaken += Data.Solarheizung.OnTemperatureChange;
+            // Fire Event for SolarHeater Temperature change für calculation SolarHeater Switch On/Off
+            Data.TemperaturesDict["Solarzulauf"].MeasurmentTaken += Data.SolarHeater.OnTemperatureChange;
+            Data.TemperaturesDict[Data.SolarHeater.GetType().Name].MeasurmentTaken += Data.SolarHeater.OnTemperatureChange;
 
 #if CREATE
             Persistence.Instance.Save(Data);

@@ -6,6 +6,9 @@ using PoolControl.Helper;
 
 namespace PoolControl.ViewModels
 {
+    /// <summary>
+    /// Data for Redox Measurment for salting engine
+    /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
     public class Redox : EzoBase
     {
@@ -14,31 +17,31 @@ namespace PoolControl.ViewModels
             Logger = Log.Logger?.ForContext<Redox>() ?? throw new ArgumentNullException(nameof(Logger));
 
             // Publish changes via MQTT
-            this.WhenAnyValue(r => r.Aus).Subscribe((Action<int>)(ein => { publishMessageWithType(PoolControlHelper.GetPropertyName(() => Aus), ein.ToString()); OnValueChange(); }));
-            this.WhenAnyValue(r => r.Ein).Subscribe((Action<int>)(aus => { publishMessageWithType(PoolControlHelper.GetPropertyName(() => Ein), aus.ToString()); OnValueChange(); }));
+            this.WhenAnyValue(r => r.Off).Subscribe(ein => { publishMessageWithType(PoolControlHelper.GetPropertyName(() => Off), ein.ToString()); OnValueChange(); });
+            this.WhenAnyValue(r => r.On).Subscribe(aus => { publishMessageWithType(PoolControlHelper.GetPropertyName(() => On), aus.ToString()); OnValueChange(); });
         }
 
         [Reactive]
         [JsonProperty]
-        public int Ein { get; set; }
+        public int On { get; set; }
 
         [Reactive]
         [JsonProperty]
-        public int Aus { get; set; }
+        public int Off { get; set; }
 
         public override void OnValueChange()
         {
             if (Switch != null)
             {
-                if (Value < Ein)
+                if (Value < On)
                 {
                     Switch.On = true;
-                    Logger.Information($"Ein({Switch.On}) Redox({Value:#0}) > Ein({Ein}");
+                    Logger.Information($"Ein({Switch.On}) Redox({Value:#0}) > Ein({On}");
                 }
-                else if (Value > Aus)
+                else if (Value > Off)
                 {
                     Switch.On = false;
-                    Logger.Information($"Ein({Switch.On}) Redox({Value:#0}) > Aus({Aus}");
+                    Logger.Information($"Ein({Switch.On}) Redox({Value:#0}) > Aus({Off}");
                 }
             }
         }

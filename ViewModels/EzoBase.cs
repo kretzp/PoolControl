@@ -7,6 +7,9 @@ using PoolControl.Helper;
 
 namespace PoolControl.ViewModels
 {
+    /// <summary>
+    /// This is the base class for all Ezo Products Data
+    /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
     public abstract class EzoBase : MeasurementModelBase
     {

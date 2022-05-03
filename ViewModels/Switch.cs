@@ -7,6 +7,9 @@ using PoolControl.Hardware;
 
 namespace PoolControl.ViewModels
 {
+    /// <summary>
+    /// Data for all Switches
+    /// </summary>
     [JsonObject(MemberSerialization.OptOut)]
     public class Switch : ViewModelBase
     {

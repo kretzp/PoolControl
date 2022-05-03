@@ -28,7 +28,7 @@
 				<ColumnDefinition Width="160"/>
 			</Grid.ColumnDefinitions>
 			<Label Grid.Column="0" Classes="SpinnerLabel">Einschaltdifferenz</Label>
-			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.Solarheizung.EinschaltDiff}" ClipValueToMinMax="True" Minimum="0" Maximum="10" FormatString="0.0 °C" Increment="0.1"></NumericUpDown>
+			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.SolarHeater.TurnOnDiff}" ClipValueToMinMax="True" Minimum="0" Maximum="10" FormatString="0.0 °C" Increment="0.1"></NumericUpDown>
 		</Grid>
 		<Grid Classes="Numeric" Background="#500000">
 			<Grid.ColumnDefinitions>
@@ -36,7 +36,7 @@
 				<ColumnDefinition Width="160"/>
 			</Grid.ColumnDefinitions>
 			<Label Grid.Column="0" Classes="SpinnerLabel">Ausschaltdifferenz</Label>
-			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.Solarheizung.AusschaltDiff}" ClipValueToMinMax="True" Minimum="0" Maximum="10" FormatString="0.0 °C" Increment="0.1"></NumericUpDown>
+			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.SolarHeater.TurnOffDiff}" ClipValueToMinMax="True" Minimum="0" Maximum="10" FormatString="0.0 °C" Increment="0.1"></NumericUpDown>
 		</Grid>
 		<Grid Classes="Numeric" Background="#500000">
 			<Grid.ColumnDefinitions>
@@ -44,7 +44,7 @@
 				<ColumnDefinition Width="160"/>
 			</Grid.ColumnDefinitions>
 			<Label Grid.Column="0" Classes="SpinnerLabel">Max. Wassertemperatur</Label>
-			<NumericUpDown Grid.Column="1" Classes="Numeric" Value="{Binding Data.Solarheizung.MaxPoolTemp}" ClipValueToMinMax="True" Minimum="10" Maximum="32" FormatString="0.0 °C" Increment="0.1"></NumericUpDown>
+			<NumericUpDown Grid.Column="1" Classes="Numeric" Value="{Binding Data.SolarHeater.MaxPoolTemp}" ClipValueToMinMax="True" Minimum="10" Maximum="32" FormatString="0.0 °C" Increment="0.1"></NumericUpDown>
 		</Grid>
 		<Grid Classes="Numeric">
 			<Grid.ColumnDefinitions>
@@ -52,14 +52,14 @@
 				<ColumnDefinition Width="160"/>
 			</Grid.ColumnDefinitions>
 			<Label Grid.Column="0" Classes="SpinnerLabel">Spüldauer</Label>
-			<NumericUpDown Grid.Column="1" Classes="Numeric" Value="{Binding Data.Solarheizung.Spueldauer}" ClipValueToMinMax="True" Minimum="10" Maximum="500" FormatString="0 sec" Increment="10"></NumericUpDown>
+			<NumericUpDown Grid.Column="1" Classes="Numeric" Value="{Binding Data.SolarHeater.SolarHeaterCleaningDuration}" ClipValueToMinMax="True" Minimum="10" Maximum="500" FormatString="0 sec" Increment="10"></NumericUpDown>
 		</Grid>
 		<StackPanel Classes="Time">
-			<TimePicker Classes="Time" SelectedTime="{Binding Data.Solarheizung.Spuelzeitpunkt}" MinuteIncrement="1" Header="Spülzeitpunkt" />
+			<TimePicker Classes="Time" SelectedTime="{Binding Data.SolarHeater.SolarHeaterCleaningTime}" MinuteIncrement="1" Header="Spülzeitpunkt" />
 		</StackPanel>
 		<StackPanel Orientation="Horizontal">
 			<Label Classes="Time" Content="Nächster Start: " FontSize="11" VerticalContentAlignment="Center"/>
-			<Label Classes="Time" Content="{Binding Data.Solarheizung.NextStart}" FontSize="11" VerticalContentAlignment="Center"/>
+			<Label Classes="Time" Content="{Binding Data.SolarHeater.NextStart}" FontSize="11" VerticalContentAlignment="Center"/>
 		</StackPanel>
 	</StackPanel>
 </UserControl>

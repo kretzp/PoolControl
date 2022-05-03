@@ -3,6 +3,9 @@ using Newtonsoft.Json;
 
 namespace PoolControl.ViewModels
 {
+    /// <summary>
+    /// Configuration for relay to pump attachment
+    /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
     public class RelayConfig
     {

@@ -9,6 +9,7 @@ using PoolControl.Hardware;
 
 namespace PoolControl.ViewModels
 {
+    // Base mode for all measurments
     [JsonObject(MemberSerialization.OptIn)]
     public class MeasurementModelBase : ViewModelBase, IDisposable
     {
@@ -127,18 +128,18 @@ namespace PoolControl.ViewModels
                     {
                         timer.Dispose();
                         timer = null;
-                        Logger.Debug("Timer gelöscht");
+                        Logger.Debug("Timer deleted");
                     }
                 }
                 else
                 {
                     if (timer.Change(duetime, interval))
                     {
-                        Logger.Debug($"Timer auf {duetime} {interval} gesetzt");
+                        Logger.Debug($"Timer set: duetime {duetime} interval {interval}");
                     }
                     else
                     {
-                        Logger.Debug($"Timer auf {duetime} {interval} setzen fehlgeschlagen");
+                        Logger.Debug($"Timer set: duetime {duetime} interval {interval} error");
                     }
                 }
             }

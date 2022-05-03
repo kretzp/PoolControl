@@ -43,7 +43,7 @@
 				<ColumnDefinition Width="160"/>
 			</Grid.ColumnDefinitions>
 			<Label Grid.Column="0" Classes="SpinnerLabel">Salzanlage An</Label>
-			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.Redox.Ein}" ClipValueToMinMax="True" Minimum="100" Maximum="1000" FormatString="0 mV" Increment="10"></NumericUpDown>
+			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.Redox.On}" ClipValueToMinMax="True" Minimum="100" Maximum="1000" FormatString="0 mV" Increment="10"></NumericUpDown>
 		</Grid>
 		<Grid Classes="Numeric" Background="DarkGoldenrod">
 			<Grid.ColumnDefinitions>
@@ -51,7 +51,7 @@
 				<ColumnDefinition Width="160"/>
 			</Grid.ColumnDefinitions>
 			<Label Grid.Column="0" Classes="SpinnerLabel">Salzanlage Aus</Label>
-			<NumericUpDown Grid.Column="1" Classes="Numeric" Value="{Binding Data.Redox.Aus}" ClipValueToMinMax="True" Minimum="100" Maximum="1000" FormatString="0 mV" Increment="10"></NumericUpDown>
+			<NumericUpDown Grid.Column="1" Classes="Numeric" Value="{Binding Data.Redox.Off}" ClipValueToMinMax="True" Minimum="100" Maximum="1000" FormatString="0 mV" Increment="10"></NumericUpDown>
 		</Grid>
 		<CheckBox IsChecked="{Binding Data.Redox.LedOn}" Background="DarkGoldenrod" Margin="4" Padding="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right">LED</CheckBox>
 	</StackPanel>

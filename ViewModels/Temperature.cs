@@ -5,6 +5,9 @@ using System;
 
 namespace PoolControl.ViewModels
 {
+    /// <summary>
+    /// Data fpr all temperatures
+    /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
     public class Temperature : MeasurementModelBase
     {

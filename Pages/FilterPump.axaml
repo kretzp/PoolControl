@@ -27,20 +27,20 @@
 				<ColumnDefinition Width="160"/>
 			</Grid.ColumnDefinitions>
 			<Label Classes="SpinnerLabel" Grid.Column="0">Filterbasislaufzeit</Label>
-			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.Filterpumpe.StandardFilterlaufzeit}" ClipValueToMinMax="True" Minimum="60" Maximum="180" FormatString="0 min" Increment="10"></NumericUpDown>
+			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.FilterPump.StandardFilterRunTime}" ClipValueToMinMax="True" Minimum="60" Maximum="180" FormatString="0 min" Increment="10"></NumericUpDown>
 		</Grid>
 		<StackPanel Classes="Time">
 			<TextBlock Classes="Time">Start Filterpumpe</TextBlock>
-			<TimePicker Classes="Time" SelectedTime="{Binding Data.Filterpumpe.StartVormittags}" MinuteIncrement="1" Header="Morgens" />
-			<TimePicker Classes="Time" SelectedTime="{Binding Data.Filterpumpe.StartNachmittags}" MinuteIncrement="1" Header="Nachmittags" />
+			<TimePicker Classes="Time" SelectedTime="{Binding Data.FilterPump.StartMorning}" MinuteIncrement="1" Header="Morgens" />
+			<TimePicker Classes="Time" SelectedTime="{Binding Data.FilterPump.StartNoon}" MinuteIncrement="1" Header="Nachmittags" />
 		</StackPanel>
 		<StackPanel Orientation="Horizontal">
 			<Label Classes="Time" Content="Nächster Start: "/>
-			<Label Classes="Time" Content="{Binding Data.Filterpumpe.NextStart}"/>
+			<Label Classes="Time" Content="{Binding Data.FilterPump.NextStart}"/>
 		</StackPanel>
 		<StackPanel Orientation="Horizontal">
 			<Label Classes="Time" Content="Nächstes Ende: "/>
-			<Label Classes="Time" Content="{Binding Data.Filterpumpe.NextEnd}"/>
+			<Label Classes="Time" Content="{Binding Data.FilterPump.NextEnd}"/>
 		</StackPanel>
 	</StackPanel>
 </UserControl>

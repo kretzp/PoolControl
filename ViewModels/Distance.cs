@@ -14,6 +14,9 @@ namespace PoolControl.ViewModels
     [JsonObject(MemberSerialization.OptIn)]
     public class Distance : MeasurementModelBase
     {
+        /// <summary>
+        /// This Model will be used to hold the data for a Distance of a Water Box, and then it will be calculatet to liters
+        /// </summary>
         public Distance()
         {
             // Calculate Liter

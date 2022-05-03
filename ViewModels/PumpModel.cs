@@ -5,8 +5,11 @@ using System.Threading;
 
 namespace PoolControl.ViewModels
 {
+    /// <summary>
+    /// Base Data for pumps
+    /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    public abstract class PumpenModel : ViewModelBase
+    public abstract class PumpModel : ViewModelBase
     {
         protected TimeSpan DAILY = new TimeSpan(24, 0, 0);
 
@@ -26,12 +29,12 @@ namespace PoolControl.ViewModels
             }
             else
             {
-                Logger.Debug($"{GetType().Name} ist null und konnte nicht eingeschaltet werden");
+                Logger.Debug($"{GetType().Name} is null and could not be turned on");
             }
             RecalculateThings();
         }
 
-        public void EndeTimerTriggered()
+        public void EndTimerTriggered()
         {
             Logger.Debug($"Schalte {GetType().Name} aus");
             if (Switch != null)
@@ -40,7 +43,7 @@ namespace PoolControl.ViewModels
             }
             else
             {
-                Logger.Debug($"{GetType().Name} ist null und konnte nicht ausgeschaltet werden");
+                Logger.Debug($"{GetType().Name} is null and could not be turned off");
             }
             RecalculateThings();
         }
