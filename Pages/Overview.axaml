@@ -10,49 +10,65 @@
 	<StackPanel Orientation="Horizontal">
 		<StackPanel Classes="Wide">
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-				<StackPanel Classes="Measurement">
-					<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[0].Label}"/>
-					<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[0].ValueWithUnit}"/>
-				</StackPanel>
-				<StackPanel Classes="Measurement">
-					<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[1].Label}"/>
-					<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[1].ValueWithUnit}"/>
-				</StackPanel>
+				<Button Classes="Measurement" Click="OnButtonClick" Tag="{Binding Data.Temperatures[0]}">
+					<StackPanel Classes="Measurement">
+						<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[0].Label}"/>
+						<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[0].ValueWithUnit}"/>
+					</StackPanel>
+				</Button>
+				<Button Classes="Measurement" Click="OnButtonClick" Tag="{Binding Data.Temperatures[1]}">
+					<StackPanel Classes="Measurement">
+						<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[1].Label}"/>
+						<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[1].ValueWithUnit}"/>
+					</StackPanel>
+				</Button>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-				<StackPanel Classes="Measurement">
-					<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[2].Label}"/>
-					<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[2].ValueWithUnit}"/>
-				</StackPanel>
+				<Button Classes="Measurement" Click="OnButtonClick" Tag="{Binding Data.Temperatures[2]}">
+					<StackPanel Classes="Measurement">
+						<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[2].Label}"/>
+						<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[2].ValueWithUnit}"/>
+					</StackPanel>
+				</Button>
 				<StackPanel Classes="Measurement" Background="Black">
 					<Button Padding="4" Content="Exit" Height="55" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding CloseWindow}" Background="Black" Foreground="Black"/>
 				</StackPanel>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-				<StackPanel Classes="Measurement" Background="#000060">
-					<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[3].Label}"/>
-					<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[3].ValueWithUnit}"/>
-				</StackPanel>
-				<StackPanel Classes="Measurement" Background="#000060">
-					<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[4].Label}"/>
-					<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[4].ValueWithUnit}"/>
-				</StackPanel>
+				<Button Classes="Measurement" Click="OnButtonClick" Tag="{Binding Data.Temperatures[3]}">
+					<StackPanel Classes="Measurement" Background="#000060">
+						<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[3].Label}"/>
+						<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[3].ValueWithUnit}"/>
+					</StackPanel>
+				</Button>
+				<Button Classes="Measurement" Click="OnButtonClick" Tag="{Binding Data.Temperatures[4]}">
+					<StackPanel Classes="Measurement" Background="#000060">
+						<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[4].Label}"/>
+						<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[4].ValueWithUnit}"/>
+					</StackPanel>
+				</Button>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-				<StackPanel Classes="Measurement" Background="DarkCyan">
-					<TextBlock Classes="TLabel" Text="{Binding Data.Ph.Label}"/>
-					<TextBlock Classes="TMeasurement" Text="{Binding Data.Ph.ValueWithUnit}"/>
-				</StackPanel>
-				<StackPanel Classes="Measurement" Background="DarkGoldenrod">
-					<TextBlock Classes="TLabel" Text="{Binding Data.Redox.Label}"/>
-					<TextBlock Classes="TMeasurement" Text="{Binding Data.Redox.ValueWithUnit}"/>
-				</StackPanel>
+				<Button Classes="Measurement" Click="OnButtonClickPh" Tag="{Binding Data.Ph}">
+					<StackPanel Classes="Measurement" Background="DarkCyan">
+						<TextBlock Classes="TLabel" Text="{Binding Data.Ph.Label}"/>
+						<TextBlock Classes="TMeasurement" Text="{Binding Data.Ph.ValueWithUnit}"/>
+					</StackPanel>
+				</Button>
+				<Button Classes="Measurement" Click="OnButtonClickRedox" Tag="{Binding Data.Redox}">
+					<StackPanel Classes="Measurement" Background="DarkGoldenrod">
+						<TextBlock Classes="TLabel" Text="{Binding Data.Redox.Label}"/>
+						<TextBlock Classes="TMeasurement" Text="{Binding Data.Redox.ValueWithUnit}"/>
+					</StackPanel>
+				</Button>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-				<StackPanel Classes="Measurement" Background="DarkMagenta">
-					<TextBlock Classes="TLabel" Text="{Binding Data.Distance.LabelL}"/>
-					<TextBlock Classes="TMeasurement" Text="{Binding Data.Distance.ValueWithUnitL}"/>
-				</StackPanel>
+				<Button Classes="Measurement" Click="OnButtonClickDistance" Tag="{Binding Data.Distance}">
+					<StackPanel Classes="Measurement" Background="DarkMagenta">
+						<TextBlock Classes="TLabel" Text="{Binding Data.Distance.LabelL}"/>
+						<TextBlock Classes="TMeasurement" Text="{Binding Data.Distance.ValueWithUnitL}"/>
+					</StackPanel>
+				</Button>
 			</StackPanel>
 		</StackPanel>
 		<ListBox Items="{Binding Data.Switches}">

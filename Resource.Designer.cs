@@ -61,11 +61,38 @@ namespace PoolControl {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Acid injection period ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Acid inhection period ähnelt.
         /// </summary>
         public static string AcidInjectionPeriod {
             get {
                 return ResourceManager.GetString("AcidInjectionPeriod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Address ähnelt.
+        /// </summary>
+        public static string Address {
+            get {
+                return ResourceManager.GetString("Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Calibrated? ähnelt.
+        /// </summary>
+        public static string Calibrated {
+            get {
+                return ResourceManager.GetString("Calibrated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Calibration ähnelt.
+        /// </summary>
+        public static string Calibration {
+            get {
+                return ResourceManager.GetString("Calibration", resourceCulture);
             }
         }
         
@@ -93,6 +120,15 @@ namespace PoolControl {
         public static string CleaningTime {
             get {
                 return ResourceManager.GetString("CleaningTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Close ähnelt.
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
             }
         }
         
@@ -142,11 +178,38 @@ namespace PoolControl {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Find ähnelt.
+        /// </summary>
+        public static string Find {
+            get {
+                return ResourceManager.GetString("Find", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Frost checker ähnelt.
         /// </summary>
         public static string FrostChecker {
             get {
                 return ResourceManager.GetString("FrostChecker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Slope? ähnelt.
+        /// </summary>
+        public static string GetSlope {
+            get {
+                return ResourceManager.GetString("GetSlope", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Low calibration ähnelt.
+        /// </summary>
+        public static string HighCal {
+            get {
+                return ResourceManager.GetString("HighCal", resourceCulture);
             }
         }
         
@@ -160,11 +223,38 @@ namespace PoolControl {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Interface format ähnelt.
+        /// </summary>
+        public static string InterfaceFormat {
+            get {
+                return ResourceManager.GetString("InterfaceFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Interval [sec] ähnelt.
+        /// </summary>
+        public static string IntervalInSec {
+            get {
+                return ResourceManager.GetString("IntervalInSec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die LED ähnelt.
         /// </summary>
         public static string LED {
             get {
                 return ResourceManager.GetString("LED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Low calibration ähnelt.
+        /// </summary>
+        public static string LowCal {
+            get {
+                return ResourceManager.GetString("LowCal", resourceCulture);
             }
         }
         
@@ -196,11 +286,29 @@ namespace PoolControl {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Mid calibration ähnelt.
+        /// </summary>
+        public static string MidCal {
+            get {
+                return ResourceManager.GetString("MidCal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Morning ähnelt.
         /// </summary>
         public static string Morning {
             get {
                 return ResourceManager.GetString("Morning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Name ähnelt.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
             }
         }
         
@@ -223,11 +331,29 @@ namespace PoolControl {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die no ähnelt.
+        /// </summary>
+        public static string no {
+            get {
+                return ResourceManager.GetString("no", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Noon ähnelt.
         /// </summary>
         public static string Noon {
             get {
                 return ResourceManager.GetString("Noon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die One ähnelt.
+        /// </summary>
+        public static string One {
+            get {
+                return ResourceManager.GetString("One", resourceCulture);
             }
         }
         
@@ -367,11 +493,74 @@ namespace PoolControl {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Three ähnelt.
+        /// </summary>
+        public static string Three {
+            get {
+                return ResourceManager.GetString("Three", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Time stamp ähnelt.
+        /// </summary>
+        public static string TimeStamp {
+            get {
+                return ResourceManager.GetString("TimeStamp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Two ähnelt.
+        /// </summary>
+        public static string Two {
+            get {
+                return ResourceManager.GetString("Two", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Unit Sign ähnelt.
+        /// </summary>
+        public static string UnitSign {
+            get {
+                return ResourceManager.GetString("UnitSign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Value ähnelt.
+        /// </summary>
+        public static string Value {
+            get {
+                return ResourceManager.GetString("Value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Format UI ähnelt.
+        /// </summary>
+        public static string ViewFormat {
+            get {
+                return ResourceManager.GetString("ViewFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Volume ähnelt.
         /// </summary>
         public static string Volume {
             get {
                 return ResourceManager.GetString("Volume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die yes ähnelt.
+        /// </summary>
+        public static string yes {
+            get {
+                return ResourceManager.GetString("yes", resourceCulture);
             }
         }
     }

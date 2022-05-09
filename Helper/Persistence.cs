@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,6 +40,10 @@ namespace PoolControl.Helper
         {
             Logger = logger?.ForContext<Persistence>() ?? throw new ArgumentNullException(nameof(Logger));
             PersistenceFile = PoolControlConfig.Instance.Settings.PersistenceFile;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                PersistenceFile = "win" + PersistenceFile;
+            }
         }
 
         public string Serialize(object o)

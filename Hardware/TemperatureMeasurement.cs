@@ -56,6 +56,10 @@ namespace PoolControl.Hardware
                 mr.StatusInfo = "OK";
                 mr.ReturnCode = 1;
                 Logger.Debug($"Temperature {mr.Result}");
+                if(mr.Result > 80)
+                {
+                    throw new ArgumentOutOfRangeException("Error in DS18B20, Temperature > 80 °C");
+                }
             }
             catch (Exception ex)
             {

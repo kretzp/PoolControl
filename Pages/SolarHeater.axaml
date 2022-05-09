@@ -14,7 +14,7 @@
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 				<StackPanel Classes="Measurement">
 					<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[1].Label}"/>
-					<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[0].ValueWithUnit}"/>
+					<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[1].ValueWithUnit}"/>
 				</StackPanel>
 				<StackPanel Classes="Measurement">
 					<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[2].Label}"/>

@@ -9,7 +9,7 @@ namespace PoolControl.Hardware
 {
     public class BaseEzoMeasurement : BaseMeasurement
     {
-        private const int BUFFER_SIZE = 16;
+        private const int BUFFER_SIZE = 32;
         private const int MILLIS_TO_WAIT = 1000;
 
         protected int I2CAddress
@@ -200,22 +200,26 @@ namespace PoolControl.Hardware
                                             }
                                             catch (Exception)
                                             {
-                                                if (resString.StartsWith("?L,") && resString.Length > 3)
+                                                if (resString.ToLower().StartsWith("?l,") && resString.Length > 3)
                                                 {
                                                     ezoResult.Result = double.Parse(resString.Substring(3), new CultureInfo("en-US"));
                                                 }
-                                                else if (resString.StartsWith("?Cal,") && resString.Length > 5)
+                                                else if (resString.ToLower().StartsWith("?cal,") && resString.Length > 5)
                                                 {
                                                     ezoResult.Result = double.Parse(resString.Substring(5), new CultureInfo("en-US"));
                                                 }
-                                                else if (resString.StartsWith("?Plock,") && resString.Length > 7)
+                                                else if (resString.ToLower().StartsWith("?plock,") && resString.Length > 7)
                                                 {
                                                     ezoResult.Result = double.Parse(resString.Substring(7), new CultureInfo("en-US"));
+                                                }
+                                                else if (resString.ToLower().StartsWith("?slope,") && resString.Length > 7)
+                                                {
+                                                    resString = resString.Substring(7);
                                                 }
                                             }
                                         }
                                         Logger.Information("< success, answer = " + resString);
-                                        ezoResult.StatusInfo = $"OK:{resString}";
+                                        ezoResult.StatusInfo = resString;
                                     }
 
                                     break;
@@ -250,7 +254,13 @@ namespace PoolControl.Hardware
         }
         public override MeasurementResult DoMeasurement()
         {
-            return takeReading();
+            MeasurementResult mr = takeReading();
+            if (mr.Result <= 0)
+            {
+                throw new ArgumentOutOfRangeException($"Error in {GetType().Name}  <= 0");
+            }
+
+            return mr;
         }
     }
 }

@@ -31,8 +31,16 @@ namespace PoolControl.ViewModels
         public override void OnTemperatureChange(MeasurementArgs args)
         {
             Temperature temp = (Temperature)args.BaseMeasurement.ModelBase;
-            if (temp.Key.Equals("Solarzulauf")) SolarPreLoopTemperature = temp;
+            if (temp.Key.Equals("SolarPreRun")) SolarPreLoopTemperature = temp;
             if (temp.Key.Equals("SolarHeater")) SolarHeaterTemperature = temp;
+
+            if (SolarPreLoopTemperature == null || SolarHeaterTemperature == null)
+            {
+                Logger.Debug($"SolarPreLoopTemperature or SolarHeaterTemperature is null");
+                return;
+            }
+
+            Logger.Debug($"SolarPreLoopTemperature: {SolarPreLoopTemperature.Value} SolarHeaterTemperature: {SolarHeaterTemperature.Value}");
 
             DateTime now = DateTime.Now;
             if (now < NextEnd && now > NextEnd - new TimeSpan(0, 0, SolarHeaterCleaningDuration))
@@ -41,26 +49,23 @@ namespace PoolControl.ViewModels
                 return;
             }
 
-            if (SolarHeaterTemperature != null && SolarPreLoopTemperature != null)
+            if (SolarHeaterTemperature.Value > SolarPreLoopTemperature.Value + TurnOnDiff)
             {
-                if (SolarHeaterTemperature.Value > SolarPreLoopTemperature.Value + TurnOnDiff)
+                if (SolarPreLoopTemperature.Value < MaxPoolTemp)
                 {
-                    if (SolarPreLoopTemperature.Value < MaxPoolTemp)
-                    {
-                        Switch.On = true;
-                    }
-                    else
-                    {
-                        Switch.On = false;
-                    }
-                    Logger.Information($"{Switch.Name} On({Switch.On}) SolarHeater({SolarHeaterTemperature.Value:#0.0}) > Pool({SolarPreLoopTemperature.Value:#0.0}) + Ein({TurnOnDiff:#0.0}) = Sum({SolarPreLoopTemperature.Value:#0.0}) Max({MaxPoolTemp:#0.0})");
-
+                    Switch.On = true;
                 }
-                else if (SolarHeaterTemperature.Value < SolarPreLoopTemperature.Value + TurnOffDiff)
+                else
                 {
                     Switch.On = false;
-                    Logger.Information($"{Switch.Name} On({Switch.On}) SolarHeater({SolarHeaterTemperature.Value:#0.0}) > Pool({SolarPreLoopTemperature.Value:#0.0}) + Aus({TurnOffDiff:#0.0}) = Sum({SolarPreLoopTemperature.Value:#0.0}) Max({MaxPoolTemp:#0.0})");
                 }
+                Logger.Information($"{Switch.Name} On({Switch.On}) SolarHeater({SolarHeaterTemperature.Value:#0.0}) > Pool({SolarPreLoopTemperature.Value:#0.0}) + Ein({TurnOnDiff:#0.0}) = Sum({SolarPreLoopTemperature.Value:#0.0}) Max({MaxPoolTemp:#0.0})");
+
+            }
+            else if (SolarHeaterTemperature.Value < SolarPreLoopTemperature.Value + TurnOffDiff)
+            {
+                Switch.On = false;
+                Logger.Information($"{Switch.Name} On({Switch.On}) SolarHeater({SolarHeaterTemperature.Value:#0.0}) > Pool({SolarPreLoopTemperature.Value:#0.0}) + Aus({TurnOffDiff:#0.0}) = Sum({SolarPreLoopTemperature.Value:#0.0}) Max({MaxPoolTemp:#0.0})");
             }
         }
 

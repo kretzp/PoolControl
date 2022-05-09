@@ -120,6 +120,15 @@
   <data name="AcidInjectionPeriod" xml:space="preserve">
     <value>Acid inhection period</value>
   </data>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="Calibrated" xml:space="preserve">
+    <value>Calibrated?</value>
+  </data>
+  <data name="Calibration" xml:space="preserve">
+    <value>Calibration</value>
+  </data>
   <data name="Cistern" xml:space="preserve">
     <value>Cistern</value>
   </data>
@@ -128,6 +137,9 @@
   </data>
   <data name="CleaningTime" xml:space="preserve">
     <value>Cleaning time</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
   </data>
   <data name="DiffOff" xml:space="preserve">
     <value>Turn off difference</value>
@@ -144,14 +156,32 @@
   <data name="FilterPump" xml:space="preserve">
     <value>Filter pump</value>
   </data>
+  <data name="Find" xml:space="preserve">
+    <value>Find</value>
+  </data>
   <data name="FrostChecker" xml:space="preserve">
     <value>Frost checker</value>
+  </data>
+  <data name="GetSlope" xml:space="preserve">
+    <value>Slope?</value>
+  </data>
+  <data name="HighCal" xml:space="preserve">
+    <value>Low calibration</value>
   </data>
   <data name="InjectionDuration" xml:space="preserve">
     <value>Injection period</value>
   </data>
+  <data name="InterfaceFormat" xml:space="preserve">
+    <value>Interface format</value>
+  </data>
+  <data name="IntervalInSec" xml:space="preserve">
+    <value>Interval [sec]</value>
+  </data>
   <data name="LED" xml:space="preserve">
     <value>LED</value>
+  </data>
+  <data name="LowCal" xml:space="preserve">
+    <value>Low calibration</value>
   </data>
   <data name="MaxPh" xml:space="preserve">
     <value>Maximum pH value</value>
@@ -162,8 +192,14 @@
   <data name="MeasurementInterval" xml:space="preserve">
     <value>Measurment Interval</value>
   </data>
+  <data name="MidCal" xml:space="preserve">
+    <value>Mid calibration</value>
+  </data>
   <data name="Morning" xml:space="preserve">
     <value>Morning</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
   </data>
   <data name="NextEnd" xml:space="preserve">
     <value>Next end:</value>
@@ -171,8 +207,14 @@
   <data name="NextStart" xml:space="preserve">
     <value>Next start:</value>
   </data>
+  <data name="no" xml:space="preserve">
+    <value>no</value>
+  </data>
   <data name="Noon" xml:space="preserve">
     <value>Noon</value>
+  </data>
+  <data name="One" xml:space="preserve">
+    <value>One</value>
   </data>
   <data name="Overview" xml:space="preserve">
     <value>Overview</value>
@@ -219,7 +261,28 @@
   <data name="TechnicRoom" xml:space="preserve">
     <value>Technic room</value>
   </data>
+  <data name="Three" xml:space="preserve">
+    <value>Three</value>
+  </data>
+  <data name="TimeStamp" xml:space="preserve">
+    <value>Time stamp</value>
+  </data>
+  <data name="Two" xml:space="preserve">
+    <value>Two</value>
+  </data>
+  <data name="UnitSign" xml:space="preserve">
+    <value>Unit Sign</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="ViewFormat" xml:space="preserve">
+    <value>Format UI</value>
+  </data>
   <data name="Volume" xml:space="preserve">
     <value>Volume</value>
+  </data>
+  <data name="yes" xml:space="preserve">
+    <value>yes</value>
   </data>
 </root>

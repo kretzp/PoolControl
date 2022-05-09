@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+    using Newtonsoft.Json;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
@@ -22,9 +22,6 @@ namespace PoolControl.ViewModels
             this.WhenAnyValue(ds => ds.Name, ds => ds.Value, ds => ds.ViewFormat, ds => ds.UnitSign, (name, temperature, viewFormat, unitSign) => $"{LocationName}: {temperature.ToString(viewFormat)} {unitSign}").ToPropertyEx(this, ds => ds.FullText, deferSubscription: true);
             this.WhenAnyValue(ds => ds.Name, ds => ds.Value, (name, value) => $"{LocationName}:").ToPropertyEx(this, ds => ds.Label, deferSubscription: true);
             this.WhenAnyValue(ds => ds.Value, ds => ds.ViewFormat, ds => ds.UnitSign, (value, viewFormat, unitSign) => $"{value.ToString(viewFormat)} {unitSign}").ToPropertyEx(this, ds => ds.ValueWithUnit, deferSubscription: true);
-
-            // publish Value
-            this.WhenAnyValue(ds => ds.Value).Subscribe(value => this.publishMessageValue());
 
             // RestartReading and Publish
             this.WhenAnyValue(ds => ds.IntervalInSec).Subscribe(value => this.RestartTimerAndPublishNewInterval());
@@ -154,7 +151,7 @@ namespace PoolControl.ViewModels
 
             if (mr.ReturnCode == (int)MeasurmentResultCode.SUCCESS)
             {
-                Logger.Information($"Measurment succesful: Value {Value} at {TimeStamp:yyyy-MM-dd HH:mm:ss-fff}, Status: {mr.StatusInfo}");
+                Logger.Information($"Measurment succesful: Class: {GetType().Name} Value {Value} at {TimeStamp:yyyy-MM-dd HH:mm:ss-fff}, Status: {mr.StatusInfo}");
                 MeasurmentTaken?.Invoke(new MeasurementArgs { MeasurementResult = mr, BaseMeasurement = BaseMeasurement });
             }
             else

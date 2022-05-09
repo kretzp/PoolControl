@@ -22,11 +22,7 @@ namespace PoolControl.Hardware
 
             if (result.ReturnCode == 1)
             {
-                // Publish Message even if it is equal!!!
-                if(ModelBase.Value == result.Result)
-                {
-                    ModelBase.publishMessageValue();
-                }
+                ModelBase.publishMessageValue();
 
                 ModelBase.Value = result.Result;
                 ModelBase.TimeStamp = result.TimeStamp;

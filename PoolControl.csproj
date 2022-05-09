@@ -61,6 +61,9 @@
     <Compile Update="Pages\FilterPump.axaml.cs">
       <DependentUpon>FilterPump.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Pages\RedoxConfig.axaml.cs">
+      <DependentUpon>RedoxConfig.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Pages\PhValue.axaml.cs">
       <DependentUpon>PhValue.axaml</DependentUpon>
     </Compile>
@@ -72,6 +75,9 @@
     </Compile>
     <Compile Update="Pages\Cistern.axaml.cs">
       <DependentUpon>Cistern.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\PhConfig.axaml.cs">
+      <DependentUpon>PhConfig.axaml</DependentUpon>
     </Compile>
     <Compile Update="Resource.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -90,7 +96,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="poolcontrolviewmodel.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 </Project>

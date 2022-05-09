@@ -7,12 +7,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using PoolControl.Helper;
+using System.Runtime.InteropServices;
 
 namespace PoolControl.Communication
 {
     public class PoolMqttClient
     {
         private const string REASON = "SHUTDOWN";
+        private const string WIN = "win";
 
         public bool Shutdown { get; set; }
 
@@ -122,12 +124,22 @@ namespace PoolControl.Communication
 
         public async void subscribe(string topic)
         {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                topic = WIN + topic;
+            }
+
             await _mqttClient.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic(topic).Build());
             Logger.Information($"# Subscribed topic={topic}");
         }
 
         public async void unSubscribe(string topic)
         {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                topic = WIN + topic;
+            }
+
             await _mqttClient.UnsubscribeAsync(topic);
             Logger.Information($"# Unsubscribed topic={topic}");
         }
@@ -163,7 +175,12 @@ namespace PoolControl.Communication
 
         public async Task publishMessage(string topic, string payload, int qos, bool retain)
         {
-            var message = new MqttApplicationMessageBuilder()
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                topic = WIN + topic;
+            }
+
+                var message = new MqttApplicationMessageBuilder()
                             .WithTopic(topic)
                             .WithPayload(payload)
                             .WithQualityOfServiceLevel((MQTTnet.Protocol.MqttQualityOfServiceLevel)qos)

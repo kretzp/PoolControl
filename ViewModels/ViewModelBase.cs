@@ -27,6 +27,7 @@ namespace PoolControl.ViewModels
         [JsonProperty]
         public string Name { get; set; }
 
+        [JsonIgnore]
         public string LocationName
         {
             get

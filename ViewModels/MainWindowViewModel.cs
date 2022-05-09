@@ -1,4 +1,4 @@
-#define CREATE
+#define CREATEN
 using MQTTnet.Client;
 using ReactiveUI.Fody.Helpers;
 using System;
@@ -13,6 +13,7 @@ using Avalonia.Interactivity;
 using ReactiveUI;
 using System.Reactive;
 using PoolControl.Hardware;
+using System.Runtime.InteropServices;
 
 namespace PoolControl.ViewModels
 {
@@ -40,40 +41,49 @@ namespace PoolControl.ViewModels
             Data = Persistence.Instance.Load<PoolData>();
 #endif
 #if CREATE
-            Data = new PoolData();
-            Data.TemperaturesDict = new Dictionary<string, Temperature>();
-            Data.TemperaturesDict.Add("Pool", new Temperature { Address = "28-0317600537ff"/*28-aaeb6e53141b4*/, Name = "Pool", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN});
-            Data.TemperaturesDict.Add("SolarPreRun", new Temperature { Address = "28-ff7d557016458", Name = "SolarPreRun", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN });
-            Data.TemperaturesDict.Add("SolarHeater", new Temperature { Address = "28-0315a43260ff", Name = "SolarHeater", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN });
-            Data.TemperaturesDict.Add("Technikraum", new Temperature { Address = "28-ff28916017325", Name = "TechnicRoom", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 60, Value = double.NaN });
-            Data.TemperaturesDict.Add("FrostChecker", new Temperature { Address = "28-ff9658701646f", Name = "FrostChecker", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 60, Value = double.NaN });
-            Data.SwitchesDict = new Dictionary<string, Switch>();
-            Data.SwitchesDict.Add("FilterPump", new Switch{ RelayNumber = 8, Name = "FilterPump", HighIsOn = false, On = false });
-            Data.SwitchesDict.Add("SolarHeater", new Switch { RelayNumber = 7, Name = "SolarHeater", HighIsOn = false, On = false });
-            Data.SwitchesDict.Add("Ph", new Switch { RelayNumber = 6, Name = "PhPump", HighIsOn = false, On = false });
-            Data.SwitchesDict.Add("Redox", new Switch { RelayNumber = 5, Name = "RedoxSwitch", HighIsOn = false, On = false });
-            Data.SwitchesDict.Add("Poollampe", new Switch { RelayNumber = 4, Name = "PoolLight", HighIsOn = false, On = false });
-            Data.FilterPump = new FilterPump { StandardFilterRunTime = 180, StartMorning = new TimeSpan(8, 0, 0), StartNoon = new TimeSpan(14, 0, 0) };
-            Data.SolarHeater = new SolarHeater { SolarHeaterCleaningTime = new TimeSpan(21, 30, 0), SolarHeaterCleaningDuration = 180, TurnOnDiff = 6.0, TurnOffDiff = 3.0, MaxPoolTemp = 29.5 };
-            Data.Ph = new Ph { Name="pHValue", MaxValue = 7.3, AcidInjectionDuration = 20, AcidInjectionRecurringPeriod = 10, IntervalInSec = 60, Address = "99", LedOn = true, ViewFormat = "#0.0", InterfaceFormat = "#0.000", UnitSign = "pH", Value = double.NaN };
-            Data.Redox = new Redox { Name="RedoxValue", On = 750, Off = 840, IntervalInSec = 60, Address = "98", LedOn = true, ViewFormat = "#0", InterfaceFormat = "#0.0", UnitSign = "mV", Value = double.NaN };
-            Data.Distance = new Distance { Address = "16/26", Name = "Distance", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "cm", NameL = "Volume", ViewFormatL = "#0", InterfaceFormatL = "#0", UnitSignL = "L", IntervalInSec = 60, Value = double.NaN, NumberOfMeasurements = 5 };
-            Data.RelayConfig = RelayConfig.Instance;
-            Data.RelayConfig.RelayToLogicLevelConverterDict = new Dictionary<int, int>();
-            for (int i = 1; i < 9; i++)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                Data.RelayConfig.RelayToLogicLevelConverterDict[i] = i;
+                Data = new PoolData();
+                Data.TemperaturesDict = new Dictionary<string, Temperature>();
+                Data.TemperaturesDict.Add("Pool", new Temperature { Address = "28-0114536eebaa", Name = "Pool", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN });
+                Data.TemperaturesDict.Add("SolarPreRun", new Temperature { Address = "28-041670557dff", Name = "SolarPreRun", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN });
+                Data.TemperaturesDict.Add("SolarHeater", new Temperature { Address = "28-0315a43260ff", Name = "SolarHeater", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN });
+                Data.TemperaturesDict.Add("Technikraum", new Temperature { Address = "28-0317609128ff", Name = "TechnicRoom", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 60, Value = double.NaN });
+                Data.TemperaturesDict.Add("FrostChecker", new Temperature { Address = "28-0416705896ff", Name = "FrostChecker", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 60, Value = double.NaN });
+                Data.SwitchesDict = new Dictionary<string, Switch>();
+                Data.SwitchesDict.Add("FilterPump", new Switch { RelayNumber = 8, Name = "FilterPump", HighIsOn = false, On = false });
+                Data.SwitchesDict.Add("SolarHeater", new Switch { RelayNumber = 7, Name = "SolarHeater", HighIsOn = false, On = false });
+                Data.SwitchesDict.Add("Ph", new Switch { RelayNumber = 6, Name = "PhPump", HighIsOn = false, On = false });
+                Data.SwitchesDict.Add("Redox", new Switch { RelayNumber = 5, Name = "RedoxSwitch", HighIsOn = false, On = false });
+                Data.SwitchesDict.Add("Poollampe", new Switch { RelayNumber = 4, Name = "PoolLight", HighIsOn = false, On = false });
+                Data.SwitchesDict.Add("Three", new Switch { RelayNumber = 3, Name = "Three", HighIsOn = false, On = false });
+                Data.SwitchesDict.Add("Two", new Switch { RelayNumber = 2, Name = "Two", HighIsOn = false, On = false });
+                Data.SwitchesDict.Add("One", new Switch { RelayNumber = 1, Name = "One", HighIsOn = false, On = false });
+                Data.FilterPump = new FilterPump { StandardFilterRunTime = 180, StartMorning = new TimeSpan(8, 0, 0), StartNoon = new TimeSpan(14, 0, 0) };
+                Data.SolarHeater = new SolarHeater { SolarHeaterCleaningTime = new TimeSpan(21, 30, 0), SolarHeaterCleaningDuration = 180, TurnOnDiff = 6.0, TurnOffDiff = 3.0, MaxPoolTemp = 29.5 };
+                Data.Ph = new Ph { Name = "pHValue", MaxValue = 7.3, AcidInjectionDuration = 20, AcidInjectionRecurringPeriod = 10, IntervalInSec = 60, Address = "99", LedOn = true, ViewFormat = "#0.00", InterfaceFormat = "#0.000", UnitSign = "pH", Value = double.NaN };
+                Data.Redox = new Redox { Name = "RedoxValue", On = 750, Off = 840, IntervalInSec = 60, Address = "98", LedOn = true, ViewFormat = "#0", InterfaceFormat = "#0.0", UnitSign = "mV", Value = double.NaN };
+                Data.Distance = new Distance { Address = "16/26", Name = "Distance", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "cm", NameL = "Volume", ViewFormatL = "#0", InterfaceFormatL = "#0", UnitSignL = "L", IntervalInSec = 60, Value = double.NaN, NumberOfMeasurements = 5 };
+                Data.RelayConfig = RelayConfig.Instance;
+                Data.RelayConfig.RelayToLogicLevelConverterDict = new Dictionary<int, int>();
+                for (int i = 1; i < 9; i++)
+                {
+                    Data.RelayConfig.RelayToLogicLevelConverterDict[i] = i;
+                }
+                Data.RelayConfig.LogicLevelConverterToGpioDict = new Dictionary<int, int>();
+                Data.RelayConfig.LogicLevelConverterToGpioDict.Add(1, 19);
+                Data.RelayConfig.LogicLevelConverterToGpioDict.Add(2, 13);
+                Data.RelayConfig.LogicLevelConverterToGpioDict.Add(3, 5);
+                Data.RelayConfig.LogicLevelConverterToGpioDict.Add(4, 22);
+                Data.RelayConfig.LogicLevelConverterToGpioDict.Add(5, 27);
+                Data.RelayConfig.LogicLevelConverterToGpioDict.Add(6, 23);
+                Data.RelayConfig.LogicLevelConverterToGpioDict.Add(7, 20);
+                Data.RelayConfig.LogicLevelConverterToGpioDict.Add(8, 21);
             }
-            Data.RelayConfig.LogicLevelConverterToGpioDict = new Dictionary<int, int>();
-            Data.RelayConfig.LogicLevelConverterToGpioDict.Add(1, 19);
-            Data.RelayConfig.LogicLevelConverterToGpioDict.Add(2, 13);
-            Data.RelayConfig.LogicLevelConverterToGpioDict.Add(3, 5);
-            Data.RelayConfig.LogicLevelConverterToGpioDict.Add(4, 22);
-            Data.RelayConfig.LogicLevelConverterToGpioDict.Add(5, 27);
-            Data.RelayConfig.LogicLevelConverterToGpioDict.Add(6, 23);
-            Data.RelayConfig.LogicLevelConverterToGpioDict.Add(7, 20);
-            Data.RelayConfig.LogicLevelConverterToGpioDict.Add(8, 21);
-
+            else
+            {
+                Data = Persistence.Instance.Load<PoolData>();
+            }
 #endif            
             // Set RelayConfig as Singleton
             RelayConfig.Instance = Data.RelayConfig;
@@ -92,7 +102,9 @@ namespace PoolControl.ViewModels
             Data.FilterPump.Switch = Data.SwitchesDict[Data.FilterPump.GetType().Name];
             Data.SolarHeater.Switch = Data.SwitchesDict[Data.SolarHeater.GetType().Name];
             Data.Redox.Switch = Data.SwitchesDict[Data.Redox.GetType().Name];
+            Data.Redox.FilterPumpSwitch = Data.SwitchesDict[Data.FilterPump.GetType().Name];
             Data.Ph.Switch = Data.SwitchesDict[Data.Ph.GetType().Name];
+            Data.Ph.FilterPumpSwitch = Data.SwitchesDict[Data.FilterPump.GetType().Name];
 
             // Populate Temperatures
             Data.Temperatures = new List<Temperature>();
@@ -116,7 +128,10 @@ namespace PoolControl.ViewModels
             Data.TemperaturesDict[Data.SolarHeater.GetType().Name].MeasurmentTaken += Data.SolarHeater.OnTemperatureChange;
 
 #if CREATE
-            Persistence.Instance.Save(Data);
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                Persistence.Instance.Save(Data);
+            }
 #endif
             // Open GPIO and handle Switches
             Data.OpenGpioSwitches();

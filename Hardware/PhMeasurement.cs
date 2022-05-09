@@ -108,7 +108,13 @@ namespace PoolControl.Hardware
 
         public override MeasurementResult DoMeasurement()
         {
-            return takeReadingTemperatureCompensation(Temperature);
+            MeasurementResult mr = takeReadingTemperatureCompensation(Temperature);
+            if (mr.Result <= 0)
+            {
+                throw new ArgumentOutOfRangeException("Error in pH  <= 0");
+            }
+
+            return mr;
         }
     }
 }

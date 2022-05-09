@@ -4,11 +4,17 @@
 		<Border Padding="20">
 			<StackPanel Spacing="5">
 				<TextBlock Classes="Temperature" Text="Code Font Family" FontFamily="{StaticResource CodeFontFamily}" />
+				<StackPanel Orientation="Horizontal">
+					<Label Classes="Details" Content="Hallo"/>
+					<TextBox Classes="Details" Text="Hallo" HorizontalAlignment="Right"/>
+				</StackPanel>
 				<ToggleButton Classes="Switch" Content="Pumpe"/>
+				<Button Classes="Measurement">
 				<StackPanel Classes="Measurement">
 					<TextBlock Classes="TLabel" Text="Abstand:"/>
 					<TextBlock Classes="TMeasurement" Text="15 cm"/>
 				</StackPanel>
+				</Button>
 				<ListBox Classes="Temperature">
 					<ListBox.ItemTemplate>
 						<DataTemplate>
@@ -148,5 +154,16 @@
 	<Style Selector="Label.Time">
 		<Setter Property="FontSize" Value="11"/>
 		<Setter Property="VerticalContentAlignment" Value="Center"/>
+	</Style>
+	<Style Selector="Button.Measurement">
+		<Setter Property="Margin" Value="0"/>
+		<Setter Property="Padding" Value="-1"/>
+		<Setter Property="Background" Value="Black"/>
+	</Style>
+	<Style Selector="Label.Details">
+		<Setter Property="Width" Value="150"/>
+	</Style>
+	<Style Selector="TextBox.Details">
+		<Setter Property="Width" Value="123"/>
 	</Style>
 </Styles>
