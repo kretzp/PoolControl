@@ -1,0 +1,53 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:vm="clr-namespace:PoolControl.ViewModels"
+		xmlns:p="clr-namespace:PoolControl"
+        Width="480" Height="320" Design.Width="480" Design.Height="320"
+		HasSystemDecorations="False"
+        x:Class="PoolControl.Pages.TemperatureConfig"
+        Title="TemperatureConfig">
+	<Design.DataContext>
+		<vm:Temperature/>
+	</Design.DataContext>
+	<StackPanel Orientation="Horizontal">
+		<StackPanel Margin="5">
+			<StackPanel Orientation="Horizontal">
+				<Label Classes="Details" Content="{x:Static p:Resource.Name}"/>
+				<TextBox Classes="Details" Text="{Binding Name}"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<Label Classes="Details" Content="{x:Static p:Resource.UnitSign}"/>
+				<TextBox Classes="Details" Text="{Binding UnitSign}"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<Label Classes="Details" Content="{x:Static p:Resource.Value}"/>
+				<TextBox Classes="Details" Text="{Binding Value}"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<Label Classes="Details" Content="{x:Static p:Resource.TimeStamp}"/>
+				<TextBox Classes="Details" Text="{Binding TimeStamp, Mode=OneWay, StringFormat={}{0:dd.MM. HH:mm:ss}}}"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<Label Classes="Details" Content="{x:Static p:Resource.Address}"/>
+				<TextBox Classes="Details" Text="{Binding Address}"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<Label Classes="Details" Content="{x:Static p:Resource.IntervalInSec}"/>
+				<TextBox Classes="Details" Text="{Binding IntervalInSec}"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<Label Classes="Details" Content="{x:Static p:Resource.ViewFormat}"/>
+				<TextBox Classes="Details" Text="{Binding ViewFormat}"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<Label Classes="Details" Content="{x:Static p:Resource.InterfaceFormat}"/>
+				<TextBox Classes="Details" Text="{Binding InterfaceFormat}" HorizontalAlignment="Right"/>
+			</StackPanel>
+		</StackPanel>
+		<StackPanel Margin="5">
+			<Button	Content="{x:Static p:Resource.Close}" Click="OnButtonClick" />
+		</StackPanel>
+	</StackPanel>
+</Window>

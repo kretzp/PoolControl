@@ -1,0 +1,68 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:vm="clr-namespace:PoolControl.ViewModels"
+		xmlns:p="clr-namespace:PoolControl"
+        Width="480" Height="320" Design.Width="480" Design.Height="320"
+		HasSystemDecorations="False"
+        x:Class="PoolControl.Pages.PhConfig"
+        Title="PhConfig">
+	<Design.DataContext>
+		<vm:Ph/>
+	</Design.DataContext>
+	<StackPanel Orientation="Horizontal">
+		<StackPanel Margin="5">
+			<StackPanel Orientation="Horizontal">
+				<Label Classes="Details" Content="{x:Static p:Resource.Name}"/>
+				<TextBox Classes="Details" Text="{Binding Name}"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<Label Classes="Details" Content="{x:Static p:Resource.UnitSign}"/>
+				<TextBox Classes="Details" Text="{Binding UnitSign}"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<Label Classes="Details" Content="{x:Static p:Resource.Value}"/>
+				<TextBox Classes="Details" Text="{Binding Value}"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<Label Classes="Details" Content="{x:Static p:Resource.TimeStamp}"/>
+				<TextBox Classes="Details" Text="{Binding TimeStamp, Mode=OneWay, StringFormat={}{0:dd.MM. HH:mm:ss}}}"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<Label Classes="Details" Content="{x:Static p:Resource.Address}"/>
+				<TextBox Classes="Details" Text="{Binding Address}"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<Label Classes="Details" Content="{x:Static p:Resource.IntervalInSec}"/>
+				<TextBox Classes="Details" Text="{Binding IntervalInSec}"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<Label Classes="Details" Content="{x:Static p:Resource.ViewFormat}"/>
+				<TextBox Classes="Details" Text="{Binding ViewFormat}"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<Label Classes="Details" Content="{x:Static p:Resource.InterfaceFormat}"/>
+				<TextBox Classes="Details" Text="{Binding InterfaceFormat}" HorizontalAlignment="Right"/>
+			</StackPanel>
+		</StackPanel>
+		<StackPanel Margin="5">
+			<Button	Content="{x:Static p:Resource.MidCal}" Command="{Binding OnMidCal}"/>
+			<NumericUpDown Classes="Numeric" Value="{Binding MidCal}" ClipValueToMinMax="True" Minimum="5" Maximum="8" FormatString="0.0 pH" Increment="0.1"/>
+			<Button	Content="{x:Static p:Resource.LowCal}" Command="{Binding OnLowCal}"/>
+			<NumericUpDown Classes="Numeric" Value="{Binding LowCal}" ClipValueToMinMax="True" Minimum="3" Maximum="5" FormatString="0.0 pH" Increment="0.1"/>
+			<Button	Content="{x:Static p:Resource.HighCal}" Command="{Binding OnHighCal}"/>
+			<NumericUpDown Classes="Numeric" Value="{Binding HighCal}" ClipValueToMinMax="True" Minimum="8" Maximum="10" FormatString="0.0 pH" Increment="0.1"/>
+			<StackPanel Orientation="Horizontal">
+				<Button	Content="{x:Static p:Resource.GetSlope}" Command="{Binding OnGetSlope}" />
+				<Label Content="{Binding Slope}"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<Button	Content="{x:Static p:Resource.Calibrated}" Command="{Binding OnCalibrated}" />
+				<Label Content="{Binding SensorsCalibrated, Mode=OneWay}"/>
+			</StackPanel>
+			<Button	Content="{x:Static p:Resource.Find}" Command="{Binding OnFind}" />
+			<Button	Content="{x:Static p:Resource.Close}" Click="OnButtonClick" />
+		</StackPanel>
+	</StackPanel>
+</Window>
