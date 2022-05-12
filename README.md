@@ -37,6 +37,9 @@ Features:
 - pH and redox sSensor could be handled over MQTT, including calibration
 - I integrated this in Openhab as generic MQTT Thing
 
+The printable .stl files could be found here:
+https://www.thingiverse.com/thing:5383565
+
 Impressions:
 
 ![image](https://user-images.githubusercontent.com/15065072/168045938-3de59ce1-81f1-497f-ac0f-714105303de1.png)
