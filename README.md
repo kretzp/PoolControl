@@ -36,3 +36,21 @@ Features:
 - all relays could be switched over MQTT
 - pH and redox sSensor could be handled over MQTT, including calibration
 - I integrated this in Openhab as generic MQTT Thing
+
+Impressions:
+![image](https://user-images.githubusercontent.com/15065072/168045938-3de59ce1-81f1-497f-ac0f-714105303de1.png)
+
+![image](https://user-images.githubusercontent.com/15065072/168045991-5ee91ce0-a7f1-400e-a9b7-eb51fb8ae487.png)
+
+![image](https://user-images.githubusercontent.com/15065072/168046041-2a5c2fb3-a5a2-4c48-a082-4280c84ddcfd.png)
+
+![image](https://user-images.githubusercontent.com/15065072/168046065-fad64f4a-37bb-413a-8254-2bc93106f913.png)
+
+![image](https://user-images.githubusercontent.com/15065072/168046088-419ad53e-7598-41af-8cf7-e962308e4593.png)
+
+![image](https://user-images.githubusercontent.com/15065072/168046108-d9cad216-3cf1-4f39-8448-e658798d0bcf.png)
+
+![image](https://user-images.githubusercontent.com/15065072/168046364-94caa5de-7882-41be-a0a1-73f5d06769ac.png)
+
+![image](https://user-images.githubusercontent.com/15065072/168046420-1908465c-4d24-4caf-b76f-63fbd81dd368.png)
+
