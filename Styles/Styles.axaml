@@ -33,6 +33,13 @@
 					<NumericUpDown Text="lkfjsdjf" Classes="pH" Value="7.6" MinWidth="140" HorizontalAlignment="Right" x:Name="maxph" ClipValueToMinMax="True" Minimum="6.9" Maximum="7.8" FormatString="0.0 pH" Increment="0.1"></NumericUpDown>
 				</StackPanel>
 				<NumericUpDown Text="fdsfdfsdf" Classes="pH" Value="5.8" MinWidth="140" HorizontalAlignment="Right" x:Name="maxph2" ClipValueToMinMax="True" Minimum="6.9" Maximum="7.8" FormatString="0.0 pH" Increment="0.1"/>
+				<StackPanel Classes="Time">
+					<TextBlock Classes="Time" Text="Startzeit"/>
+					<StackPanel Orientation="Horizontal">
+						<TimePicker Classes="Time" />
+						<TimePicker Classes="Time"/>
+					</StackPanel>
+				</StackPanel>
 			</StackPanel>
 		</Border>
 	</Design.PreviewWith>
@@ -130,8 +137,8 @@
 	</Style>
 	<Style Selector="TimePicker.Time">
 		<Setter Property="FontWeight" Value="Normal"/>
-		<Setter Property="HorizontalAlignment" Value="Stretch"/>
-		<Setter Property="Margin" Value="4 4 4 4"/>
+		<Setter Property="HorizontalAlignment"  Value="Stretch"/>
+		<Setter Property="Margin" Value="4 4 4 4"/>										
 		<Setter Property="FontSize" Value="14"/>
 	</Style>
 	<Style Selector="TextBlock.Time">

@@ -22,7 +22,7 @@
 				</StackPanel>
 			</StackPanel>
 		</StackPanel>
-		<Grid Classes="Numeric">
+		<Grid Classes="Numeric" Background="DarkSlateBlue">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="160"/>
@@ -30,16 +30,15 @@
 			<Label Classes="SpinnerLabel" Grid.Column="0" Content="{x:Static p:Resource.FilterBaseRuntime}" />
 			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.FilterPump.StandardFilterRunTime}" ClipValueToMinMax="True" Minimum="60" Maximum="180" FormatString="0 min" Increment="10"></NumericUpDown>
 		</Grid>
-		<StackPanel Classes="Time">
-			<TextBlock Classes="Time" Text="{x:Static p:Resource.StartFilterPump}"/>
+		<StackPanel Classes="Time" Background="DarkOliveGreen">
+			<!--TextBlock Classes="Time" Text="{x:Static p:Resource.StartFilterPump}"/-->
 			<TimePicker Classes="Time" SelectedTime="{Binding Data.FilterPump.StartMorning}" MinuteIncrement="1" Header="{x:Static p:Resource.Morning}" />
 			<TimePicker Classes="Time" SelectedTime="{Binding Data.FilterPump.StartNoon}" MinuteIncrement="1" Header="{x:Static p:Resource.Noon}" />
+			<TimePicker Classes="Time" SelectedTime="{Binding Data.FilterPump.FilterOff}" MinuteIncrement="1" Header="{x:Static p:Resource.FilterOff}" />
 		</StackPanel>
 		<StackPanel Orientation="Horizontal">
 			<Label Classes="Time" Content="{x:Static p:Resource.NextStart}"/>
 			<Label Classes="Time" Content="{Binding Data.FilterPump.NextStart}"/>
-		</StackPanel>
-		<StackPanel Orientation="Horizontal">
 			<Label Classes="Time" Content="{x:Static p:Resource.NextEnd}"/>
 			<Label Classes="Time" Content="{Binding Data.FilterPump.NextEnd}"/>
 		</StackPanel>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PoolControl.ViewModels;
+using System;
 using System.Device.I2c;
 using System.Globalization;
 using System.Runtime.InteropServices;
@@ -216,6 +217,10 @@ namespace PoolControl.Hardware
                                                 {
                                                     resString = resString.Substring(7);
                                                 }
+                                                else if (resString.ToLower().StartsWith("?status") && resString.Length > 7)
+                                                {
+                                                    ezoResult.Result = double.Parse(resString.Split(",")[2], new CultureInfo("en-US"));
+                                                }
                                             }
                                         }
                                         Logger.Information("< success, answer = " + resString);
@@ -254,7 +259,21 @@ namespace PoolControl.Hardware
         }
         public override MeasurementResult DoMeasurement()
         {
+            MeasurementResult vmr = DoVoltageMeasurement();
+            ((EzoBase)ModelBase).Voltage = vmr.Result;
+
             MeasurementResult mr = takeReading();
+            if (mr.Result <= 0)
+            {
+                throw new ArgumentOutOfRangeException($"Error in {GetType().Name}  <= 0");
+            }
+
+            return mr;
+        }
+
+        public MeasurementResult DoVoltageMeasurement()
+        {
+            MeasurementResult mr = getDeviceStatus();
             if (mr.Result <= 0)
             {
                 throw new ArgumentOutOfRangeException($"Error in {GetType().Name}  <= 0");

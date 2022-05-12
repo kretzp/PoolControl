@@ -85,13 +85,23 @@ namespace PoolControl.ViewModels
         [JsonIgnore]
         public string InterfaceFormatLocal
         {
-            get { return Value.ToString(InterfaceFormat); }
+            get { return GetInterfaceFormatLocal(Value); }
         }
 
         [JsonIgnore]
         public string InterfaceFormatDecimalPoint
         {
-            get { return Value.ToString(InterfaceFormat, new CultureInfo("en-US")); }
+            get { return GetInterfaceFormatDecimalPoint(Value);  }
+        }
+
+        public string GetInterfaceFormatDecimalPoint(double o)
+        {
+            return o.ToString(InterfaceFormat, new CultureInfo("en-US"));
+        }
+
+        public string GetInterfaceFormatLocal(double o)
+        {
+            return o.ToString(InterfaceFormat);
         }
 
         public void RestartTimerAndPublishNewInterval()

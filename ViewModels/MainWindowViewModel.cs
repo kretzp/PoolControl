@@ -59,7 +59,7 @@ namespace PoolControl.ViewModels
                 Data.SwitchesDict.Add("Three", new Switch { RelayNumber = 3, Name = "Three", HighIsOn = false, On = false });
                 Data.SwitchesDict.Add("Two", new Switch { RelayNumber = 2, Name = "Two", HighIsOn = false, On = false });
                 Data.SwitchesDict.Add("One", new Switch { RelayNumber = 1, Name = "One", HighIsOn = false, On = false });
-                Data.FilterPump = new FilterPump { StandardFilterRunTime = 180, StartMorning = new TimeSpan(8, 0, 0), StartNoon = new TimeSpan(14, 0, 0) };
+                Data.FilterPump = new FilterPump { StandardFilterRunTime = 180, StartMorning = new TimeSpan(8, 0, 0), StartNoon = new TimeSpan(14, 0, 0), FilterOff = new TimeSpan(20, 0, 0) };
                 Data.SolarHeater = new SolarHeater { SolarHeaterCleaningTime = new TimeSpan(21, 30, 0), SolarHeaterCleaningDuration = 180, TurnOnDiff = 6.0, TurnOffDiff = 3.0, MaxPoolTemp = 29.5 };
                 Data.Ph = new Ph { Name = "pHValue", MaxValue = 7.3, AcidInjectionDuration = 20, AcidInjectionRecurringPeriod = 10, IntervalInSec = 60, Address = "99", LedOn = true, ViewFormat = "#0.00", InterfaceFormat = "#0.000", UnitSign = "pH", Value = double.NaN };
                 Data.Redox = new Redox { Name = "RedoxValue", On = 750, Off = 840, IntervalInSec = 60, Address = "98", LedOn = true, ViewFormat = "#0", InterfaceFormat = "#0.0", UnitSign = "mV", Value = double.NaN };

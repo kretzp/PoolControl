@@ -45,14 +45,19 @@
 				<Label Classes="Details" Content="{x:Static p:Resource.InterfaceFormat}"/>
 				<TextBox Classes="Details" Text="{Binding InterfaceFormat}" HorizontalAlignment="Right"/>
 			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<Label Classes="Details" Content="{x:Static p:Resource.Voltage}"/>
+				<TextBox Classes="Details" Text="{Binding Voltage}" HorizontalAlignment="Right"/>
+			</StackPanel>
 		</StackPanel>
 		<StackPanel Margin="5">
+			<Button	Content="{x:Static p:Resource.Close}" Click="OnButtonClick" Background="red"/>
 			<Button	Content="{x:Static p:Resource.MidCal}" Command="{Binding OnMidCal}"/>
-			<NumericUpDown Classes="Numeric" Value="{Binding MidCal}" ClipValueToMinMax="True" Minimum="5" Maximum="8" FormatString="0.0 pH" Increment="0.1"/>
+			<NumericUpDown Classes="Numeric" Value="{Binding MidCal}" ClipValueToMinMax="True" Minimum="5" Maximum="8" FormatString="0.0 pH" Increment="0.1" Background="DarkCyan"/>
 			<Button	Content="{x:Static p:Resource.LowCal}" Command="{Binding OnLowCal}"/>
-			<NumericUpDown Classes="Numeric" Value="{Binding LowCal}" ClipValueToMinMax="True" Minimum="3" Maximum="5" FormatString="0.0 pH" Increment="0.1"/>
+			<NumericUpDown Classes="Numeric" Value="{Binding LowCal}" ClipValueToMinMax="True" Minimum="3" Maximum="5" FormatString="0.0 pH" Increment="0.1" Background="DarkCyan"/>
 			<Button	Content="{x:Static p:Resource.HighCal}" Command="{Binding OnHighCal}"/>
-			<NumericUpDown Classes="Numeric" Value="{Binding HighCal}" ClipValueToMinMax="True" Minimum="8" Maximum="10" FormatString="0.0 pH" Increment="0.1"/>
+			<NumericUpDown Classes="Numeric" Value="{Binding HighCal}" ClipValueToMinMax="True" Minimum="8" Maximum="10" FormatString="0.0 pH" Increment="0.1" Background="DarkCyan"/>
 			<StackPanel Orientation="Horizontal">
 				<Button	Content="{x:Static p:Resource.GetSlope}" Command="{Binding OnGetSlope}" />
 				<Label Content="{Binding Slope}"/>
@@ -62,7 +67,6 @@
 				<Label Content="{Binding SensorsCalibrated, Mode=OneWay}"/>
 			</StackPanel>
 			<Button	Content="{x:Static p:Resource.Find}" Command="{Binding OnFind}" />
-			<Button	Content="{x:Static p:Resource.Close}" Click="OnButtonClick" />
 		</StackPanel>
 	</StackPanel>
 </Window>

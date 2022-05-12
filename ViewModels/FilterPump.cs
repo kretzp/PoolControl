@@ -13,6 +13,7 @@ namespace PoolControl.ViewModels
     [JsonObject(MemberSerialization.OptIn)]
     public class FilterPump : PumpModel
     {
+        private const string DATE_TIME_FORMAT = "yyyy-MM-ddTHH:mm:ss";
         private const double diff = -20.0;
         private const double factor = 6 * 60;
         private const double max = 237.0 * 60;
@@ -26,12 +27,14 @@ namespace PoolControl.ViewModels
             StartTriggerNoon = InitializeTrigger(StartTimerTriggered, DAILY, GetTimerName(PoolControlHelper.GetPropertyName(() => StartTriggerNoon)));
             EndTriggerMorning = InitializeTrigger(EndTimerTriggered, DAILY, GetTimerName(PoolControlHelper.GetPropertyName(() => EndTriggerMorning)));
             EndTriggerNoon = InitializeTrigger(EndTimerTriggered, DAILY, GetTimerName(PoolControlHelper.GetPropertyName(() => EndTriggerNoon)));
+            FilterOffTrigger = InitializeTrigger(EndTimerTriggered, DAILY, GetTimerName(PoolControlHelper.GetPropertyName(() => FilterOffTrigger)));
 
             this.WhenAnyValue(x => x.StandardFilterRunTime).Subscribe(standardFilterlaufzeit => { publishMessage(PoolControlHelper.GetPropertyName(() => StandardFilterRunTime), standardFilterlaufzeit.ToString()); Recalculate(); });
             this.WhenAnyValue(x => x.StartMorning).Subscribe(startVormittags => { publishMessage(PoolControlHelper.GetPropertyName(() => StartMorning), startVormittags.ToString()); Recalculate(); });
             this.WhenAnyValue(x => x.StartNoon).Subscribe(startNachmittags => { publishMessage(PoolControlHelper.GetPropertyName(() => StartNoon), startNachmittags.ToString()); Recalculate(); });
-            this.WhenAnyValue(x => x.NextStart).Subscribe(nextStart => publishMessage(PoolControlHelper.GetPropertyName(() => NextStart), nextStart.ToString()));
-            this.WhenAnyValue(x => x.NextEnd).Subscribe(nextEnd => publishMessage(PoolControlHelper.GetPropertyName(() => NextEnd), nextEnd.ToString()));
+            this.WhenAnyValue(x => x.FilterOff).Subscribe(filterOff => { publishMessage(PoolControlHelper.GetPropertyName(() => FilterOff), filterOff.ToString()); Recalculate(); });
+            this.WhenAnyValue(x => x.NextStart).Subscribe(nextStart => publishMessage(PoolControlHelper.GetPropertyName(() => NextStart), nextStart?.ToString(DATE_TIME_FORMAT))); ;
+            this.WhenAnyValue(x => x.NextEnd).Subscribe(nextEnd => publishMessage(PoolControlHelper.GetPropertyName(() => NextEnd), nextEnd?.ToString(DATE_TIME_FORMAT)));
         }
 
         public override void OnTemperatureChange(MeasurementArgs args)
@@ -50,6 +53,7 @@ namespace PoolControl.ViewModels
         {
             int secondsToAdd = (int)Math.Min(max, Math.Max(StandardFilterRunTime * 60, StandardFilterRunTime * 60 + factor * (PoolTemperature == null?0:PoolTemperature.Value + diff)));
             Logger.Debug($"New scondsToAdd To Filterlaufzeit: {secondsToAdd}");
+            startTrigger(FilterOffTrigger, FilterOff);
             startTrigger(StartTriggerMorning, StartMorning);
             startTrigger(StartTriggerNoon, StartNoon);
             startTrigger(EndTriggerMorning, StartMorning.Add(new TimeSpan(0, 0, 0, secondsToAdd)));
@@ -78,6 +82,9 @@ namespace PoolControl.ViewModels
         [JsonIgnore]
         public TimeTrigger EndTriggerNoon { get; set; }
 
+        [JsonIgnore]
+        public TimeTrigger FilterOffTrigger { get; set; }
+
         [Reactive]
         [JsonProperty]
         public int StandardFilterRunTime { get; set; }
@@ -92,10 +99,14 @@ namespace PoolControl.ViewModels
 
         [Reactive]
         [JsonProperty]
-        public DateTime NextStart { get; set; }
+        public TimeSpan FilterOff { get; set; }
 
         [Reactive]
         [JsonProperty]
-        public DateTime NextEnd { get; set; }
+        public DateTime? NextStart { get; set; }
+
+        [Reactive]
+        [JsonProperty]
+        public DateTime? NextEnd { get; set; }
     }
 }

@@ -153,6 +153,9 @@
   <data name="FilterBaseRuntime" xml:space="preserve">
     <value>Filter base runtime</value>
   </data>
+  <data name="FilterOff" xml:space="preserve">
+    <value>Filter off time</value>
+  </data>
   <data name="FilterPump" xml:space="preserve">
     <value>Filter pump</value>
   </data>
@@ -202,7 +205,7 @@
     <value>Name</value>
   </data>
   <data name="NextEnd" xml:space="preserve">
-    <value>Next end:</value>
+    <value>end:</value>
   </data>
   <data name="NextStart" xml:space="preserve">
     <value>Next start:</value>
@@ -278,6 +281,9 @@
   </data>
   <data name="ViewFormat" xml:space="preserve">
     <value>Format UI</value>
+  </data>
+  <data name="Voltage" xml:space="preserve">
+    <value>Voltage</value>
   </data>
   <data name="Volume" xml:space="preserve">
     <value>Volume</value>

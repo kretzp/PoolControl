@@ -169,6 +169,15 @@ namespace PoolControl {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Filter off time ähnelt.
+        /// </summary>
+        public static string FilterOff {
+            get {
+                return ResourceManager.GetString("FilterOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Filter pump ähnelt.
         /// </summary>
         public static string FilterPump {
@@ -313,7 +322,7 @@ namespace PoolControl {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Next end: ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die end: ähnelt.
         /// </summary>
         public static string NextEnd {
             get {
@@ -543,6 +552,15 @@ namespace PoolControl {
         public static string ViewFormat {
             get {
                 return ResourceManager.GetString("ViewFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Voltage ähnelt.
+        /// </summary>
+        public static string Voltage {
+            get {
+                return ResourceManager.GetString("Voltage", resourceCulture);
             }
         }
         

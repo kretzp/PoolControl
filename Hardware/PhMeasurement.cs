@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using PoolControl.ViewModels;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -26,18 +27,26 @@ namespace PoolControl.Hardware
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                MeasurementResult ezoResult = new MeasurementResult { ReturnCode = (int)MeasurmentResultCode.PENDING, StatusInfo = "Error: ", Result = double.NaN, Device = $"{GetType().Name}@{I2CAddress}", Command = command };
+                if (command.ToLower().Equals("status"))
+                {
+                    return new MeasurementResult { Result = 3.85, ReturnCode = 1, TimeStamp = DateTime.Now, StatusInfo = "?STATUS,P,3.85", Device = $"{GetType().Name}.{ModelBase.Name}@{I2CAddress}", Command = "Status" };
+                }
+                else
+                {
+                    MeasurementResult ezoResult = new MeasurementResult { ReturnCode = (int)MeasurmentResultCode.PENDING, StatusInfo = "Error: ", Result = double.NaN, Device = $"{GetType().Name}@{I2CAddress}", Command = command };
 
-                i++;
 
-                int a = i % 10;
-                if (a == 0) add = !add;
-                int m = add ? 1 : -1;
-                ph += m * 0.1;
+                    i++;
 
-                string code = $"Using WinBaseEZOMock: Class {this.GetType().Name} Command {command} Address {I2CAddress}";
-                Logger.Information(code);
-                return new MeasurementResult { Result = ph, ReturnCode = 1, TimeStamp = DateTime.Now, StatusInfo = code, Device = $"{GetType().Name}.{ModelBase.Name}@{I2CAddress}", Command = "ph" };
+                    int a = i % 10;
+                    if (a == 0) add = !add;
+                    int m = add ? 1 : -1;
+                    ph += m * 0.1;
+
+                    string code = $"Using WinBaseEZOMock: Class {this.GetType().Name} Command {command} Address {I2CAddress}";
+                    Logger.Information(code);
+                    return new MeasurementResult { Result = ph, ReturnCode = 1, TimeStamp = DateTime.Now, StatusInfo = code, Device = $"{GetType().Name}.{ModelBase.Name}@{I2CAddress}", Command = "ph" };
+                }
             }
 
             return base.send_i2c_command(command);
@@ -108,6 +117,9 @@ namespace PoolControl.Hardware
 
         public override MeasurementResult DoMeasurement()
         {
+            MeasurementResult vmr = DoVoltageMeasurement();
+            ((EzoBase)ModelBase).Voltage = vmr.Result;
+
             MeasurementResult mr = takeReadingTemperatureCompensation(Temperature);
             if (mr.Result <= 0)
             {

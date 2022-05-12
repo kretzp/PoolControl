@@ -150,6 +150,9 @@
   <data name="FilterBaseRuntime" xml:space="preserve">
     <value>Filterbasislaufzeit</value>
   </data>
+  <data name="FilterOff" xml:space="preserve">
+    <value>Endgültige Abschaltung Filterpumpe</value>
+  </data>
   <data name="FilterPump" xml:space="preserve">
     <value>Filterpumpe</value>
   </data>
@@ -199,7 +202,7 @@
     <value>Name</value>
   </data>
   <data name="NextEnd" xml:space="preserve">
-    <value>Nächstes Ende:</value>
+    <value>Ende:</value>
   </data>
   <data name="NextStart" xml:space="preserve">
     <value>Nächster Start:</value>
@@ -275,6 +278,9 @@
   </data>
   <data name="ViewFormat" xml:space="preserve">
     <value>Format UI</value>
+  </data>
+  <data name="Voltage" xml:space="preserve">
+    <value>Spannung</value>
   </data>
   <data name="Volume" xml:space="preserve">
     <value>Volumen</value>

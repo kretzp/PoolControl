@@ -46,7 +46,7 @@
 			<Label Grid.Column="0" Classes="SpinnerLabel" Content="{x:Static p:Resource.MaxPoolTemp}"/>
 			<NumericUpDown Grid.Column="1" Classes="Numeric" Value="{Binding Data.SolarHeater.MaxPoolTemp}" ClipValueToMinMax="True" Minimum="10" Maximum="32" FormatString="0.0 °C" Increment="0.1"></NumericUpDown>
 		</Grid>
-		<Grid Classes="Numeric">
+		<Grid Classes="Numeric" Background="DarkSlateBlue">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="160"/>
@@ -54,7 +54,7 @@
 			<Label Grid.Column="0" Classes="SpinnerLabel" Content="{x:Static p:Resource.CleaningDuration}"/>
 			<NumericUpDown Grid.Column="1" Classes="Numeric" Value="{Binding Data.SolarHeater.SolarHeaterCleaningDuration}" ClipValueToMinMax="True" Minimum="10" Maximum="500" FormatString="0 sec" Increment="10"></NumericUpDown>
 		</Grid>
-		<StackPanel Classes="Time">
+		<StackPanel Classes="Time" Background="DarkOliveGreen">
 			<TimePicker Classes="Time" SelectedTime="{Binding Data.SolarHeater.SolarHeaterCleaningTime}" MinuteIncrement="1" Header="{x:Static p:Resource.CleaningTime}" />
 		</StackPanel>
 		<StackPanel Orientation="Horizontal">

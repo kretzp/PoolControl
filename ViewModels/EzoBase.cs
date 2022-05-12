@@ -22,6 +22,7 @@ namespace PoolControl.ViewModels
 
             // Change LED and publish Message
             this.WhenAnyValue(r => r.LedOn).Subscribe(ledon => SwitchLEDAndPublishMessage());
+            this.WhenAnyValue(r => r.Voltage).Subscribe(voltage => { publishMessageWithType(PoolControlHelper.GetPropertyName(() => Voltage), GetInterfaceFormatDecimalPoint(voltage)); });
         }
 
         private void ClearCalibrated_Button_Clicked()
@@ -73,5 +74,9 @@ namespace PoolControl.ViewModels
         [Reactive]
         [JsonProperty]
         public int SensorsCalibrated { get; set; }
+
+        [Reactive]
+        [JsonProperty]
+        public double Voltage { get; set; }
     }
 }

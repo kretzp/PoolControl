@@ -2,56 +2,56 @@
   "Temperatures": {
     "Pool": {
       "Key": "Pool",
-      "Value": 18.875,
+      "Value": 25.9,
       "Address": "28-0114536eebaa",
       "UnitSign": "°C",
       "ViewFormat": "#0.00",
       "InterfaceFormat": "#0.00",
-      "TimeStamp": "2022-05-05T10:59:19.322286+02:00",
+      "TimeStamp": "2022-05-12T11:18:07.7582361+02:00",
       "IntervalInSec": 10,
       "Name": "Pool"
     },
     "SolarPreRun": {
       "Key": "SolarPreRun",
-      "Value": 18.125,
+      "Value": 25.9,
       "Address": "28-041670557dff",
       "UnitSign": "°C",
       "ViewFormat": "#0.00",
       "InterfaceFormat": "#0.00",
-      "TimeStamp": "2022-05-05T10:59:19.2900585+02:00",
+      "TimeStamp": "2022-05-12T11:18:07.758184+02:00",
       "IntervalInSec": 10,
       "Name": "SolarPreRun"
     },
     "SolarHeater": {
       "Key": "SolarHeater",
-      "Value": 22.0,
+      "Value": 33.1,
       "Address": "28-0315a43260ff",
       "UnitSign": "°C",
       "ViewFormat": "#0.00",
       "InterfaceFormat": "#0.00",
-      "TimeStamp": "2022-05-05T10:59:19.2424947+02:00",
+      "TimeStamp": "2022-05-12T11:18:07.7582103+02:00",
       "IntervalInSec": 10,
       "Name": "SolarHeater"
     },
     "Technikraum": {
       "Key": "Technikraum",
-      "Value": 16.125,
+      "Value": 25.9,
       "Address": "28-0317609128ff",
       "UnitSign": "°C",
       "ViewFormat": "#0.00",
       "InterfaceFormat": "#0.00",
-      "TimeStamp": "2022-05-05T10:31:02.6017294+02:00",
+      "TimeStamp": "2022-05-12T11:17:27.7572016+02:00",
       "IntervalInSec": 60,
       "Name": "TechnicRoom"
     },
     "FrostChecker": {
       "Key": "FrostChecker",
-      "Value": 12.562,
+      "Value": 25.9,
       "Address": "28-0416705896ff",
       "UnitSign": "°C",
       "ViewFormat": "#0.00",
       "InterfaceFormat": "#0.00",
-      "TimeStamp": "2022-05-05T10:31:02.4875055+02:00",
+      "TimeStamp": "2022-05-12T11:17:27.7571765+02:00",
       "IntervalInSec": 60,
       "Name": "FrostChecker"
     }
@@ -59,35 +59,35 @@
   "Switches": {
     "FilterPump": {
       "Key": "FilterPump",
-      "RelayNumber": 5,
+      "RelayNumber": 8,
       "HighIsOn": false,
-      "On": true,
+      "On": false,
       "Name": "FilterPump"
     },
     "SolarHeater": {
       "Key": "SolarHeater",
-      "RelayNumber": 1,
+      "RelayNumber": 7,
       "HighIsOn": false,
       "On": true,
       "Name": "SolarHeater"
     },
     "Ph": {
       "Key": "Ph",
-      "RelayNumber": 7,
+      "RelayNumber": 6,
       "HighIsOn": false,
       "On": false,
       "Name": "PhPump"
     },
     "Redox": {
       "Key": "Redox",
-      "RelayNumber": 6,
+      "RelayNumber": 5,
       "HighIsOn": false,
-      "On": true,
+      "On": false,
       "Name": "RedoxSwitch"
     },
-    "PoolLight": {
-      "Key": "PoolLight",
-      "RelayNumber": 2,
+    "Poollampe": {
+      "Key": "Poollampe",
+      "RelayNumber": 4,
       "HighIsOn": false,
       "On": false,
       "Name": "PoolLight"
@@ -101,14 +101,14 @@
     },
     "Two": {
       "Key": "Two",
-      "RelayNumber": 4,
+      "RelayNumber": 2,
       "HighIsOn": false,
       "On": false,
       "Name": "Two"
     },
     "One": {
       "Key": "One",
-      "RelayNumber": 8,
+      "RelayNumber": 1,
       "HighIsOn": false,
       "On": false,
       "Name": "One"
@@ -140,9 +140,10 @@
     "StandardFilterRunTime": 180,
     "StartMorning": "08:00:00",
     "StartNoon": "14:00:00",
-    "NextStart": "2022-05-05T14:00:00+02:00",
-    "NextEnd": "2022-05-05T11:00:00+02:00",
-    "Name": null
+    "FilterOff": "20:00:00",
+    "NextStart": "2022-05-12T14:00:00+02:00",
+    "NextEnd": "2022-05-12T11:35:24+02:00",
+    "Name": "FilterPump"
   },
   "SolarHeater": {
     "SolarHeaterCleaningTime": "21:30:00",
@@ -150,34 +151,43 @@
     "TurnOffDiff": 3.0,
     "MaxPoolTemp": 29.5,
     "SolarHeaterCleaningDuration": 180,
-    "NextStart": "2022-05-06T07:59:00+02:00",
-    "NextEnd": "2022-05-06T08:02:00+02:00",
-    "Name": null
+    "NextStart": "2022-05-07T21:30:00+02:00",
+    "NextEnd": "2022-05-07T21:33:00+02:00",
+    "Name": "SolarHeater"
   },
   "Ph": {
+    "MidCal": 0.0,
+    "LowCal": 0.0,
+    "HighCal": 0.0,
     "MaxValue": 7.3,
     "AcidInjectionDuration": 20,
     "AcidInjectionRecurringPeriod": 10,
+    "Slope": null,
     "LedOn": true,
-    "Value": 7.849,
+    "SensorsCalibrated": 0,
+    "Voltage": 3.85,
+    "Value": 6.9,
     "Address": "99",
     "UnitSign": "pH",
     "ViewFormat": "#0.00",
     "InterfaceFormat": "#0.000",
-    "TimeStamp": "2022-05-05T10:31:03.4084625+02:00",
-    "IntervalInSec": 60,
+    "TimeStamp": "2022-05-12T11:18:08.0067131+02:00",
+    "IntervalInSec": 5,
     "Name": "pHValue"
   },
   "Redox": {
     "On": 750,
     "Off": 840,
+    "Cal": 0,
     "LedOn": true,
-    "Value": 445.9,
+    "SensorsCalibrated": 0,
+    "Voltage": 3.84,
+    "Value": 745.0,
     "Address": "98",
     "UnitSign": "mV",
     "ViewFormat": "#0",
     "InterfaceFormat": "#0.0",
-    "TimeStamp": "2022-05-05T10:31:03.4983429+02:00",
+    "TimeStamp": "2022-05-12T11:17:28.1939391+02:00",
     "IntervalInSec": 60,
     "Name": "RedoxValue"
   },
@@ -187,14 +197,14 @@
     "ViewFormatL": "#0",
     "InterfaceFormatL": "#0",
     "NumberOfMeasurements": 5,
-    "Value": 110.54437680000001,
+    "Value": 0.0013728000000000017,
     "Address": "16/26",
     "UnitSign": "cm",
     "ViewFormat": "#0.00",
     "InterfaceFormat": "#0.00",
-    "TimeStamp": "2022-05-05T10:31:02.7726048+02:00",
+    "TimeStamp": "2022-05-12T11:17:28.301886+02:00",
     "IntervalInSec": 60,
     "Name": "Distance"
   },
-  "Name": null
+  "Name": "Main"
 }

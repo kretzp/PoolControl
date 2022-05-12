@@ -23,18 +23,25 @@ namespace PoolControl.Hardware
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                MeasurementResult ezoResult = new MeasurementResult { ReturnCode = (int)MeasurmentResultCode.PENDING, StatusInfo = "Error: ", Result = double.NaN, Device = $"{GetType().Name}@{I2CAddress}", Command = command };
+                if (command.ToLower().Equals("status"))
+                {
+                    return new MeasurementResult { Result = 3.84, ReturnCode = 1, TimeStamp = DateTime.Now, StatusInfo = "?STATUS,P,3.84", Device = $"{GetType().Name}.{ModelBase.Name}@{I2CAddress}", Command = "Status" };
+                }
+                else
+                {
+                    MeasurementResult ezoResult = new MeasurementResult { ReturnCode = (int)MeasurmentResultCode.PENDING, StatusInfo = "Error: ", Result = double.NaN, Device = $"{GetType().Name}@{I2CAddress}", Command = command };
 
-                i++;
+                    i++;
 
-                int a = i % 10;
-                if (a == 0) add = !add;
-                int m = add ? 1 : -1;
-                redox += m * 15;
+                    int a = i % 10;
+                    if (a == 0) add = !add;
+                    int m = add ? 1 : -1;
+                    redox += m * 15;
 
-                string code = $"Using WinBaseEZOMock: Class {this.GetType().Name} Command {command} Address {I2CAddress}";
-                Logger.Information(code);
-                return new MeasurementResult { Result = redox, ReturnCode = 1, TimeStamp = DateTime.Now, StatusInfo = code, Device = $"{GetType().Name}.{ModelBase.Name}@{I2CAddress}", Command = "ph" };
+                    string code = $"Using WinBaseEZOMock: Class {this.GetType().Name} Command {command} Address {I2CAddress}";
+                    Logger.Information(code);
+                    return new MeasurementResult { Result = redox, ReturnCode = 1, TimeStamp = DateTime.Now, StatusInfo = code, Device = $"{GetType().Name}.{ModelBase.Name}@{I2CAddress}", Command = "ph" };
+                }
             }
 
             return base.send_i2c_command(command);

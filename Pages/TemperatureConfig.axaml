@@ -47,7 +47,7 @@
 			</StackPanel>
 		</StackPanel>
 		<StackPanel Margin="5">
-			<Button	Content="{x:Static p:Resource.Close}" Click="OnButtonClick" />
+			<Button	Content="{x:Static p:Resource.Close}" Click="OnButtonClick" Background="Red"/>
 		</StackPanel>
 	</StackPanel>
 </Window>
