@@ -153,6 +153,7 @@ namespace PoolControl.ViewModels
         public virtual void publishMessageValue()
         {
             publishMessageWithType(PoolControlHelper.GetPropertyName(() => Value), InterfaceFormatDecimalPoint);
+            publishMessageWithType(PoolControlHelper.GetPropertyName(() => TimeStamp), TimeStamp.ToString("yyyy-MM-ddTHH:mm:ss"));
         }
 
         protected void Read(object? state)

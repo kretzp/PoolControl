@@ -19,6 +19,7 @@ namespace PoolControl.ViewModels
         public override void publishMessageValue()
         {
             publishMessage($"Temperatures/{Key}/Temperature", InterfaceFormatDecimalPoint, !String.IsNullOrEmpty(Key));
+            publishMessage($"Temperatures/{Key}/TimeStamp", TimeStamp.ToString("yyyy-MM-ddTHH:mm:ss"), !String.IsNullOrEmpty(Key));
         }
 
         [Reactive]

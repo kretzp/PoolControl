@@ -44,7 +44,7 @@ namespace PoolControl.ViewModels
 
         public override void publishMessageValue()
         {
-            publishMessageWithType(PoolControlHelper.GetPropertyName(() => Value), InterfaceFormatDecimalPoint);
+            base.publishMessageValue();
             OnValueChange();
         }
 
