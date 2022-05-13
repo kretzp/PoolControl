@@ -135,6 +135,9 @@
   <data name="CleaningTime" xml:space="preserve">
     <value>Spülzeitpunkt</value>
   </data>
+  <data name="ClearCalibration" xml:space="preserve">
+    <value>Kalibr. löschen</value>
+  </data>
   <data name="Close" xml:space="preserve">
     <value>Schließen</value>
   </data>

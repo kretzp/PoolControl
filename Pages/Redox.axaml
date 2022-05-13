@@ -36,7 +36,7 @@
 				<ColumnDefinition Width="160"/>
 			</Grid.ColumnDefinitions>
 			<Label Grid.Column="0" Classes="SpinnerLabel" Content="{x:Static p:Resource.MeasurementInterval}" />
-			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.Redox.IntervalInSec}" ClipValueToMinMax="True" Minimum="0" Maximum="500" FormatString="0 sec" Increment="1"></NumericUpDown>
+			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.Redox.IntervalInSec}" ClipValueToMinMax="True" Minimum="0" Maximum="500" FormatString="0 sec" Increment="5"></NumericUpDown>
 		</Grid>
 		<Grid Classes="Numeric" Background="DarkGoldenrod">
 			<Grid.ColumnDefinitions>

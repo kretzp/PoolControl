@@ -138,6 +138,9 @@
   <data name="CleaningTime" xml:space="preserve">
     <value>Cleaning time</value>
   </data>
+  <data name="ClearCalibration" xml:space="preserve">
+    <value>Clear calibration</value>
+  </data>
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>

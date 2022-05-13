@@ -50,7 +50,7 @@
 				<TextBox Classes="Details" Text="{Binding Voltage}" HorizontalAlignment="Right"/>
 			</StackPanel>
 		</StackPanel>
-		<StackPanel Margin="5">
+		<StackPanel Margin="5" Width="180">
 			<Button	Content="{x:Static p:Resource.Close}" Click="OnButtonClick" Background="Red"/>
 			<Button	Content="{x:Static p:Resource.Calibration}" Command="{Binding OnCal}"/>
 			<NumericUpDown Classes="Numeric" Value="{Binding Cal}" ClipValueToMinMax="True" Minimum="400" Maximum="500" FormatString="0 mV" Increment="1" Background="DarkGoldenrod"/>
@@ -59,6 +59,7 @@
 				<Label Content="{Binding SensorsCalibrated, Mode=OneWay}"/>
 			</StackPanel>
 			<Button	Content="{x:Static p:Resource.Find}" Command="{Binding OnFind}" />
+			<Button	Content="{x:Static p:Resource.ClearCalibration}" Command="{Binding OnClearCalibration}" />
 		</StackPanel>
 	</StackPanel>
 </Window>

@@ -124,6 +124,15 @@ namespace PoolControl {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Clear calibration ähnelt.
+        /// </summary>
+        public static string ClearCalibration {
+            get {
+                return ResourceManager.GetString("ClearCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Close ähnelt.
         /// </summary>
         public static string Close {

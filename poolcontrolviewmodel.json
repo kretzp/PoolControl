@@ -85,8 +85,8 @@
       "On": false,
       "Name": "RedoxSwitch"
     },
-    "Poollampe": {
-      "Key": "Poollampe",
+    "PoolLight": {
+      "Key": "PoolLight",
       "RelayNumber": 4,
       "HighIsOn": false,
       "On": false,
