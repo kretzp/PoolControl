@@ -82,6 +82,11 @@ namespace PoolControl.ViewModels
             RecalculateSolarHeatingCleaning();   
         }
 
+        protected override void OnTimerTicked(object? state)
+        {
+            throw new NotImplementedException();
+        }
+
         [JsonIgnore]
         protected Temperature SolarPreLoopTemperature { get; set; }
 

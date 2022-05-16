@@ -38,5 +38,10 @@ namespace PoolControl.ViewModels
             Gpio.Instance.doSwitch(RelayConfig.Instance.GetGpioForRelayNumber(RelayNumber), On, HighIsOn);
             base.publishMessage($"Switches/{Key}/On", On ? "1" : "0", 2, true, !String.IsNullOrEmpty(Key));
         }
+
+        protected override void OnTimerTicked(object? state)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

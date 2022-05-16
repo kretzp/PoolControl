@@ -7,7 +7,7 @@ using Serilog;
 using System.Reflection;
 using System.Collections;
 using PoolControl.Helper;
-
+using System.Threading;
 
 namespace PoolControl.ViewModels
 {
@@ -22,6 +22,16 @@ namespace PoolControl.ViewModels
         {
             Logger = Log.Logger?.ForContext<ViewModelBase>() ?? throw new ArgumentNullException(nameof(Logger));
         }
+
+        [JsonIgnore]
+        protected Timer? Timer { get; private set; }
+
+        [Reactive]
+        [JsonProperty]
+        public int IntervalInSec { get; set; }
+
+        [JsonIgnore]
+        public int Interval { get { return IntervalInSec * 1000; } }
 
         [Reactive]
         [JsonProperty]
@@ -41,6 +51,54 @@ namespace PoolControl.ViewModels
 
                 return ret;
             }
+        }
+
+        public void RestartTimerAndPublishNewInterval()
+        {
+            Timer = RestartTimer(Timer, OnTimerTicked, Interval);
+
+            publishMessageWithType(PoolControlHelper.GetPropertyName(() => IntervalInSec), IntervalInSec.ToString());
+        }
+
+        protected abstract void OnTimerTicked(object? state);
+
+        protected Timer RestartTimer(Timer timer, TimerCallback callback, int interval)
+        {
+            return RestartTimer(timer, callback, interval, interval);
+        }
+
+        protected Timer RestartTimer(Timer timer, TimerCallback callback, int duetime, int interval)
+        {
+            if (timer == null && interval > 0)
+            {
+                var autoEvent = new AutoResetEvent(false);
+                timer = new Timer(callback, autoEvent, duetime, interval);
+            }
+            else
+            {
+                if (interval <= 0)
+                {
+                    if (Timer != null)
+                    {
+                        timer.Dispose();
+                        timer = null;
+                        Logger.Debug("Timer deleted");
+                    }
+                }
+                else
+                {
+                    if (timer.Change(duetime, interval))
+                    {
+                        Logger.Debug($"Timer set: duetime {duetime} interval {interval}");
+                    }
+                    else
+                    {
+                        Logger.Debug($"Timer set: duetime {duetime} interval {interval} error");
+                    }
+                }
+            }
+
+            return timer;
         }
 
         public void publishMessage(string propertyName, string value, int qos, bool retain, bool reallySend)

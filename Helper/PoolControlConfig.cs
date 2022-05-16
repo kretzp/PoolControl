@@ -63,5 +63,7 @@ namespace PoolControl.Helper
         public MQTTSettings MQTT { get; set; } = null!;
 
         public string PersistenceFile { get; set; } = "poolcontrolviewmodel.json";
+
+        public int PersistenceSaveIntervalInSec { get; set; } = 60;
     }
 }

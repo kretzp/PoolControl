@@ -35,6 +35,11 @@ namespace PoolControl.ViewModels
 
             CloseWindow = ReactiveCommand.Create(Close_Button_Clicked);
 
+            // RestartReading and Publish
+            this.WhenAnyValue(ds => ds.IntervalInSec).Subscribe(value => this.RestartTimerAndPublishNewInterval());
+
+            IntervalInSec = PoolControlConfig.Instance.Settings.PersistenceSaveIntervalInSec;
+
             _ = PoolMqttClient.Instance;
 
 #if !CREATE
@@ -256,6 +261,11 @@ namespace PoolControl.ViewModels
             }
 
             return arg.AcknowledgeAsync(new CancellationToken());
+        }
+
+        protected override void OnTimerTicked(object? state)
+        {
+            Persistence.Instance.Save(Data);
         }
 
         [Reactive][JsonProperty]

@@ -36,9 +36,6 @@ namespace PoolControl.ViewModels
         [JsonIgnore]
         public BaseMeasurement BaseMeasurement { get; set; }
 
-        [JsonIgnore]
-        protected Timer? Timer { get; private set; }
-
         [Reactive]
         [JsonProperty]
         public double Value { get; set; }
@@ -62,13 +59,6 @@ namespace PoolControl.ViewModels
         [Reactive]
         [JsonProperty]
         public DateTime TimeStamp { get; set; }
-
-        [Reactive]
-        [JsonProperty]
-        public int IntervalInSec { get; set; }
-
-        [JsonIgnore]
-        public int Interval { get { return IntervalInSec * 1000; } }
 
         [JsonIgnore]
         [ObservableAsProperty]
@@ -104,59 +94,13 @@ namespace PoolControl.ViewModels
             return o.ToString(InterfaceFormat);
         }
 
-        public void RestartTimerAndPublishNewInterval()
-        {
-            Timer = RestartTimer(Timer, Read, Interval);
-
-            publishMessageWithType(PoolControlHelper.GetPropertyName(() => IntervalInSec), IntervalInSec.ToString());
-        }
-
-        protected Timer RestartTimer(Timer timer, TimerCallback callback, int interval)
-        {
-            return RestartTimer(timer, callback, interval, interval);
-        }
-
-        protected Timer RestartTimer(Timer timer, TimerCallback callback, int duetime, int interval)
-        {
-            if (timer == null && interval > 0)
-            {
-                var autoEvent = new AutoResetEvent(false);
-                timer = new Timer(callback, autoEvent, duetime, interval);
-            }
-            else
-            {
-                if (interval <= 0)
-                {
-                    if (Timer != null)
-                    {
-                        timer.Dispose();
-                        timer = null;
-                        Logger.Debug("Timer deleted");
-                    }
-                }
-                else
-                {
-                    if (timer.Change(duetime, interval))
-                    {
-                        Logger.Debug($"Timer set: duetime {duetime} interval {interval}");
-                    }
-                    else
-                    {
-                        Logger.Debug($"Timer set: duetime {duetime} interval {interval} error");
-                    }
-                }
-            }
-
-            return timer;
-        }
-
         public virtual void publishMessageValue()
         {
             publishMessageWithType(PoolControlHelper.GetPropertyName(() => Value), InterfaceFormatDecimalPoint);
             publishMessageWithType(PoolControlHelper.GetPropertyName(() => TimeStamp), TimeStamp.ToString("yyyy-MM-ddTHH:mm:ss"));
         }
 
-        protected void Read(object? state)
+        protected override void OnTimerTicked(object? state)
         {
             MeasurementResult mr = BaseMeasurement.Measure();
 

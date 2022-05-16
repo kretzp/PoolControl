@@ -91,5 +91,10 @@ namespace PoolControl.ViewModels
                 Gpio.Instance.off(RelayConfig.GetGpioForRelayNumber(sw.RelayNumber), sw.HighIsOn);
             }
         }
+
+        protected override void OnTimerTicked(object? state)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

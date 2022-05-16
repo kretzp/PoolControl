@@ -10,10 +10,12 @@
 	</Design.DataContext>
 	<StackPanel Orientation="Vertical">
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-			<StackPanel Classes="Measurement" Background="DarkMagenta">
-				<TextBlock Classes="TLabel" Text="{Binding Data.Distance.Label}"/>
-				<TextBlock Classes="TMeasurement" Text="{Binding Data.Distance.ValueWithUnit}"/>
-			</StackPanel>
+			<Button Classes="Measurement" Click="OnButtonClick">
+				<StackPanel Classes="Measurement" Background="DarkMagenta">
+					<TextBlock Classes="TLabel" Text="{Binding Data.Distance.Label}"/>
+					<TextBlock Classes="TMeasurement" Text="{Binding Data.Distance.ValueWithUnit}"/>
+				</StackPanel>
+			</Button>
 			<StackPanel Classes="Measurement" Background="DarkMagenta">
 				<TextBlock Classes="TLabel" Text="{Binding Data.Distance.LabelL}"/>
 				<TextBlock Classes="TMeasurement" Text="{Binding Data.Distance.ValueWithUnitL}"/>

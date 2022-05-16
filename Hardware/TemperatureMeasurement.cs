@@ -60,6 +60,10 @@ namespace PoolControl.Hardware
                 {
                     throw new ArgumentOutOfRangeException("Error in DS18B20, Temperature > 80 °C");
                 }
+                else if(mr.Result == 0)
+                {
+                    throw new ArgumentOutOfRangeException("Error in DS18B20, Temperature > 0 °C");
+                }
             }
             catch (Exception ex)
             {

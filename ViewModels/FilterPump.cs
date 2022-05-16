@@ -67,6 +67,11 @@ namespace PoolControl.ViewModels
             Recalculate();
         }
 
+        protected override void OnTimerTicked(object? state)
+        {
+            throw new NotImplementedException();
+        }
+
         [JsonIgnore]
         protected Temperature PoolTemperature { get; set; }
 
