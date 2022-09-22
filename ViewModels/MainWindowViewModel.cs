@@ -14,6 +14,7 @@ using ReactiveUI;
 using System.Reactive;
 using PoolControl.Hardware;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace PoolControl.ViewModels
 {
@@ -265,6 +266,10 @@ namespace PoolControl.ViewModels
 
         protected override void OnTimerTicked(object? state)
         {
+            Process currentProc = Process.GetCurrentProcess();
+            double bytesInUse = currentProc.PrivateMemorySize64 / 1024 / 1024;
+
+            Logger.Debug("MBytes in use {bytes} in {proc}", bytesInUse, currentProc.ProcessName);
             Persistence.Instance.Save(Data);
         }
 

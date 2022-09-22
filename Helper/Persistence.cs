@@ -68,10 +68,12 @@ namespace PoolControl.Helper
             {
                 while (persistenceInUse) ;
                 persistenceInUse = true;
-                using StreamWriter file = File.CreateText(PersistenceFile);
-                JsonSerializer serializer = new JsonSerializer();
-                serializer.Formatting = Formatting.Indented;
-                serializer.Serialize(file, o);
+                using (StreamWriter file = File.CreateText(PersistenceFile))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Formatting = Formatting.Indented;
+                    serializer.Serialize(file, o);
+                }
                 Logger.Information("Persistence Saved {o}", o);
             }
             catch (Exception ex)

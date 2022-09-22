@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using PoolControl.Helper;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace PoolControl.Communication
 {
@@ -37,7 +38,7 @@ namespace PoolControl.Communication
         }
 
         private MqttFactory _mqttFactory;
-        private MQTTnet.Client.MqttClient _mqttClient;
+        private MQTTnet.Client.IMqttClient _mqttClient;
         private MqttClientOptions options;
         protected ILogger Logger { get; set; }
 
@@ -189,6 +190,11 @@ namespace PoolControl.Communication
 
             await _mqttClient.PublishAsync(message);
             Logger.Information($"# Published  Topic={message.Topic} Payload={Encoding.UTF8.GetString(message.Payload)} QoS={message.QualityOfServiceLevel} Retain={message.Retain}");
+
+            Process currentProc = Process.GetCurrentProcess();
+            double bytesInUse = currentProc.PrivateMemorySize64 / 1024 / 1024;
+
+            Logger.Debug("MBytes in use {bytes} in {proc}", bytesInUse, currentProc.ProcessName);
         }
     }
 }
