@@ -69,6 +69,7 @@
 						<TextBlock Classes="TMeasurement" Text="{Binding Data.Distance.ValueWithUnitL}"/>
 					</StackPanel>
 				</Button>
+				<ToggleButton Classes="SwitchButton" Content="{Binding Data.LocationName}" IsChecked="{Binding Data.WinterMode}" />
 			</StackPanel>
 		</StackPanel>
 		<ListBox Items="{Binding Data.Switches}">

@@ -288,6 +288,9 @@
   <data name="Volume" xml:space="preserve">
     <value>Volumen</value>
   </data>
+  <data name="Winter" xml:space="preserve">
+    <value>Winter</value>
+  </data>
   <data name="yes" xml:space="preserve">
     <value>ja</value>
   </data>

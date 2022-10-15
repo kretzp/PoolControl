@@ -70,6 +70,12 @@ namespace PoolControl.ViewModels
 
         protected void CheckPh(object? state)
         {
+            if(WinterMode)
+            {
+                Logger.Information($"Wintermode: {Switch.Name} Ein({Switch.On}) pH({Value}), MaxPh({MaxValue}) FilterPump({FilterPumpSwitch.On})");
+                return;
+            }
+
             if (Switch != null)
             {
                 if (FilterPumpSwitch.On)

@@ -23,6 +23,12 @@ namespace PoolControl.ViewModels
         public void StartTimerTriggered()
         {
             Logger.Debug($"Schalte {GetType().Name} ein");
+
+            if (WinterMode)
+            {
+                Logger.Information("WinterMode! Nothing to do!");
+            }
+
             if (Switch != null)
             {
                 Switch.On = true;
@@ -37,6 +43,12 @@ namespace PoolControl.ViewModels
         public void EndTimerTriggered()
         {
             Logger.Debug($"Schalte {GetType().Name} aus");
+
+            if (WinterMode)
+            {
+                Logger.Information("WinterMode! Nothing to do!");
+            }
+
             if (Switch != null)
             {
                 Switch.On = false;

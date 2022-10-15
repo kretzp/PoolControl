@@ -29,6 +29,7 @@ namespace PoolControl.Hardware
                 start = DateTime.Now;
             }
 
+            // Here is a possible memory leak, if sensor doesn't respond
             while (Gpio.Instance.readPin(((Distance)ModelBase).Echo) == 1)
             {
                 end = DateTime.Now;

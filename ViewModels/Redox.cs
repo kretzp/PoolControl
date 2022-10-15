@@ -46,6 +46,11 @@ namespace PoolControl.ViewModels
 
         public override void OnValueChange()
         {
+            if(WinterMode)
+            {
+                Logger.Information($"Wintermode: Ein({Switch.On}) Redox({Value:#0})");
+            }
+
             if (Switch != null)
             {
                 if (FilterPumpSwitch.On && Value < On)

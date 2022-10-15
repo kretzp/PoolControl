@@ -37,6 +37,11 @@ namespace PoolControl.ViewModels
         [JsonProperty]
         public string Name { get; set; }
 
+        [Reactive]
+        [JsonProperty]
+        public bool WinterMode { get; set; }
+
+
         [JsonIgnore]
         public string LocationName
         {

@@ -583,6 +583,15 @@ namespace PoolControl {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Winter ähnelt.
+        /// </summary>
+        public static string Winter {
+            get {
+                return ResourceManager.GetString("Winter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die yes ähnelt.
         /// </summary>
         public static string yes {

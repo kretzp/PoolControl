@@ -8,6 +8,7 @@ namespace PoolControl.Hardware
     public class TemperatureMeasurement : BaseMeasurement
     {
         protected string DS18B20Address { get { return @"/sys/bus/w1/devices/" + ModelBase.Address + @"/w1_slave"; } }
+        protected string WindowsDS18B20Address { get { return "w1_slave"; } }
 
         int i = 0;
         double temp = 25.1;
@@ -19,32 +20,39 @@ namespace PoolControl.Hardware
             Logger = Log.Logger.ForContext<TemperatureMeasurement>() ?? throw new ArgumentNullException(nameof(Logger));
         }
 
+        private MeasurementResult emulateWindowsTemp()
+        {
+            i++;
+            double retValue = pooltemp;
+
+            if (ModelBase.Name.Equals("SolarHeater"))
+            {
+                int a = i % 10;
+                if (a == 0) add = !add;
+                int m = add ? 1 : -1;
+                temp += m * 1;
+                retValue = temp;
+            }
+
+            string code = $"Using WinBaseEZOMock: Sensor: {ModelBase.Name} Temperature: {retValue}";
+            Logger.Information(code);
+            return new MeasurementResult { Result = retValue, ReturnCode = 1, TimeStamp = DateTime.Now, StatusInfo = code, Device = $"{GetType().Name}.{ModelBase.Name}@{DS18B20Address}", Command = "temperature" };
+        }
+
         public override MeasurementResult DoMeasurement()
         {
             var mr = new MeasurementResult { Device = $"{GetType().Name}.{ModelBase.Name}", Command = "temperature" };
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                i++;
-                double retValue = pooltemp;
 
-                if (ModelBase.Name.Equals("SolarHeater"))
-                {
-                    int a = i % 10;
-                    if (a == 0) add = !add;
-                    int m = add ? 1 : -1;
-                    temp += m * 1;
-                    retValue = temp;
-                }
-
-                string code = $"Using WinBaseEZOMock: Sensor: {ModelBase.Name} Temperature: {retValue}";
-                Logger.Information(code);
-                return new MeasurementResult { Result = retValue, ReturnCode = 1, TimeStamp = DateTime.Now, StatusInfo = code, Device = $"{GetType().Name}.{ModelBase.Name}@{DS18B20Address}", Command = "temperature" };
             }
+
+            bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
             try
             {
-                string[] inhalt = File.ReadAllLines(DS18B20Address);
+                string[] inhalt = File.ReadAllLines(isWindows?WindowsDS18B20Address:DS18B20Address);
                 for (int i = 0; i < inhalt.Length; i++)
                 {
                     Logger.Debug(inhalt[i]);
@@ -56,11 +64,11 @@ namespace PoolControl.Hardware
                 mr.StatusInfo = "OK";
                 mr.ReturnCode = 1;
                 Logger.Debug($"Temperature {mr.Result}");
-                if(mr.Result > 80)
+                if (mr.Result > 80)
                 {
                     throw new ArgumentOutOfRangeException("Error in DS18B20, Temperature > 80 °C");
                 }
-                else if(mr.Result == 0)
+                else if (mr.Result == 0)
                 {
                     throw new ArgumentOutOfRangeException("Error in DS18B20, Temperature > 0 °C");
                 }
@@ -73,6 +81,11 @@ namespace PoolControl.Hardware
                 mr.Result = double.NaN;
                 mr.ReturnCode = 99;
                 mr.StatusInfo = ex.Message;
+            }
+
+            if(isWindows)
+            {
+                mr = emulateWindowsTemp();
             }
 
             return mr;

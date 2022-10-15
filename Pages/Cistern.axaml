@@ -10,7 +10,7 @@
 	</Design.DataContext>
 	<StackPanel Orientation="Vertical">
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-			<Button Classes="Measurement" Click="OnButtonClick">
+			<Button Classes="Measurement">
 				<StackPanel Classes="Measurement" Background="DarkMagenta">
 					<TextBlock Classes="TLabel" Text="{Binding Data.Distance.Label}"/>
 					<TextBlock Classes="TMeasurement" Text="{Binding Data.Distance.ValueWithUnit}"/>

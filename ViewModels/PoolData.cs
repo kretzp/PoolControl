@@ -17,6 +17,52 @@ namespace PoolControl.ViewModels
         public PoolData()
         {
             Logger = Log.Logger?.ForContext<PoolData>() ?? throw new ArgumentNullException(nameof(Logger));
+            this.WhenAnyValue(d => d.WinterMode).Subscribe(winterMode => SetWinterMode());
+        }
+
+        private void SetWinterMode()
+        {
+            if (Temperatures is not null)
+            {
+                foreach (var temperature in Temperatures)
+                {
+                    temperature.WinterMode = this.WinterMode;
+                }
+            }
+
+            if (Switches is not null)
+            {
+                foreach (var sw in Switches)
+                {
+                    sw.WinterMode = this.WinterMode;
+                    sw.On = false;
+                }
+            }
+
+            if (FilterPump is not null)
+            {
+                FilterPump.WinterMode = this.WinterMode;
+            }
+
+            if (FilterPump is not null)
+            {
+                SolarHeater.WinterMode = this.WinterMode;
+            }
+
+            if (Ph is not null)
+            {
+                Ph.WinterMode = this.WinterMode;
+            }
+
+            if (Redox is not null)
+            {
+                Redox.WinterMode = this.WinterMode;
+            }
+
+            if (Distance is not null)
+            {
+                Distance.WinterMode = this.WinterMode;
+            }
         }
 
         [Reactive]

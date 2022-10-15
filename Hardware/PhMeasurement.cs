@@ -120,13 +120,7 @@ namespace PoolControl.Hardware
             MeasurementResult vmr = DoVoltageMeasurement();
             ((EzoBase)ModelBase).Voltage = vmr.Result;
 
-            MeasurementResult mr = takeReadingTemperatureCompensation(Temperature);
-            if (mr.Result <= 0)
-            {
-                throw new ArgumentOutOfRangeException("Error in pH  <= 0");
-            }
-
-            return mr;
+            return takeReadingTemperatureCompensation(Temperature);
         }
     }
 }

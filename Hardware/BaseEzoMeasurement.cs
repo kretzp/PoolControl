@@ -262,13 +262,7 @@ namespace PoolControl.Hardware
             MeasurementResult vmr = DoVoltageMeasurement();
             ((EzoBase)ModelBase).Voltage = vmr.Result;
 
-            MeasurementResult mr = takeReading();
-            if (mr.Result <= 0)
-            {
-                throw new ArgumentOutOfRangeException($"Error in {GetType().Name}  <= 0");
-            }
-
-            return mr;
+            return takeReading();
         }
 
         public MeasurementResult DoVoltageMeasurement()

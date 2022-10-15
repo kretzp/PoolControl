@@ -99,5 +99,8 @@
     <None Update="poolcontrolviewmodel.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
+    <None Update="w1_slave">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

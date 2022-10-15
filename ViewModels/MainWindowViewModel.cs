@@ -50,6 +50,7 @@ namespace PoolControl.ViewModels
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 Data = new PoolData();
+                Data.Name = "Winter";
                 Data.TemperaturesDict = new Dictionary<string, Temperature>();
                 Data.TemperaturesDict.Add("Pool", new Temperature { Address = "28-0114536eebaa", Name = "Pool", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN });
                 Data.TemperaturesDict.Add("SolarPreRun", new Temperature { Address = "28-041670557dff", Name = "SolarPreRun", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN });
@@ -85,6 +86,7 @@ namespace PoolControl.ViewModels
                 Data.RelayConfig.LogicLevelConverterToGpioDict.Add(6, 23);
                 Data.RelayConfig.LogicLevelConverterToGpioDict.Add(7, 20);
                 Data.RelayConfig.LogicLevelConverterToGpioDict.Add(8, 21);
+                Data.WinterMode = false;
             }
             else
             {
@@ -266,11 +268,12 @@ namespace PoolControl.ViewModels
 
         protected override void OnTimerTicked(object? state)
         {
+            Persistence.Instance.Save(Data);
+
             Process currentProc = Process.GetCurrentProcess();
             double bytesInUse = currentProc.PrivateMemorySize64 / 1024 / 1024;
 
             Logger.Debug("MBytes in use {bytes} in {proc}", bytesInUse, currentProc.ProcessName);
-            Persistence.Instance.Save(Data);
         }
 
         [Reactive][JsonProperty]

@@ -16,11 +16,5 @@ namespace PoolControl.Pages
         {
             AvaloniaXamlLoader.Load(this);
         }
-
-        private void OnButtonClick(object sender, RoutedEventArgs e)
-        {
-            PoolChart poolChart = new PoolChart();
-            poolChart.ShowDialog(App.MainWindow);
-        }
     }
 }

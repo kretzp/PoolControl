@@ -9,6 +9,7 @@
 					<TextBox Classes="Details" Text="Hallo" HorizontalAlignment="Right"/>
 				</StackPanel>
 				<ToggleButton Classes="Switch" Content="Pumpe"/>
+				<ToggleButton Classes="SwitchButton" Content="Winter"/>
 				<Button Classes="Measurement">
 				<StackPanel Classes="Measurement">
 					<TextBlock Classes="TLabel" Text="Abstand:"/>
@@ -79,6 +80,16 @@
 		<Setter Property="Margin" Value="4" />
 		<Setter Property="Padding" Value="0 16 0 0" />
 		<Setter Property="MinWidth" Value="133" />
+		<Setter Property="HorizontalContentAlignment" Value="Center" />
+	</Style>
+	<Style Selector="ToggleButton.SwitchButton">
+		<Setter Property="FontSize" Value="18" />
+		<Setter Property="FontWeight" Value="Normal" />
+		<Setter Property="Background" Value="DarkRed" />
+		<Setter Property="Height" Value="55" />
+		<Setter Property="Width" Value="105" />
+		<Setter Property="Margin" Value="4" />
+		<Setter Property="Padding" Value="0 16 0 0" />
 		<Setter Property="HorizontalContentAlignment" Value="Center" />
 	</Style>
 	<Style Selector="ToggleButton:checked /template/ ContentPresenter">
