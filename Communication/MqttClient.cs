@@ -165,7 +165,7 @@ namespace PoolControl.Communication
                 _ = SendLWTDisconnected();
                 Thread.Sleep(3000);
                 Shutdown = true;
-                _ = _mqttClient.DisconnectAsync(MqttClientDisconnectReason.DisconnectWithWillMessage, REASON);
+                _ = _mqttClient.DisconnectAsync(new MqttClientDisconnectOptionsBuilder().WithReason(MqttClientDisconnectOptionsReason.DisconnectWithWillMessage).Build());
                 Logger.Information("# Disconnect started because of shutdown");
             }
             catch (Exception ex)

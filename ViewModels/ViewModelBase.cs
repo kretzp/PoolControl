@@ -35,7 +35,7 @@ namespace PoolControl.ViewModels
 
         [Reactive]
         [JsonProperty]
-        public string Name { get; set; }
+        public string Name { get; set; } = "Name";
 
         [Reactive]
         [JsonProperty]
