@@ -27,6 +27,7 @@ namespace PoolControl.ViewModels
             if (WinterMode)
             {
                 Logger.Information("WinterMode! Nothing to do!");
+                return;
             }
 
             if (Switch != null)

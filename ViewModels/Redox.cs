@@ -49,6 +49,7 @@ namespace PoolControl.ViewModels
             if(WinterMode)
             {
                 Logger.Information($"Wintermode: Ein({Switch.On}) Redox({Value:#0})");
+                return;
             }
 
             if (Switch != null)
