@@ -11,15 +11,9 @@
 	<StackPanel Orientation="Vertical">
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 			<Button Classes="Measurement">
-				<StackPanel Classes="Measurement" Background="DarkMagenta">
-					<TextBlock Classes="TLabel" Text="{Binding Data.Distance.Label}"/>
-					<TextBlock Classes="TMeasurement" Text="{Binding Data.Distance.ValueWithUnit}"/>
-				</StackPanel>
+				<uc:MeasurementControl Label="{Binding Data.Distance.Label}" Measurement="{Binding Data.Distance.ValueWithUnit}" ButtonBackground="DarkMagenta"/>
 			</Button>
-			<StackPanel Classes="Measurement" Background="DarkMagenta">
-				<TextBlock Classes="TLabel" Text="{Binding Data.Distance.LabelL}"/>
-				<TextBlock Classes="TMeasurement" Text="{Binding Data.Distance.ValueWithUnitL}"/>
-			</StackPanel>
+ 			<uc:MeasurementControl Label="{Binding Data.Distance.LabelL}" Measurement="{Binding Data.Distance.ValueWithUnitL}" ButtonBackground="DarkMagenta"/>
 		</StackPanel>
 	</StackPanel>
 </UserControl>

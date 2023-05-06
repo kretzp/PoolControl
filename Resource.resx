@@ -123,6 +123,9 @@
   <data name="Address" xml:space="preserve">
     <value>Address</value>
   </data>
+  <data name="Base" xml:space="preserve">
+    <value>Base:</value>
+  </data>
   <data name="Calibrated" xml:space="preserve">
     <value>Calibrated?</value>
   </data>

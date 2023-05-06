@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="clr-namespace:PoolControl.ViewModels"
 			 xmlns:p="clr-namespace:PoolControl"
+			 xmlns:uc="clr-namespace:PoolControl.UserControls"
 			 HorizontalAlignment="Left"
 			 VerticalAlignment="Top"
 			 HorizontalContentAlignment="Stretch"
@@ -16,44 +17,12 @@
 	<StackPanel>
 		<StackPanel Orientation="Horizontal">
 			<ToggleButton Classes="Switch" Content="{Binding Data.Switches[3].LocationName}" IsChecked="{Binding Data.Switches[3].On}" />
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-				<StackPanel Classes="Measurement" Background="DarkGoldenrod">
-					<TextBlock Classes="TLabel" Text="{Binding Data.Redox.Label}"/>
-					<TextBlock Classes="TMeasurement" Text="{Binding Data.Redox.ValueWithUnit}"/>
-				</StackPanel>
-			</StackPanel>
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-				<StackPanel Classes="Measurement" Background="DarkCyan">
-					<TextBlock Classes="TLabel" Text="{Binding Data.Ph.Label}"/>
-					<TextBlock Classes="TMeasurement" Text="{Binding Data.Ph.ValueWithUnit}"/>
-				</StackPanel>
-			</StackPanel>
-
-		</StackPanel>
-		<Grid Classes="Numeric" Background="DarkGoldenrod">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="160"/>
-			</Grid.ColumnDefinitions>
-			<Label Grid.Column="0" Classes="SpinnerLabel" Content="{x:Static p:Resource.MeasurementInterval}" />
-			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.Redox.IntervalInSec}" ClipValueToMinMax="True" Minimum="0" Maximum="500" FormatString="0 sec" Increment="5"></NumericUpDown>
-		</Grid>
-		<Grid Classes="Numeric" Background="DarkGoldenrod">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="160"/>
-			</Grid.ColumnDefinitions>
-			<Label Grid.Column="0" Classes="SpinnerLabel" Content="{x:Static p:Resource.RedoxOn}"/>
-			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.Redox.On}" ClipValueToMinMax="True" Minimum="100" Maximum="1000" FormatString="0 mV" Increment="10"></NumericUpDown>
-		</Grid>
-		<Grid Classes="Numeric" Background="DarkGoldenrod">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="160"/>
-			</Grid.ColumnDefinitions>
-			<Label Grid.Column="0" Classes="SpinnerLabel" Content="{x:Static p:Resource.RedoxOff}"/>
-			<NumericUpDown Grid.Column="1" Classes="Numeric" Value="{Binding Data.Redox.Off}" ClipValueToMinMax="True" Minimum="100" Maximum="1000" FormatString="0 mV" Increment="10"></NumericUpDown>
-		</Grid>
+			<uc:MeasurementControl Label="{Binding Data.Redox.Label}" Measurement="{Binding Data.Redox.ValueWithUnit}" ButtonBackground="DarkGoldenrod" />
+			<uc:MeasurementControl Label="{Binding Data.Ph.Label}" Measurement="{Binding Data.Ph.ValueWithUnit}" ButtonBackground="DarkCyan" />
+	   </StackPanel>
+		<uc:NumControl ControlBackground="DarkGoldenrod" ColumnWidth="160" Label="{x:Static p:Resource.MeasurementInterval}" NumValue="{Binding Data.Redox.IntervalInSec, Mode=TwoWay}" Minimum="0" Maximum="500" FormatString="0 sec" Increment="5"/>
+		<uc:NumControl ControlBackground="DarkGoldenrod" ColumnWidth="160" Label="{x:Static p:Resource.RedoxOn}" NumValue="{Binding Data.Redox.On, Mode=TwoWay}" Minimum="100" Maximum="1000" FormatString="0 mV" Increment="10"/>
+		<uc:NumControl ControlBackground="DarkGoldenrod" ColumnWidth="160" Label="{x:Static p:Resource.RedoxOff}" NumValue="{Binding Data.Redox.Off, Mode=TwoWay}" Minimum="100" Maximum="1000" FormatString="0 mV" Increment="10"/>
 		<CheckBox IsChecked="{Binding Data.Redox.LedOn}" Background="DarkGoldenrod" Margin="4" Padding="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" Content="{x:Static p:Resource.LED}"/>
 	</StackPanel>
 </UserControl>

@@ -51,21 +51,25 @@ namespace PoolControl.ViewModels
             {
                 Data = new PoolData();
                 Data.Name = "Winter";
-                Data.TemperaturesDict = new Dictionary<string, Temperature>();
-                Data.TemperaturesDict.Add("Pool", new Temperature { Address = "28-0114536eebaa", Name = "Pool", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN });
-                Data.TemperaturesDict.Add("SolarPreRun", new Temperature { Address = "28-041670557dff", Name = "SolarPreRun", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN });
-                Data.TemperaturesDict.Add("SolarHeater", new Temperature { Address = "28-0315a43260ff", Name = "SolarHeater", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN });
-                Data.TemperaturesDict.Add("Technikraum", new Temperature { Address = "28-0317609128ff", Name = "TechnicRoom", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 60, Value = double.NaN });
-                Data.TemperaturesDict.Add("FrostChecker", new Temperature { Address = "28-0416705896ff", Name = "FrostChecker", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 60, Value = double.NaN });
-                Data.SwitchesDict = new Dictionary<string, Switch>();
-                Data.SwitchesDict.Add("FilterPump", new Switch { RelayNumber = 8, Name = "FilterPump", HighIsOn = false, On = false });
-                Data.SwitchesDict.Add("SolarHeater", new Switch { RelayNumber = 7, Name = "SolarHeater", HighIsOn = false, On = false });
-                Data.SwitchesDict.Add("Ph", new Switch { RelayNumber = 6, Name = "PhPump", HighIsOn = false, On = false });
-                Data.SwitchesDict.Add("Redox", new Switch { RelayNumber = 5, Name = "RedoxSwitch", HighIsOn = false, On = false });
-                Data.SwitchesDict.Add("Poollampe", new Switch { RelayNumber = 4, Name = "PoolLight", HighIsOn = false, On = false });
-                Data.SwitchesDict.Add("Three", new Switch { RelayNumber = 3, Name = "Three", HighIsOn = false, On = false });
-                Data.SwitchesDict.Add("Two", new Switch { RelayNumber = 2, Name = "Two", HighIsOn = false, On = false });
-                Data.SwitchesDict.Add("One", new Switch { RelayNumber = 1, Name = "One", HighIsOn = false, On = false });
+                Data.TemperaturesDict = new Dictionary<string, Temperature>
+                {
+                    { "Pool", new Temperature { Address = "28-0114536eebaa", Name = "Pool", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN } },
+                    { "SolarPreRun", new Temperature { Address = "28-041670557dff", Name = "SolarPreRun", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN } },
+                    { "SolarHeater", new Temperature { Address = "28-0315a43260ff", Name = "SolarHeater", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN } },
+                    { "Technikraum", new Temperature { Address = "28-0317609128ff", Name = "TechnicRoom", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 60, Value = double.NaN } },
+                    { "FrostChecker", new Temperature { Address = "28-0416705896ff", Name = "FrostChecker", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 60, Value = double.NaN } }
+                };
+                Data.SwitchesDict = new Dictionary<string, Switch>
+                {
+                    { "FilterPump", new Switch { RelayNumber = 8, Name = "FilterPump", HighIsOn = false, On = false } },
+                    { "SolarHeater", new Switch { RelayNumber = 7, Name = "SolarHeater", HighIsOn = false, On = false } },
+                    { "Ph", new Switch { RelayNumber = 6, Name = "PhPump", HighIsOn = false, On = false } },
+                    { "Redox", new Switch { RelayNumber = 5, Name = "RedoxSwitch", HighIsOn = false, On = false } },
+                    { "Poollampe", new Switch { RelayNumber = 4, Name = "PoolLight", HighIsOn = false, On = false } },
+                    { "Three", new Switch { RelayNumber = 3, Name = "Three", HighIsOn = false, On = false } },
+                    { "Two", new Switch { RelayNumber = 2, Name = "Two", HighIsOn = false, On = false } },
+                    { "One", new Switch { RelayNumber = 1, Name = "One", HighIsOn = false, On = false } }
+                };
                 Data.FilterPump = new FilterPump { StandardFilterRunTime = 180, StartMorning = new TimeSpan(8, 0, 0), StartNoon = new TimeSpan(14, 0, 0), FilterOff = new TimeSpan(20, 0, 0) };
                 Data.SolarHeater = new SolarHeater { SolarHeaterCleaningTime = new TimeSpan(21, 30, 0), SolarHeaterCleaningDuration = 180, TurnOnDiff = 6.0, TurnOffDiff = 3.0, MaxPoolTemp = 29.5 };
                 Data.Ph = new Ph { Name = "pHValue", MaxValue = 7.3, AcidInjectionDuration = 20, AcidInjectionRecurringPeriod = 10, IntervalInSec = 60, Address = "99", LedOn = true, ViewFormat = "#0.00", InterfaceFormat = "#0.000", UnitSign = "pH", Value = double.NaN };
@@ -77,15 +81,17 @@ namespace PoolControl.ViewModels
                 {
                     Data.RelayConfig.RelayToLogicLevelConverterDict[i] = i;
                 }
-                Data.RelayConfig.LogicLevelConverterToGpioDict = new Dictionary<int, int>();
-                Data.RelayConfig.LogicLevelConverterToGpioDict.Add(1, 19);
-                Data.RelayConfig.LogicLevelConverterToGpioDict.Add(2, 13);
-                Data.RelayConfig.LogicLevelConverterToGpioDict.Add(3, 5);
-                Data.RelayConfig.LogicLevelConverterToGpioDict.Add(4, 22);
-                Data.RelayConfig.LogicLevelConverterToGpioDict.Add(5, 27);
-                Data.RelayConfig.LogicLevelConverterToGpioDict.Add(6, 23);
-                Data.RelayConfig.LogicLevelConverterToGpioDict.Add(7, 20);
-                Data.RelayConfig.LogicLevelConverterToGpioDict.Add(8, 21);
+                Data.RelayConfig.LogicLevelConverterToGpioDict = new Dictionary<int, int>
+                {
+                    { 1, 19 },
+                    { 2, 13 },
+                    { 3, 5 },
+                    { 4, 22 },
+                    { 5, 27 },
+                    { 6, 23 },
+                    { 7, 20 },
+                    { 8, 21 }
+                };
                 Data.WinterMode = false;
             }
             else
@@ -130,7 +136,8 @@ namespace PoolControl.ViewModels
 
             // Fire Event for Pool Temperature change for calculationg Filterlaufzeit
             Data.TemperaturesDict["Pool"].MeasurmentTaken += Data.FilterPump.OnTemperatureChange;
-            
+            Data.TemperaturesDict["Pool"].MeasurmentTaken += Data.SolarHeater.OnTemperatureChange;
+
             // Fire Event for SolarHeater Temperature change für calculation SolarHeater Switch On/Off
             Data.TemperaturesDict["SolarPreRun"].MeasurmentTaken += Data.SolarHeater.OnTemperatureChange;
             Data.TemperaturesDict[Data.SolarHeater.GetType().Name].MeasurmentTaken += Data.SolarHeater.OnTemperatureChange;
@@ -185,7 +192,7 @@ namespace PoolControl.ViewModels
 
             //Dispose();
 
-            App.MainWindow.Close();
+            App.MainWindow?.Close();
         }
 
         private Task MqttClient_ApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs arg)
@@ -197,7 +204,7 @@ namespace PoolControl.ViewModels
             string objectNameToSet = "";
             string key = "";
 
-            propertyValue = Encoding.UTF8.GetString(arg.ApplicationMessage.Payload);
+            propertyValue = Encoding.UTF8.GetString(arg.ApplicationMessage.PayloadSegment.ToArray());
             string topic = arg.ApplicationMessage.Topic.Replace(PoolControlConfig.Instance.Settings.BaseTopic.Command, "");
 
             if (topic.ToLower().Equals("sendstate"))
@@ -207,7 +214,7 @@ namespace PoolControl.ViewModels
             else if (topic.ToLower().StartsWith("i2c/"))
             {
                 string deviceName = topic.Split("/")[1];
-                BaseMeasurement i2cObject = ((MeasurementModelBase)Data.GetType().GetProperty(deviceName).GetValue(Data)).BaseMeasurement;
+                BaseMeasurement i2cObject = (Data.GetType().GetProperty(deviceName).GetValue(Data) as MeasurementModelBase).BaseMeasurement;
                 MeasurementResult mr;
                 try
                 {

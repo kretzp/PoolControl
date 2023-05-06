@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:vm="clr-namespace:PoolControl.ViewModels"
 		xmlns:p="clr-namespace:PoolControl"
+		xmlns:uc="clr-namespace:PoolControl.UserControls"
         Width="480" Height="320" Design.Width="480" Design.Height="320"
 		HasSystemDecorations="False"
         x:Class="PoolControl.Pages.RedoxConfig"

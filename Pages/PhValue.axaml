@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="clr-namespace:PoolControl.ViewModels"
 			 xmlns:p="clr-namespace:PoolControl"
+			 xmlns:uc="clr-namespace:PoolControl.UserControls"
 			 HorizontalAlignment="Left"
 			 VerticalAlignment="Top"
 			 HorizontalContentAlignment="Stretch"
@@ -16,51 +17,13 @@
 	<StackPanel>
 		<StackPanel Orientation="Horizontal">
 			<ToggleButton Classes="Switch" Content="{Binding Data.Switches[2].LocationName}" IsChecked="{Binding Data.Switches[2].On}" />
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-				<StackPanel Classes="Measurement" Background="DarkCyan">
-					<TextBlock Classes="TLabel" Text="{Binding Data.Ph.Label}"/>
-					<TextBlock Classes="TMeasurement" Text="{Binding Data.Ph.ValueWithUnit}"/>
-				</StackPanel>
-			</StackPanel>
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-				<StackPanel Classes="Measurement" Background="DarkGoldenrod">
-					<TextBlock Classes="TLabel" Text="{Binding Data.Redox.Label}"/>
-					<TextBlock Classes="TMeasurement" Text="{Binding Data.Redox.ValueWithUnit}"/>
-				</StackPanel>
-			</StackPanel>
+			<uc:MeasurementControl Label="{Binding Data.Ph.Label}" Measurement="{Binding Data.Ph.ValueWithUnit}" ButtonBackground="DarkCyan" />
+			<uc:MeasurementControl Label="{Binding Data.Redox.Label}" Measurement="{Binding Data.Redox.ValueWithUnit}" ButtonBackground="DarkGoldenrod" />
 		</StackPanel>
-		<Grid Classes="Numeric" Background="DarkCyan">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="160"/>
-			</Grid.ColumnDefinitions>
-			<Label Grid.Column="0" Classes="SpinnerLabel" Content="{x:Static p:Resource.MeasurementInterval}"/>
-			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.Ph.IntervalInSec}" ClipValueToMinMax="True" Minimum="0" Maximum="500" FormatString="0 sec" Increment="5"></NumericUpDown>
-		</Grid>
-		<Grid Classes="Numeric" Background="DarkCyan">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="160"/>
-			</Grid.ColumnDefinitions>
-			<Label Grid.Column="0" Classes="SpinnerLabel" Content="{x:Static p:Resource.MaxPh}" />
-			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.Ph.MaxValue}" ClipValueToMinMax="True" Minimum="7.0" Maximum="7.5" FormatString="0.0 pH" Increment="0.1"></NumericUpDown>
-		</Grid>
-		<Grid Classes="Numeric" Background="DarkCyan">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="160"/>
-			</Grid.ColumnDefinitions>
-			<Label Grid.Column="0" Classes="SpinnerLabel" Content="{x:Static p:Resource.AcidInjectionPeriod}"/>
-			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.Ph.AcidInjectionRecurringPeriod}" ClipValueToMinMax="True" Minimum="0" Maximum="100" FormatString="0 min" Increment="1"></NumericUpDown>
-		</Grid>
-		<Grid Classes="Numeric" Background="DarkCyan">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="160"/>
-			</Grid.ColumnDefinitions>
-			<Label Grid.Column="0" Classes="SpinnerLabel" Content="{x:Static p:Resource.InjectionDuration}" />
-			<NumericUpDown Grid.Column="1" Classes="Numeric" Value="{Binding Data.Ph.AcidInjectionDuration}" ClipValueToMinMax="True" Minimum="0" Maximum="120" FormatString="0 sec" Increment="1"></NumericUpDown>
-		</Grid>
+		<uc:NumControl ControlBackground="DarkCyan" ColumnWidth="160" Label="{x:Static p:Resource.MeasurementInterval}" NumValue="{Binding Data.Ph.IntervalInSec, Mode=TwoWay}" Minimum="0" Maximum="500" FormatString="0 sec" Increment="5"/>
+		<uc:NumControl ControlBackground="DarkCyan" ColumnWidth="160" Label="{x:Static p:Resource.MaxPh}" NumValue="{Binding Data.Ph.MaxValue, Mode=TwoWay}" Minimum="7.0" Maximum="7.5" FormatString="0.0 pH" Increment="0.1"/>
+		<uc:NumControl ControlBackground="DarkCyan" ColumnWidth="160" Label="{x:Static p:Resource.AcidInjectionPeriod}" NumValue="{Binding Data.Ph.AcidInjectionRecurringPeriod, Mode=TwoWay}" Minimum="0" Maximum="100" FormatString="0 min" Increment="1"/>
+		<uc:NumControl ControlBackground="DarkCyan" ColumnWidth="160" Label="{x:Static p:Resource.InjectionDuration}" NumValue="{Binding Data.Ph.AcidInjectionDuration, Mode=TwoWay}" Minimum="0" Maximum="120" FormatString="0 sec" Increment="1"/>
 		<CheckBox IsChecked="{Binding Data.Ph.LedOn}" Background="DarkCyan" Margin="4" Padding="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" Content="{x:Static p:Resource.LED}"/>
 	</StackPanel>
 </UserControl>

@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using PoolControl.Hardware;
 using PoolControl.Helper;
 using PoolControl.Time;
+using Avalonia.Media;
+using System.Drawing;
 
 namespace PoolControl.ViewModels
 {
@@ -33,14 +35,15 @@ namespace PoolControl.ViewModels
             Temperature temp = (Temperature)args.BaseMeasurement.ModelBase;
             if (temp.Key.Equals("SolarPreRun")) SolarPreLoopTemperature = temp;
             if (temp.Key.Equals("SolarHeater")) SolarHeaterTemperature = temp;
+            if (temp.Key.Equals("Pool")) SolarPoolTemperature = temp;
 
-            if (SolarPreLoopTemperature == null || SolarHeaterTemperature == null)
+            if (SolarPreLoopTemperature == null || SolarHeaterTemperature == null || SolarPoolTemperature == null)
             {
-                Logger.Debug($"SolarPreLoopTemperature or SolarHeaterTemperature is null");
+                Logger.Debug($"SolarPreLoopTemperature or SolarHeaterTemperature or SolarPoolTemperature is null");
                 return;
             }
 
-            Logger.Debug($"SolarPreLoopTemperature: {SolarPreLoopTemperature.Value} SolarHeaterTemperature: {SolarHeaterTemperature.Value}");
+            Logger.Debug($"SolarPreLoopTemperature: {SolarPreLoopTemperature.Value} SolarHeaterTemperature: {SolarHeaterTemperature.Value} SolarPoolTemperature: {SolarPoolTemperature.Value}");
 
             DateTime now = DateTime.Now;
             if (now < NextEnd && now > NextEnd - new TimeSpan(0, 0, SolarHeaterCleaningDuration))
@@ -49,9 +52,20 @@ namespace PoolControl.ViewModels
                 return;
             }
 
-            if (SolarHeaterTemperature.Value > SolarPreLoopTemperature.Value + TurnOnDiff)
+            if(SolarPoolTemperature.Value > SolarPreLoopTemperature.Value)
             {
-                if (SolarPreLoopTemperature.Value < MaxPoolTemp)
+                Logger.Information("Using SolarPreloop Temperature vor Solarheating!");
+            }
+            else
+            {
+                Logger.Information("Using Pool Temperature vor Solarheating!");
+            }
+
+            double baseTemperature = Math.Min(SolarPreLoopTemperature.Value, SolarPoolTemperature.Value);
+
+            if (SolarHeaterTemperature.Value > baseTemperature + TurnOnDiff)
+            {
+                if (baseTemperature < MaxPoolTemp)
                 {
                     Switch.On = true;
                 }
@@ -59,13 +73,14 @@ namespace PoolControl.ViewModels
                 {
                     Switch.On = false;
                 }
-                Logger.Information($"{Switch.Name} On({Switch.On}) SolarHeater({SolarHeaterTemperature.Value:#0.0}) > Pool({SolarPreLoopTemperature.Value:#0.0}) + Ein({TurnOnDiff:#0.0}) = Sum({SolarPreLoopTemperature.Value:#0.0}) Max({MaxPoolTemp:#0.0})");
+                Logger.Information($"{Switch.Name} On({Switch.On}) SolarHeater({SolarHeaterTemperature.Value:#0.0}) > Pool({baseTemperature:#0.0}) + Ein({TurnOnDiff:#0.0}) = Sum({baseTemperature:#0.0}) Max({MaxPoolTemp:#0.0})");
 
             }
-            else if (SolarHeaterTemperature.Value < SolarPreLoopTemperature.Value + TurnOffDiff)
+            else if (SolarHeaterTemperature.Value < baseTemperature + TurnOffDiff)
             {
                 Switch.On = false;
-                Logger.Information($"{Switch.Name} On({Switch.On}) SolarHeater({SolarHeaterTemperature.Value:#0.0}) > Pool({SolarPreLoopTemperature.Value:#0.0}) + Aus({TurnOffDiff:#0.0}) = Sum({SolarPreLoopTemperature.Value:#0.0}) Max({MaxPoolTemp:#0.0})");
+                
+                Logger.Information($"{Switch.Name} On({Switch.On}) SolarHeater({SolarHeaterTemperature.Value:#0.0}) > Pool({baseTemperature:#0.0}) + Aus({TurnOffDiff:#0.0}) = Sum({baseTemperature:#0.0}) Max({MaxPoolTemp:#0.0})");
             }
         }
 
@@ -86,6 +101,9 @@ namespace PoolControl.ViewModels
         {
             throw new NotImplementedException();
         }
+
+        [JsonIgnore]
+        protected Temperature SolarPoolTemperature { get; set; }
 
         [JsonIgnore]
         protected Temperature SolarPreLoopTemperature { get; set; }

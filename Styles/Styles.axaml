@@ -136,6 +136,11 @@
 		<Setter Property="FontSize" Value="18"/>
 		<Setter Property="HorizontalAlignment" Value="Right"/>
 	</Style>
+	<Style Selector="TextBlock.TMeasurementLittle">
+		<Setter Property="Padding" Value="4"/>
+		<Setter Property="FontSize" Value="12"/>
+		<Setter Property="HorizontalAlignment" Value="Right"/>
+	</Style>
 	<Style Selector="TextBlock.TLabel">
 		<Setter Property="FontSize" Value="12"/>
 		<Setter Property="Padding" Value="4"/>

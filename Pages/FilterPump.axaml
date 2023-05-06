@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="clr-namespace:PoolControl.ViewModels"
 			 xmlns:p="clr-namespace:PoolControl"
+			 xmlns:uc="clr-namespace:PoolControl.UserControls"
              x:Class="PoolControl.Pages.FilterPump">
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
@@ -12,24 +13,11 @@
 		<StackPanel Orientation="Horizontal">
 			<ToggleButton Classes="Switch" Content="{Binding Data.Switches[0].LocationName}" IsChecked="{Binding Data.Switches[0].On}" />
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-				<StackPanel Classes="Measurement">
-					<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[0].Label}"/>
-					<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[0].ValueWithUnit}"/>
-				</StackPanel>
-				<StackPanel Classes="Measurement">
-					<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[3].Label}"/>
-					<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[3].ValueWithUnit}"/>
-				</StackPanel>
+				<uc:MeasurementControl Label="{Binding Data.Temperatures[0].Label}" Measurement="{Binding Data.Temperatures[0].ValueWithUnit}" ButtonBackground="Blue"/>
+				<uc:MeasurementControl Label="{Binding Data.Temperatures[3].Label}" Measurement="{Binding Data.Temperatures[3].ValueWithUnit}" ButtonBackground="Blue"/>
 			</StackPanel>
 		</StackPanel>
-		<Grid Classes="Numeric" Background="DarkSlateBlue">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="160"/>
-			</Grid.ColumnDefinitions>
-			<Label Classes="SpinnerLabel" Grid.Column="0" Content="{x:Static p:Resource.FilterBaseRuntime}" />
-			<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding Data.FilterPump.StandardFilterRunTime}" ClipValueToMinMax="True" Minimum="60" Maximum="180" FormatString="0 min" Increment="10"></NumericUpDown>
-		</Grid>
+		<uc:NumControl ControlBackground="DarkSlateBlue" ColumnWidth="160" Label="{x:Static p:Resource.FilterBaseRuntime}" NumValue="{Binding Data.FilterPump.StandardFilterRunTime, Mode=TwoWay}" Minimum="60" Maximum="180" FormatString="0 min" Increment="10"/>
 		<StackPanel Classes="Time" Background="DarkOliveGreen">
 			<!--TextBlock Classes="Time" Text="{x:Static p:Resource.StartFilterPump}"/-->
 			<TimePicker Classes="Time" SelectedTime="{Binding Data.FilterPump.StartMorning}" MinuteIncrement="1" Header="{x:Static p:Resource.Morning}" />

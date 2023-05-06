@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="clr-namespace:PoolControl.ViewModels"
+			 xmlns:uc="clr-namespace:PoolControl.UserControls"
              x:Class="PoolControl.Pages.Overview">
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
@@ -11,24 +12,15 @@
 		<StackPanel Classes="Wide">
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 				<Button Classes="Measurement" Click="OnButtonClick" Tag="{Binding Data.Temperatures[0]}">
-					<StackPanel Classes="Measurement">
-						<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[0].Label}"/>
-						<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[0].ValueWithUnit}"/>
-					</StackPanel>
+					<uc:MeasurementControl Label="{Binding Data.Temperatures[0].Label}" Measurement="{Binding Data.Temperatures[0].ValueWithUnit}" ButtonBackground="Blue"/>
 				</Button>
 				<Button Classes="Measurement" Click="OnButtonClick" Tag="{Binding Data.Temperatures[1]}">
-					<StackPanel Classes="Measurement">
-						<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[1].Label}"/>
-						<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[1].ValueWithUnit}"/>
-					</StackPanel>
+					<uc:MeasurementControl Label="{Binding Data.Temperatures[1].Label}" Measurement="{Binding Data.Temperatures[1].ValueWithUnit}" ButtonBackground="Blue"/>
 				</Button>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 				<Button Classes="Measurement" Click="OnButtonClick" Tag="{Binding Data.Temperatures[2]}">
-					<StackPanel Classes="Measurement">
-						<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[2].Label}"/>
-						<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[2].ValueWithUnit}"/>
-					</StackPanel>
+					<uc:MeasurementControl Label="{Binding Data.Temperatures[2].Label}" Measurement="{Binding Data.Temperatures[2].ValueWithUnit}" ButtonBackground="Blue"/>
 				</Button>
 				<StackPanel Classes="Measurement" Background="Black">
 					<Button Padding="4" Content="Exit" Height="55" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding CloseWindow}" Background="Black" Foreground="Black"/>
@@ -36,38 +28,23 @@
 			</StackPanel>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 				<Button Classes="Measurement" Click="OnButtonClick" Tag="{Binding Data.Temperatures[3]}">
-					<StackPanel Classes="Measurement" Background="#000060">
-						<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[3].Label}"/>
-						<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[3].ValueWithUnit}"/>
-					</StackPanel>
+					<uc:MeasurementControl Label="{Binding Data.Temperatures[3].Label}" Measurement="{Binding Data.Temperatures[3].ValueWithUnit}" ButtonBackground="#000060" />
 				</Button>
 				<Button Classes="Measurement" Click="OnButtonClick" Tag="{Binding Data.Temperatures[4]}">
-					<StackPanel Classes="Measurement" Background="#000060">
-						<TextBlock Classes="TLabel" Text="{Binding Data.Temperatures[4].Label}"/>
-						<TextBlock Classes="TMeasurement" Text="{Binding Data.Temperatures[4].ValueWithUnit}"/>
-					</StackPanel>
+					<uc:MeasurementControl Label="{Binding Data.Temperatures[4].Label}" Measurement="{Binding Data.Temperatures[4].ValueWithUnit}" ButtonBackground="#000060"/>
 				</Button>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 				<Button Classes="Measurement" Click="OnButtonClickPh" Tag="{Binding Data.Ph}">
-					<StackPanel Classes="Measurement" Background="DarkCyan">
-						<TextBlock Classes="TLabel" Text="{Binding Data.Ph.Label}"/>
-						<TextBlock Classes="TMeasurement" Text="{Binding Data.Ph.ValueWithUnit}"/>
-					</StackPanel>
+					<uc:MeasurementControl Label="{Binding Data.Ph.Label}" Measurement="{Binding Data.Ph.ValueWithUnit}" ButtonBackground="DarkCyan" />
 				</Button>
 				<Button Classes="Measurement" Click="OnButtonClickRedox" Tag="{Binding Data.Redox}">
-					<StackPanel Classes="Measurement" Background="DarkGoldenrod">
-						<TextBlock Classes="TLabel" Text="{Binding Data.Redox.Label}"/>
-						<TextBlock Classes="TMeasurement" Text="{Binding Data.Redox.ValueWithUnit}"/>
-					</StackPanel>
+					<uc:MeasurementControl Label="{Binding Data.Redox.Label}" Measurement="{Binding Data.Redox.ValueWithUnit}" ButtonBackground="DarkGoldenrod" />
 				</Button>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 				<Button Classes="Measurement" Click="OnButtonClickDistance" Tag="{Binding Data.Distance}">
-					<StackPanel Classes="Measurement" Background="DarkMagenta">
-						<TextBlock Classes="TLabel" Text="{Binding Data.Distance.LabelL}"/>
-						<TextBlock Classes="TMeasurement" Text="{Binding Data.Distance.ValueWithUnitL}"/>
-					</StackPanel>
+					<uc:MeasurementControl Label="{Binding Data.Distance.LabelL}" Measurement="{Binding Data.Distance.ValueWithUnitL}" ButtonBackground="DarkMagenta"/>
 				</Button>
 				<ToggleButton Classes="SwitchButton" Content="{Binding Data.LocationName}" IsChecked="{Binding Data.WinterMode}" />
 			</StackPanel>
