@@ -1,0 +1,14 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="PoolControl.UserControls.DoubleMeasurementControl">
+	<StackPanel Classes="Measurement" Background="{Binding ButtonBackground}" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType = UserControl}}">
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+			<TextBlock Classes="TLabel" Text="{Binding Label}"/>
+			<TextBlock Classes="TMeasurementLittle" Text="{Binding FirstMeasurement}"/>
+		</StackPanel>
+		<TextBlock Classes="TMeasurementLittle" Text="{Binding SecondMeasurement}"/>
+	</StackPanel>
+</UserControl>

@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+	 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	 xmlns:vm="clr-namespace:PoolControl.ViewModels"
+	 mc:Ignorable="d"
+	 x:Class="PoolControl.UserControls.NumControl">
+	<Design.DataContext>
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
+	<Grid Classes="Numeric" Background="{Binding ControlBackground, Mode=TwoWay}"  DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType = UserControl}, Mode=TwoWay}">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="{Binding ColumnWidth, Mode=TwoWay}"/>
+		</Grid.ColumnDefinitions>
+		<TextBox Text="{Binding Label, Mode=TwoWay}"/>
+		<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding NumValue, Mode=TwoWay}" ClipValueToMinMax="True" Minimum="{Binding $parent[UserControl].Minimum}" Maximum="{Binding Maximum, Mode=TwoWay}" FormatString="{Binding FormatString, Mode=TwoWay}" Increment="{Binding Increment, Mode=TwoWay}"></NumericUpDown>
+	</Grid>
+</UserControl>

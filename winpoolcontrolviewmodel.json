@@ -1,0 +1,240 @@
+{
+  "Temperatures": {
+    "Pool": {
+      "Key": "Pool",
+      "Value": 25.9,
+      "Address": "28-0114536eebaa",
+      "UnitSign": "°C",
+      "ViewFormat": "#0.00",
+      "InterfaceFormat": "#0.00",
+      "TimeStamp": "2023-05-06T14:26:18.844447+02:00",
+      "IntervalInSec": 10,
+      "Name": "Pool",
+      "WinterMode": false
+    },
+    "SolarPreRun": {
+      "Key": "SolarPreRun",
+      "Value": 25.9,
+      "Address": "28-041670557dff",
+      "UnitSign": "°C",
+      "ViewFormat": "#0.00",
+      "InterfaceFormat": "#0.00",
+      "TimeStamp": "2023-05-06T14:26:18.8758071+02:00",
+      "IntervalInSec": 10,
+      "Name": "SolarPreRun",
+      "WinterMode": false
+    },
+    "SolarHeater": {
+      "Key": "SolarHeater",
+      "Value": 28.1,
+      "Address": "28-0315a43260ff",
+      "UnitSign": "°C",
+      "ViewFormat": "#0.00",
+      "InterfaceFormat": "#0.00",
+      "TimeStamp": "2023-05-06T14:26:18.9057112+02:00",
+      "IntervalInSec": 10,
+      "Name": "SolarHeater",
+      "WinterMode": false
+    },
+    "Technikraum": {
+      "Key": "Technikraum",
+      "Value": 25.9,
+      "Address": "28-0317609128ff",
+      "UnitSign": "°C",
+      "ViewFormat": "#0.00",
+      "InterfaceFormat": "#0.00",
+      "TimeStamp": "2023-05-06T14:25:28.9260747+02:00",
+      "IntervalInSec": 60,
+      "Name": "TechnicRoom",
+      "WinterMode": false
+    },
+    "FrostChecker": {
+      "Key": "FrostChecker",
+      "Value": 25.9,
+      "Address": "28-0416705896ff",
+      "UnitSign": "°C",
+      "ViewFormat": "#0.00",
+      "InterfaceFormat": "#0.00",
+      "TimeStamp": "2023-05-06T14:25:28.9561842+02:00",
+      "IntervalInSec": 60,
+      "Name": "FrostChecker",
+      "WinterMode": false
+    }
+  },
+  "Switches": {
+    "FilterPump": {
+      "Key": "FilterPump",
+      "RelayNumber": 8,
+      "HighIsOn": false,
+      "On": true,
+      "IntervalInSec": 0,
+      "Name": "FilterPump",
+      "WinterMode": false
+    },
+    "SolarHeater": {
+      "Key": "SolarHeater",
+      "RelayNumber": 7,
+      "HighIsOn": false,
+      "On": false,
+      "IntervalInSec": 0,
+      "Name": "SolarHeater",
+      "WinterMode": false
+    },
+    "Ph": {
+      "Key": "Ph",
+      "RelayNumber": 6,
+      "HighIsOn": false,
+      "On": false,
+      "IntervalInSec": 0,
+      "Name": "PhPump",
+      "WinterMode": false
+    },
+    "Redox": {
+      "Key": "Redox",
+      "RelayNumber": 5,
+      "HighIsOn": false,
+      "On": false,
+      "IntervalInSec": 0,
+      "Name": "RedoxSwitch",
+      "WinterMode": false
+    },
+    "Poollampe": {
+      "Key": "Poollampe",
+      "RelayNumber": 4,
+      "HighIsOn": false,
+      "On": false,
+      "IntervalInSec": 0,
+      "Name": "PoolLight",
+      "WinterMode": false
+    },
+    "Three": {
+      "Key": "Three",
+      "RelayNumber": 3,
+      "HighIsOn": false,
+      "On": false,
+      "IntervalInSec": 0,
+      "Name": "Three",
+      "WinterMode": false
+    },
+    "Two": {
+      "Key": "Two",
+      "RelayNumber": 2,
+      "HighIsOn": false,
+      "On": false,
+      "IntervalInSec": 0,
+      "Name": "Two",
+      "WinterMode": false
+    },
+    "One": {
+      "Key": "One",
+      "RelayNumber": 1,
+      "HighIsOn": false,
+      "On": false,
+      "IntervalInSec": 0,
+      "Name": "One",
+      "WinterMode": false
+    }
+  },
+  "RelayConfig": {
+    "RelayToLogicLevelConverter": {
+      "1": 1,
+      "2": 2,
+      "3": 3,
+      "4": 4,
+      "5": 5,
+      "6": 6,
+      "7": 7,
+      "8": 8
+    },
+    "LogicLevelConverterToGpio": {
+      "1": 19,
+      "2": 13,
+      "3": 5,
+      "4": 22,
+      "5": 27,
+      "6": 23,
+      "7": 20,
+      "8": 21
+    }
+  },
+  "FilterPump": {
+    "StandardFilterRunTime": 180,
+    "StartMorning": "08:00:00",
+    "StartNoon": "14:00:00",
+    "FilterOff": "20:00:00",
+    "NextStart": "2023-05-07T08:00:00+02:00",
+    "NextEnd": "2023-05-06T17:35:24+02:00",
+    "IntervalInSec": 0,
+    "Name": "Name",
+    "WinterMode": false
+  },
+  "SolarHeater": {
+    "SolarHeaterCleaningTime": "21:30:00",
+    "TurnOnDiff": 6.0,
+    "TurnOffDiff": 3.0,
+    "MaxPoolTemp": 29.5,
+    "SolarHeaterCleaningDuration": 180,
+    "NextStart": "2023-05-05T21:30:00+02:00",
+    "NextEnd": "2023-05-05T21:33:00+02:00",
+    "IntervalInSec": 0,
+    "Name": "Name",
+    "WinterMode": false
+  },
+  "Ph": {
+    "MidCal": 0.0,
+    "LowCal": 0.0,
+    "HighCal": 0.0,
+    "MaxValue": 7.3,
+    "AcidInjectionDuration": 20,
+    "AcidInjectionRecurringPeriod": 10,
+    "Slope": null,
+    "LedOn": true,
+    "SensorsCalibrated": 0,
+    "Voltage": 3.85,
+    "Value": 7.399999999999999,
+    "Address": "99",
+    "UnitSign": "pH",
+    "ViewFormat": "#0.00",
+    "InterfaceFormat": "#0.000",
+    "TimeStamp": "2023-05-06T14:25:29.5021162+02:00",
+    "IntervalInSec": 60,
+    "Name": "pHValue",
+    "WinterMode": false
+  },
+  "Redox": {
+    "On": 750,
+    "Off": 840,
+    "Cal": 0,
+    "LedOn": true,
+    "SensorsCalibrated": 0,
+    "Voltage": 3.84,
+    "Value": 805.0,
+    "Address": "98",
+    "UnitSign": "mV",
+    "ViewFormat": "#0",
+    "InterfaceFormat": "#0.0",
+    "TimeStamp": "2023-05-06T14:25:29.6423899+02:00",
+    "IntervalInSec": 60,
+    "Name": "RedoxValue",
+    "WinterMode": false
+  },
+  "Distance": {
+    "NameL": "Volume",
+    "UnitSignL": "L",
+    "ViewFormatL": "#0",
+    "InterfaceFormatL": "#0",
+    "NumberOfMeasurements": 5,
+    "Value": 0.013727999999999999,
+    "Address": "16/26",
+    "UnitSign": "cm",
+    "ViewFormat": "#0.00",
+    "InterfaceFormat": "#0.00",
+    "TimeStamp": "2023-05-06T14:25:29.7977172+02:00",
+    "IntervalInSec": 60,
+    "Name": "Distance",
+    "WinterMode": false
+  },
+  "IntervalInSec": 0,
+  "Name": "Winter",
+  "WinterMode": false
+}
