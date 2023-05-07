@@ -1,12 +1,9 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:vm="clr-namespace:PoolControl.ViewModels"
 		xmlns:p="clr-namespace:PoolControl"
-		xmlns:uc="clr-namespace:PoolControl.UserControls"
         Width="480" Height="320" Design.Width="480" Design.Height="320"
-		HasSystemDecorations="False"
+		SystemDecorations="None"
         x:Class="PoolControl.Pages.RedoxConfig"
         Title="RedoxConfig">
 	<Design.DataContext>
@@ -28,7 +25,7 @@
 			</StackPanel>
 			<StackPanel Orientation="Horizontal">
 				<Label Classes="Details" Content="{x:Static p:Resource.TimeStamp}"/>
-				<TextBox Classes="Details" Text="{Binding TimeStamp, Mode=OneWay, StringFormat={}{0:dd.MM. HH:mm:ss}}}"/>
+				<TextBox Classes="Details" Text="{Binding TimeStamp, Mode=OneWay, StringFormat={}{0:dd.MM. HH:mm:ss}}"/>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal">
 				<Label Classes="Details" Content="{x:Static p:Resource.Address}"/>

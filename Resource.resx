@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AcidInjectionPeriod" xml:space="preserve">
-    <value>Acid inhection period</value>
+    <value>Acid injection period</value>
   </data>
   <data name="Address" xml:space="preserve">
     <value>Address</value>

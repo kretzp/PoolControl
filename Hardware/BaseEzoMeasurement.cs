@@ -2,278 +2,279 @@
 using System;
 using System.Device.I2c;
 using System.Globalization;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using PoolControl.Helper;
 
-namespace PoolControl.Hardware
+namespace PoolControl.Hardware;
+
+public class BaseEzoMeasurement : BaseMeasurement
 {
-    public class BaseEzoMeasurement : BaseMeasurement
+    private const int BufferSize = 32;
+    private const int MillisToWait = 1000;
+
+    protected int I2CAddress
     {
-        private const int BUFFER_SIZE = 32;
-        private const int MILLIS_TO_WAIT = 1000;
-
-        protected int I2CAddress
+        get
         {
-            get
-            {
-                int address = -1;
-                try
-                {
-                    address = int.Parse(ModelBase.Address);
-                }
-                catch(Exception)
-                {
-                }
-                return address;
-            }
-        }
-
-        public BaseEzoMeasurement()
-        {
-            Logger = Log.Logger.ForContext<BaseEzoMeasurement>() ?? throw new ArgumentNullException(nameof(Logger));
-        }
-
-        public MeasurementResult getDeviceInformation()
-        {
-            return send_i2c_command("i");
-        }
-
-        public MeasurementResult getDeviceStatus()
-        {
-            return send_i2c_command("Status");
-        }
-
-        public MeasurementResult getLedState()
-        {
-            return send_i2c_command("L,?");
-        }
-
-        public MeasurementResult setLedStateOn()
-        {
-            return send_i2c_command("L,1");
-        }
-        public MeasurementResult setLedStateOff()
-        {
-            return send_i2c_command("L,0");
-        }
-
-        public MeasurementResult switchLedState(bool state)
-        {
-            string sw = state ? "1" : "0";
-            return send_i2c_command($"L,{sw}");
-        }
-
-        public MeasurementResult findDevice()
-        {
-            return send_i2c_command("Find");
-        }
-
-        public MeasurementResult terminateFind()
-        {
-            return getLedState();
-        }
-
-        public MeasurementResult takeReading()
-        {
-            return send_i2c_command("R");
-        }
-
-        public MeasurementResult sleep()
-        {
-            return send_i2c_command("Sleeps");
-        }
-
-        public MeasurementResult awake()
-        {
-            return getDeviceInformation();
-        }
-
-        public MeasurementResult factoryReset()
-        {
-            return send_i2c_command("Factory");
-        }
-
-        public MeasurementResult deviceCalibrated()
-        {
-            return send_i2c_command("Cal,?");
-        }
-
-        public MeasurementResult clearCalibration()
-        {
-            return send_i2c_command("Cal,clear");
-        }
-
-        public MeasurementResult setName(string name)
-        {
-            return send_i2c_command("Name," + name);
-        }
-
-        public MeasurementResult clearName()
-        {
-            return setName("");
-        }
-
-        public MeasurementResult getName()
-        {
-            return send_i2c_command("Name,?");
-        }
-
-        /*
-         * Parts of this section has been used from
-         * https://github.com/letscontrolit/ESPEasy
-         * */
-        public virtual MeasurementResult send_i2c_command(string command)
-        {
-            MeasurementResult ezoResult = new MeasurementResult { ReturnCode = (int)MeasurmentResultCode.PENDING, StatusInfo = "Error: ", Result = double.NaN, Device = $"{GetType().Name}@{I2CAddress}", Command = command };
-
+            var address = -1;
             try
             {
-                string resString = "";
+                if (ModelBase?.Address != null) address = int.Parse(ModelBase.Address);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
 
-                // When we Export the calibration, we have to fetch it multiple times
-                bool export = "Export".Equals(command);
+            return address;
+        }
+    }
 
-                do
+    public BaseEzoMeasurement()
+    {
+        if (Log.Logger != null)
+            Logger = Log.Logger.ForContext<BaseEzoMeasurement>() ?? throw new ArgumentNullException(nameof(Logger));
+    }
+
+    private MeasurementResult getDeviceInformation()
+    {
+        return send_i2c_command("i");
+    }
+
+    private MeasurementResult getDeviceStatus()
+    {
+        return send_i2c_command("Status");
+    }
+
+    private MeasurementResult getLedState()
+    {
+        return send_i2c_command("L,?");
+    }
+
+    public MeasurementResult setLedStateOn()
+    {
+        return send_i2c_command("L,1");
+    }
+    public MeasurementResult setLedStateOff()
+    {
+        return send_i2c_command("L,0");
+    }
+
+    public MeasurementResult switchLedState(bool state)
+    {
+        var sw = state ? "1" : "0";
+        return send_i2c_command($"L,{sw}");
+    }
+
+    public MeasurementResult findDevice()
+    {
+        return send_i2c_command("Find");
+    }
+
+    public MeasurementResult terminateFind()
+    {
+        return getLedState();
+    }
+
+    protected MeasurementResult takeReading()
+    {
+        return send_i2c_command("R");
+    }
+
+    public MeasurementResult sleep()
+    {
+        return send_i2c_command("Sleeps");
+    }
+
+    public MeasurementResult awake()
+    {
+        return getDeviceInformation();
+    }
+
+    public MeasurementResult factoryReset()
+    {
+        return send_i2c_command("Factory");
+    }
+
+    public MeasurementResult deviceCalibrated()
+    {
+        return send_i2c_command("Cal,?");
+    }
+
+    public MeasurementResult clearCalibration()
+    {
+        return send_i2c_command("Cal,clear");
+    }
+
+    private MeasurementResult setName(string name)
+    {
+        return send_i2c_command("Name," + name);
+    }
+
+    public MeasurementResult clearName()
+    {
+        return setName("");
+    }
+
+    public MeasurementResult getName()
+    {
+        return send_i2c_command("Name,?");
+    }
+
+    /*
+     * Parts of this section has been used from
+     * https://github.com/letscontrolit/ESPEasy
+     * */
+    protected virtual MeasurementResult send_i2c_command(string command)
+    {
+        var ezoResult = new MeasurementResult { ReturnCode = (int)MeasurementResultCode.Pending, StatusInfo = "Error: ", Result = double.NaN, Device = $"{GetType().Name}@{I2CAddress}", Command = command };
+
+        try
+        {
+            var resString = "";
+
+            // When we Export the calibration, we have to fetch it multiple times
+            var export = "Export".Equals(command);
+
+            do
+            {
+                ezoResult.ReturnCode = (int)MeasurementResultCode.Pending;
+                Logger?.Information("> cmd = {Command} to Address {I2CAddress}", command, I2CAddress);
+                ReadOnlySpan<byte> writeBuffer = new(Encoding.ASCII.GetBytes(command));
+
+                using var i2C = I2cDevice.Create(new I2cConnectionSettings(1, I2CAddress));
+                i2C.Write(writeBuffer);
+                // don't read answer if we want to go to sleep
+                if (command.Length > 4 && command[..5].ToLower().Equals("sleep"))
                 {
-                    ezoResult.ReturnCode = (int)MeasurmentResultCode.PENDING;
-                    Logger.Information("> cmd = " + command + " to Address " + I2CAddress);
-                    ReadOnlySpan<byte> writeBuffer = new(Encoding.ASCII.GetBytes(command));
+                    ezoResult.ReturnCode = 1;
+                    ezoResult.StatusInfo = "Going to sleep";
+                    return ezoResult;
+                }
 
-                    using (I2cDevice i2c = I2cDevice.Create(new I2cConnectionSettings(1, I2CAddress)))
+
+                Logger?.Debug("  Waiting {MillisToWait} before fetching answer", MillisToWait);
+                Thread.Sleep(MillisToWait);
+
+                while (ezoResult.ReturnCode == (int)MeasurementResultCode.Pending)
+                {
+                    Span<byte> readBuffer = new(new byte[BufferSize]);
+                    i2C.Read(readBuffer);
+
+                    ezoResult.ReturnCode = readBuffer[0];
+
+                    switch (ezoResult.ReturnCode)
                     {
-                        i2c.Write(writeBuffer);
-                        // don't read answer if we want to go to sleep
-                        if (command.Length > 4 && command.Substring(0, 5).ToLower().Equals("sleep"))
-                        {
-                            ezoResult.ReturnCode = 1;
-                            ezoResult.StatusInfo = "Going to sleep";
-                            return ezoResult;
-                        }
+                        case (int)MeasurementResultCode.Success:
+                            Logger?.Information("< success, answer = {Bits}", BitConverter.ToString(readBuffer.ToArray()));
 
-
-                        Logger.Debug($"  Waiting {MILLIS_TO_WAIT} before fetching answer");
-                        Thread.Sleep(MILLIS_TO_WAIT);
-
-                        while (ezoResult.ReturnCode == (int)MeasurmentResultCode.PENDING)
-                        {
-                            Span<byte> readBuffer = new(new byte[BUFFER_SIZE]) { };
-                            i2c.Read(readBuffer);
-
-                            ezoResult.ReturnCode = readBuffer[0];
-
-                            switch (ezoResult.ReturnCode)
+                            var nullByteIndexLength = readBuffer.IndexOf<byte>(0x00) - 1;
+                            if (nullByteIndexLength < 1)
                             {
-                                case (int)MeasurmentResultCode.SUCCESS:
-                                    Logger.Information("< success, answer = " + BitConverter.ToString(readBuffer.ToArray()));
+                                Logger?.Information("< success, without answer");
+                                ezoResult.Result = double.NaN;
+                                ezoResult.StatusInfo = "OK without return value";
+                            }
+                            else
+                            {
+                                var slice = Encoding.ASCII.GetString(readBuffer.Slice(1, nullByteIndexLength));
 
-                                    int nullByteIndexLength = readBuffer.IndexOf<byte>(0x00) - 1;
-                                    if (nullByteIndexLength < 1)
+                                Logger?.Debug("Slice: {Slice}", slice);
+
+                                if (export)
+                                {
+                                    if ("*DONE".Equals(slice))
                                     {
-                                        Logger.Information("< success, without answer");
-                                        ezoResult.Result = double.NaN;
-                                        ezoResult.StatusInfo = "OK without return value";
+                                        Logger?.Debug("Done!!!");
+                                        export = false;
                                     }
                                     else
                                     {
-                                        string slice = Encoding.ASCII.GetString(readBuffer.Slice(1, nullByteIndexLength));
-
-                                        Logger.Debug($"Slice: {slice}");
-
-                                        if (export)
-                                        {
-                                            if ("*DONE".Equals(slice))
-                                            {
-                                                Logger.Debug("Done!!!");
-                                                export = false;
-                                            }
-                                            else
-                                            {
-                                                resString += slice;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            resString = slice;
-                                            try
-                                            {
-                                                ezoResult.Result = double.Parse(resString, new CultureInfo("en-US"));
-                                            }
-                                            catch (Exception)
-                                            {
-                                                if (resString.ToLower().StartsWith("?l,") && resString.Length > 3)
-                                                {
-                                                    ezoResult.Result = double.Parse(resString.Substring(3), new CultureInfo("en-US"));
-                                                }
-                                                else if (resString.ToLower().StartsWith("?cal,") && resString.Length > 5)
-                                                {
-                                                    ezoResult.Result = double.Parse(resString.Substring(5), new CultureInfo("en-US"));
-                                                }
-                                                else if (resString.ToLower().StartsWith("?plock,") && resString.Length > 7)
-                                                {
-                                                    ezoResult.Result = double.Parse(resString.Substring(7), new CultureInfo("en-US"));
-                                                }
-                                                else if (resString.ToLower().StartsWith("?slope,") && resString.Length > 7)
-                                                {
-                                                    resString = resString.Substring(7);
-                                                }
-                                                else if (resString.ToLower().StartsWith("?status") && resString.Length > 7)
-                                                {
-                                                    ezoResult.Result = double.Parse(resString.Split(",")[2], new CultureInfo("en-US"));
-                                                }
-                                            }
-                                        }
-                                        Logger.Information("< success, answer = " + resString);
-                                        ezoResult.StatusInfo = resString;
+                                        resString += slice;
                                     }
-
-                                    break;
-                                case (int)MeasurmentResultCode.SYNTAXERROR:
-                                    Logger.Information("< syntax error = " + BitConverter.ToString(readBuffer.ToArray()));
-                                    ezoResult.StatusInfo += "syntax error";
-                                    break;
-                                case (int)MeasurmentResultCode.PENDING:
-                                    Logger.Information("< command pending");
-                                    break;
-                                case (int)MeasurmentResultCode.NODATATOSEND:
-                                    Logger.Information("< no data");
-                                    break;
-                                default:
-                                    Logger.Information("< command failed = " + BitConverter.ToString(readBuffer.ToArray()));
-                                    ezoResult.StatusInfo += "command failed!";
-                                    break;
+                                }
+                                else
+                                {
+                                    resString = slice;
+                                    try
+                                    {
+                                        ezoResult.Result = double.Parse(resString, new CultureInfo("en-US"));
+                                    }
+                                    catch (Exception)
+                                    {
+                                        if (resString.ToLower().StartsWith("?l,") && resString.Length > 3)
+                                        {
+                                            ezoResult.Result = double.Parse(resString[3..], new CultureInfo("en-US"));
+                                        }
+                                        else if (resString.ToLower().StartsWith("?cal,") && resString.Length > 5)
+                                        {
+                                            ezoResult.Result = double.Parse(resString[5..], new CultureInfo("en-US"));
+                                        }
+                                        else if (resString.ToLower().StartsWith("?pLock,") && resString.Length > 7)
+                                        {
+                                            ezoResult.Result = double.Parse(resString[7..], new CultureInfo("en-US"));
+                                        }
+                                        else if (resString.ToLower().StartsWith("?slope,") && resString.Length > 7)
+                                        {
+                                            resString = resString[7..];
+                                        }
+                                        else if (resString.ToLower().StartsWith("?status") && resString.Length > 7)
+                                        {
+                                            ezoResult.Result = double.Parse(resString.Split(",")[2], new CultureInfo("en-US"));
+                                        }
+                                    }
+                                }
+                                Logger?.Information("< success, answer = {ResString}", resString);
+                                ezoResult.StatusInfo = resString;
                             }
-                        }
+
+                            break;
+                        case (int)MeasurementResultCode.SyntaxError:
+                            Logger?.Information("< syntax error = {Bits}", BitConverter.ToString(readBuffer.ToArray()));
+                            ezoResult.StatusInfo += "syntax error";
+                            break;
+                        case (int)MeasurementResultCode.Pending:
+                            Logger?.Information("< command pending");
+                            break;
+                        case (int)MeasurementResultCode.NoDataToSend:
+                            Logger?.Information("< no data");
+                            break;
+                        default:
+                            Logger?.Information("< command failed = {Bits}", BitConverter.ToString(readBuffer.ToArray()));
+                            ezoResult.StatusInfo += "command failed!";
+                            break;
                     }
-                } while (export);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, $"Error in EzoResult send_i2c_command {command} Address {I2CAddress}");
-                ezoResult.StatusInfo += ex.Message;
-            }
-
-            ezoResult.TimeStamp = DateTime.Now;
-
-            return ezoResult;
+                }
+            } while (export);
         }
-        public override MeasurementResult DoMeasurement()
+        catch (Exception ex)
         {
-            MeasurementResult vmr = DoVoltageMeasurement();
-            ((EzoBase)ModelBase).Voltage = vmr.Result;
-
-            return takeReading();
+            Logger?.Error(ex, "Error in EzoResult send_i2c_command {Command} Address {I2CAddress}",command, I2CAddress);
+            ezoResult.StatusInfo += ex.Message;
         }
 
-        public MeasurementResult DoVoltageMeasurement()
+        ezoResult.TimeStamp = DateTime.Now;
+
+        return ezoResult;
+    }
+
+    protected override MeasurementResult DoMeasurement()
+    {
+        var vmr = DoVoltageMeasurement();
+        ((EzoBase)ModelBase!).Voltage = vmr.Result;
+
+        return takeReading();
+    }
+
+    protected MeasurementResult DoVoltageMeasurement()
+    {
+        var mr = getDeviceStatus();
+        if (mr.Result <= 0)
         {
-            MeasurementResult mr = getDeviceStatus();
-            if (mr.Result <= 0)
-            {
-                throw new ArgumentOutOfRangeException($"Error in {GetType().Name}  <= 0");
-            }
-
-            return mr;
+            throw new ArgumentOutOfRangeException($"Error in {GetType().Name}  <= 0");
         }
+
+        return mr;
     }
 }

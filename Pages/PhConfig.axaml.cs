@@ -3,26 +3,25 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 
-namespace PoolControl.Pages
+namespace PoolControl.Pages;
+
+public partial class PhConfig : Window
 {
-    public partial class PhConfig : Window
+    public PhConfig()
     {
-        public PhConfig()
-        {
-            InitializeComponent();
+        InitializeComponent();
 #if DEBUG
-            this.AttachDevTools();
+        this.AttachDevTools();
 #endif
-        }
+    }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
 
-        private void OnButtonClick(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
+    private void OnButtonClick(object sender, RoutedEventArgs e)
+    {
+        Close();
     }
 }

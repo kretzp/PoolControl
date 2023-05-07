@@ -1,34 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PoolControl.ViewModels;
+﻿using PoolControl.ViewModels;
 using Serilog;
 
-namespace PoolControl.Hardware
+namespace PoolControl.Hardware;
+
+public abstract class BaseMeasurement
 {
-    public abstract class BaseMeasurement
+    protected ILogger? Logger { get; init; }
+
+    public MeasurementModelBase? ModelBase { get; set; }
+
+    protected abstract MeasurementResult DoMeasurement();
+
+    public MeasurementResult Measure()
     {
-        protected ILogger Logger { get; set; }
+        var result = DoMeasurement();
 
-        public MeasurementModelBase ModelBase { get; set; }
+        if (result.ReturnCode != 1) return result;
+        if (ModelBase == null) return result;
+            
+        ModelBase.publishMessageValue();
+        ModelBase.Value = result.Result;
+        ModelBase.TimeStamp = result.TimeStamp;
 
-        public abstract MeasurementResult DoMeasurement();
-
-        public MeasurementResult Measure()
-        {
-            MeasurementResult result = DoMeasurement();
-
-            if (result.ReturnCode == 1)
-            {
-                ModelBase.publishMessageValue();
-
-                ModelBase.Value = result.Result;
-                ModelBase.TimeStamp = result.TimeStamp;
-            }
-
-            return result;
-        }
+        return result;
     }
 }

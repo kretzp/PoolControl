@@ -13,7 +13,7 @@
 			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="{Binding ColumnWidth, Mode=TwoWay}"/>
 		</Grid.ColumnDefinitions>
-		<TextBox Text="{Binding Label, Mode=TwoWay}"/>
+		<Label Content="{Binding Label, Mode=TwoWay}"/>
 		<NumericUpDown Grid.Column="1"  Classes="Numeric" Value="{Binding NumValue, Mode=TwoWay}" ClipValueToMinMax="True" Minimum="{Binding $parent[UserControl].Minimum}" Maximum="{Binding Maximum, Mode=TwoWay}" FormatString="{Binding FormatString, Mode=TwoWay}" Increment="{Binding Increment, Mode=TwoWay}"></NumericUpDown>
 	</Grid>
 </UserControl>

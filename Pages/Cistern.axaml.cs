@@ -1,20 +1,17 @@
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 
-namespace PoolControl.Pages
-{
-    public partial class Cistern : UserControl
-    {
-        public Cistern()
-        {
-            InitializeComponent();
-        }
+namespace PoolControl.Pages;
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+public partial class Cistern : UserControl
+{
+    public Cistern()
+    {
+        InitializeComponent();
+    }
+
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
     }
 }

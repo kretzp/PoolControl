@@ -1,79 +1,65 @@
 ﻿using Serilog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using Log = PoolControl.Helper.Log;
 
-namespace PoolControl.Time
+namespace PoolControl.Time;
+
+public class TimeTrigger
 {
-    public class TimeTrigger
+    private readonly ILogger _logger;
+
+    public string Name { get; init; } = "NoName";
+
+    public TimeSpan StartTime { get; set; }
+
+    public TimeSpan Period { get; init; }
+
+    public DateTime TriggerTime { get; private set; }
+
+    private Timer? _timer;
+
+
+    public TimeTrigger()
     {
-        private ILogger Logger;
-
-        private TimeSpan startTime;
-
-        public string Name { get; set; } = "NoName";
-
-        public TimeSpan StartTime { get; set; }
-
-        private TimeSpan period;
-        public TimeSpan Period
-        {
-            get => period;
-            set
-            {
-                period = value;
-            }
-        }
-
-        public DateTime TriggerTime { get; protected set; }
-
-        private Timer timer;
-
-
-        public TimeTrigger()
-        {
-            Logger = Log.Logger?.ForContext<TimeTrigger>() ?? throw new ArgumentNullException(nameof(Logger));
-        }
-
-        private void OnTimerTicked(object? state)
-        {
-            OnTimeTriggered?.Invoke();
-            InitiateTimer();
-        }
-
-        public void InitiateTimer()
-        {
-            if(StartTime <= TimeSpan.Zero || Period <= TimeSpan.Zero)
-            {
-                Logger.Debug($"Timer {Name} not started because of zero values StartTime: {StartTime} Period: {Period}");
-                return;
-            }
-
-            DateTime now = DateTime.Now;
-            var triggerTime = DateTime.Today + StartTime - now;
-            while(triggerTime < TimeSpan.Zero)
-            {
-                triggerTime += Period;
-            }
-
-            if (timer == null)
-            {
-                var autoEvent = new AutoResetEvent(false);
-                timer = new Timer(OnTimerTicked, autoEvent, triggerTime, Period);
-                Logger.Debug($"New Timer {Name} created");
-            }
-            else
-            {
-                timer.Change(triggerTime, Period);
-            }
-
-            TriggerTime = now + triggerTime;
-            Logger.Debug($"Timer: {Name} TriggerTime: {TriggerTime} StartTime: {StartTime} Period: {Period}");
-        }
-
-        public event Action OnTimeTriggered;
+        _logger = Log.Logger?.ForContext<TimeTrigger>() ?? throw new ArgumentNullException(nameof(_logger));
     }
+
+    private void OnTimerTicked(object? state)
+    {
+        OnTimeTriggered?.Invoke();
+        InitiateTimer();
+    }
+
+    public void InitiateTimer()
+    {
+        if(StartTime <= TimeSpan.Zero || Period <= TimeSpan.Zero)
+        {
+            _logger.Debug("Timer {Name} not started because of zero values StartTime: {StartTime} Period: {Period}", Name, StartTime, Period);
+            return;
+        }
+
+        DateTime now = DateTime.Now;
+        var triggerTime = DateTime.Today + StartTime - now;
+        while(triggerTime < TimeSpan.Zero)
+        {
+            triggerTime += Period;
+        }
+
+        if (_timer == null)
+        {
+            var autoEvent = new AutoResetEvent(false);
+            _timer = new Timer(OnTimerTicked, autoEvent, triggerTime, Period);
+            _logger.Debug("New Timer {Name} created", Name);
+        }
+        else
+        {
+            _timer.Change(triggerTime, Period);
+        }
+
+        TriggerTime = now + triggerTime;
+        _logger.Debug("Timer: {Name} TriggerTime: {TriggerTime} StartTime: {StartTime} Period: {Period}", Name, TriggerTime, StartTime, Period);
+    }
+
+    public event Action? OnTimeTriggered;
 }

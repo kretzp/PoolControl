@@ -2,164 +2,155 @@
 using System;
 using System.Device.Gpio;
 using System.Runtime.InteropServices;
+using Log = PoolControl.Helper.Log;
 
-namespace PoolControl.Hardware
+namespace PoolControl.Hardware;
+
+public class Gpio : IGpio
 {
-    public class Gpio : IGpio
+    private static IGpio? _instance;
+    private static readonly object Padlock = new object();
+
+    protected ILogger Logger { get; private init; }
+    private readonly GpioController _controller;
+
+    private Gpio(ILogger? logger)
     {
-        private static IGpio? _instance;
-        private static readonly object padlock = new object();
+        Logger = logger?.ForContext<Gpio>() ?? throw new ArgumentNullException(nameof(Logger));
+        _controller = new GpioController(PinNumberingScheme.Logical);
+    }
 
-        protected ILogger Logger { get; private set; }
-        protected GpioController controller;
-
-        private Gpio(ILogger logger)
+    public static IGpio Instance
+    {
+        get
         {
-            Logger = logger?.ForContext<Gpio>() ?? throw new ArgumentNullException(nameof(Logger));
-            controller = new GpioController(PinNumberingScheme.Logical);
-        }
-
-        public static IGpio Instance
-        {
-            get
+            lock (Padlock)
             {
-                lock (padlock)
-                {
-                    if (_instance == null)
-                    {
-                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                        {
-                            _instance = WinGpioMock.Instance; 
-                        }
-                        else
-                        {
-                            _instance = new Gpio(Log.Logger);
-                        }
-                    }
-                    return _instance;
-                }
+                return _instance ??= RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                    ? WinGpioMock.Instance
+                    : new Gpio(Log.Logger);
             }
         }
+    }
 
-        public int readPin(int pin)
-        {
-            return (int)controller.Read(pin);
-        }
+    public int readPin(int pin)
+    {
+        return (int)_controller.Read(pin);
+    }
 
-        public void openPinModeOutput(int pin, bool highIsOn)
-        {
-            open(pin, PinMode.Output, highIsOn);
-        }
+    public void openPinModeOutput(int pin, bool highIsOn)
+    {
+        open(pin, PinMode.Output, highIsOn);
+    }
 
-        public void openPinModeInput(int pin, bool highIsOn)
-        {
-            open(pin, PinMode.Input, highIsOn);
-        }
+    public void openPinModeInput(int pin, bool highIsOn)
+    {
+        open(pin, PinMode.Input, highIsOn);
+    }
 
-        public void open(int pin, PinMode mode, bool highIsOn)
+    public void open(int pin, PinMode mode, bool highIsOn)
+    {
+        if (pin < 1)
         {
-            if (pin < 1)
-            {
-                Logger.Warning($"Error pin {pin} open");
-                return;
-            }
-            Logger.Debug($"Try to open {pin}");
-            controller.OpenPin(pin, mode, highIsOn ? PinValue.Low : PinValue.High);
-            Logger.Information($"Opened {pin}");
+            Logger.Warning("Error pin {Pin} open", pin);
+            return;
         }
+        Logger.Debug("Try to open {Pin}", pin);
+        _controller.OpenPin(pin, mode, highIsOn ? PinValue.Low : PinValue.High);
+        Logger.Information("Opened {Pin}", pin);
+    }
 
-        public void openPinModeOutput(int[] pins, bool highIsOn)
+    public void openPinModeOutput(int[] pins, bool highIsOn)
+    {
+        foreach (var t in pins)
         {
-            for (int i = 0; i < pins.Length; i++)
-            {
-                openPinModeOutput(pins[i], highIsOn);
-            }
+            openPinModeOutput(t, highIsOn);
         }
+    }
 
-        public void close(int pin)
+    public void close(int pin)
+    {
+        if (pin < 1)
         {
-            if (pin < 1)
-            {
-                Logger.Warning($"Error pin {pin} close");
-                return;
-            }
-            Logger.Debug($"Try to close {pin}");
-            controller.ClosePin(pin);
-            Logger.Information($"Closed {pin}");
+            Logger.Warning("Error pin {Pin} close", pin);
+            return;
         }
+        Logger.Debug("Try to close {Pin}", pin);
+        _controller.ClosePin(pin);
+        Logger.Information("Closed {Pin}", pin);
+    }
 
-        public void close(int[] pins, bool highIsOn)
+    public void close(int[] pins, bool highIsOn)
+    {
+        foreach (var t in pins)
         {
-            for (int i = 0; i < pins.Length; i++)
-            {
-                close(pins[i]);
-            }
+            close(t);
         }
+    }
 
-        public void doSwitch(int pin, bool state, bool highIsOn)
+    public void doSwitch(int pin, bool state, bool highIsOn)
+    {
+        if (pin < 1)
         {
-            if (pin < 1)
-            {
-                Logger.Warning($"Try pin {pin} switch, which is not allowed");
-                return;
-            }
-            Logger.Debug($"Try state {state} highIsOn {highIsOn} pin {pin}");
-            controller.Write(pin, highIsOn ? state : !state);
-            Logger.Information($"state {state} highIsOn {highIsOn} pin {pin}");
+            Logger.Warning("Try pin {Pin} switch, which is not allowed", pin);
+            return;
         }
-        public void doSwitch(int[] pin, bool state, bool highIsOn)
+        Logger.Debug("Try state {State} highIsOn {HighIsOn} pin {Pin}", state, highIsOn, pin);
+        _controller.Write(pin, highIsOn ? state : !state);
+        Logger.Information("state {State} highIsOn {HighIsOn} pin {Pin}", state, highIsOn, pin);
+    }
+    public void doSwitch(int[] pin, bool state, bool highIsOn)
+    {
+        foreach (var t in pin)
         {
-            for (int i = 0; i < pin.Length; i++)
-            {
-                doSwitch(pin[i], state, highIsOn);
-            }
+            doSwitch(t, state, highIsOn);
         }
+    }
 
 
-        public void on(int pin, bool highIsOn)
+    public void on(int pin, bool highIsOn)
+    {
+        if (pin < 1)
         {
-            if (pin < 1)
-            {
-                Logger.Warning($"Error pin {pin} on");
-                return;
-            }
-            Logger.Debug($"Try On {pin}");
-            controller.Write(pin, highIsOn ? PinValue.High : PinValue.Low);
-            Logger.Information($"On {pin}");
+            Logger.Warning("Error pin {Pin} on", pin);
+            return;
         }
+        Logger.Debug("Try On {Pin}", pin);
+        _controller.Write(pin, highIsOn ? PinValue.High : PinValue.Low);
+        Logger.Information("On {Pin}", pin);
+    }
 
-        public void on(int[] pin, bool highIsOn)
+    public void on(int[] pin, bool highIsOn)
+    {
+        foreach (var t in pin)
         {
-            for (int i = 0; i < pin.Length; i++)
-            {
-                on(pin[i], highIsOn);
-            }
+            on(t, highIsOn);
         }
+    }
 
-        public void off(int pin, bool highIsOn)
+    public void off(int pin, bool highIsOn)
+    {
+        if (pin == 0)
         {
-            if (pin == 0)
-            {
-                Logger.Warning($"Error pin {pin} off");
-                return;
-            }
-            Logger.Debug($"Try Off {pin}");
-            controller.Write(pin, highIsOn ? PinValue.Low : PinValue.High);
-            Logger.Information($"Off {pin}");
+            Logger.Warning("Error pin {Pin} off", pin);
+            return;
         }
-        public void off(int[] pin, bool highIsOn)
+        Logger.Debug("Try Off {Pin}", pin);
+        _controller.Write(pin, highIsOn ? PinValue.Low : PinValue.High);
+        Logger.Information("Off {Pin}", pin);
+    }
+    public void off(int[] pin, bool highIsOn)
+    {
+        foreach (var t in pin)
         {
-            for (int i = 0; i < pin.Length; i++)
-            {
-                off(pin[i], highIsOn);
-            }
+            off(t, highIsOn);
         }
+    }
 
-        public void dispose()
-        {
-            Logger.Debug("Try to dispose}");
-            controller.Dispose();
-            Logger.Information("Disposed");
-        }
+    public void dispose()
+    {
+        Logger.Debug("Try to dispose");
+        _controller.Dispose();
+        Logger.Information("Disposed");
     }
 }

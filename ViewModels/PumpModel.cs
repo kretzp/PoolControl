@@ -1,85 +1,85 @@
 ﻿using Newtonsoft.Json;
 using PoolControl.Time;
 using System;
-using System.Threading;
 
-namespace PoolControl.ViewModels
+namespace PoolControl.ViewModels;
+
+/// <summary>
+/// Base Data for pumps
+/// </summary>
+[JsonObject(MemberSerialization.OptIn)]
+public abstract class PumpModel : ViewModelBase
 {
-    /// <summary>
-    /// Base Data for pumps
-    /// </summary>
-    [JsonObject(MemberSerialization.OptIn)]
-    public abstract class PumpModel : ViewModelBase
+    protected TimeSpan Daily = new TimeSpan(24, 0, 0);
+
+    [JsonIgnore]
+    public Switch? Switch { get; set; }
+
+    public abstract void OnTemperatureChange(MeasurementArgs args);
+
+    public abstract void RecalculateThings();
+
+    public void StartTimerTriggered()
     {
-        protected TimeSpan DAILY = new TimeSpan(24, 0, 0);
+        Logger.Debug("Switching {On} on", GetType().Name);
 
-        [JsonIgnore]
-        public Switch Switch { get; set; }
-
-        public abstract void OnTemperatureChange(MeasurementArgs args);
-
-        public abstract void RecalculateThings();
-
-        public void StartTimerTriggered()
+        if (WinterMode)
         {
-            Logger.Debug($"Schalte {GetType().Name} ein");
-
-            if (WinterMode)
-            {
-                Logger.Information("WinterMode! Nothing to do!");
-                return;
-            }
-
-            if (Switch != null)
-            {
-                Switch.On = true;
-            }
-            else
-            {
-                Logger.Debug($"{GetType().Name} is null and could not be turned on");
-            }
-            RecalculateThings();
+            Logger.Information("WinterMode! Nothing to do!");
+            return;
         }
 
-        public void EndTimerTriggered()
+        if (Switch != null)
         {
-            Logger.Debug($"Schalte {GetType().Name} aus");
+            Switch.On = true;
+        }
+        else
+        {
+            Logger.Debug("{Name} is null and could not be turned on", GetType().Name);
+        }
+        RecalculateThings();
+    }
 
-            if (WinterMode)
-            {
-                Logger.Information("WinterMode! Nothing to do!");
-            }
+    public void EndTimerTriggered()
+    {
+        Logger.Debug("Switching {Name} off", GetType().Name);
 
-            if (Switch != null)
-            {
-                Switch.On = false;
-            }
-            else
-            {
-                Logger.Debug($"{GetType().Name} is null and could not be turned off");
-            }
-            RecalculateThings();
+        if (WinterMode)
+        {
+            Logger.Information("WinterMode! Nothing to do!");
         }
 
-        protected TimeTrigger InitializeTrigger(Action action, TimeSpan period, string name)
+        if (Switch != null)
         {
-            TimeTrigger trigger = new TimeTrigger();
-            trigger.Name = name;
-            trigger.Period = period;
-            trigger.OnTimeTriggered += action;
-
-            return trigger;
+            Switch.On = false;
         }
-
-        protected void startTrigger(TimeTrigger trigger, TimeSpan startTime)
+        else
         {
-            trigger.StartTime = startTime;
-            trigger.InitiateTimer();
+            Logger.Debug("{Name} is null and could not be turned off", GetType().Name);
         }
+        RecalculateThings();
+    }
 
-        protected string GetTimerName(string name)
+    protected TimeTrigger InitializeTrigger(Action? action, TimeSpan period, string name)
+    {
+        var trigger = new TimeTrigger
         {
-            return $"{GetType().Name}.{name}";
-        }
+            Name = name,
+            Period = period
+        };
+        trigger.OnTimeTriggered += action;
+
+        return trigger;
+    }
+
+    protected void startTrigger(TimeTrigger trigger, TimeSpan startTime)
+    {
+        trigger.StartTime = startTime;
+        trigger.InitiateTimer();
+    }
+
+    protected string GetTimerName(string name)
+    {
+        return $"{GetType().Name}.{name}";
     }
 }

@@ -61,7 +61,7 @@ namespace PoolControl {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Acid inhection period ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Acid injection period ähnelt.
         /// </summary>
         public static string AcidInjectionPeriod {
             get {

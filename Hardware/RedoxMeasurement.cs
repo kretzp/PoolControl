@@ -1,55 +1,51 @@
-﻿using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+using JetBrains.Annotations;
+using PoolControl.Helper;
 
-namespace PoolControl.Hardware
+namespace PoolControl.Hardware;
+
+
+[UsedImplicitly]
+public class RedoxMeasurement : BaseEzoMeasurement
 {
-    public class RedoxMeasurement : BaseEzoMeasurement
+    private int _i;
+    private bool _add = true;
+    private double _redox = 730;
+
+    public RedoxMeasurement()
     {
-        int i = 0;
-        bool add = true;
-        double redox = 730;
+        Logger = Log.Logger?.ForContext<RedoxMeasurement>() ?? throw new ArgumentNullException(nameof(Logger));
+    }
 
-        public RedoxMeasurement()
+    protected override MeasurementResult send_i2c_command(string command)
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            base.Logger = Log.Logger.ForContext<RedoxMeasurement>() ?? throw new ArgumentNullException(nameof(Logger));
-        }
-
-        public override MeasurementResult send_i2c_command(string command)
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (command.ToLower().Equals("status"))
             {
-                if (command.ToLower().Equals("status"))
-                {
-                    return new MeasurementResult { Result = 3.84, ReturnCode = 1, TimeStamp = DateTime.Now, StatusInfo = "?STATUS,P,3.84", Device = $"{GetType().Name}.{ModelBase.Name}@{I2CAddress}", Command = "Status" };
-                }
-                else
-                {
-                    MeasurementResult ezoResult = new MeasurementResult { ReturnCode = (int)MeasurmentResultCode.PENDING, StatusInfo = "Error: ", Result = double.NaN, Device = $"{GetType().Name}@{I2CAddress}", Command = command };
-
-                    i++;
-
-                    int a = i % 10;
-                    if (a == 0) add = !add;
-                    int m = add ? 1 : -1;
-                    redox += m * 15;
-
-                    string code = $"Using WinBaseEZOMock: Class {this.GetType().Name} Command {command} Address {I2CAddress}";
-                    Logger.Information(code);
-                    return new MeasurementResult { Result = redox, ReturnCode = 1, TimeStamp = DateTime.Now, StatusInfo = code, Device = $"{GetType().Name}.{ModelBase.Name}@{I2CAddress}", Command = "ph" };
-                }
+                return new MeasurementResult { Result = 3.84, ReturnCode = 1, TimeStamp = DateTime.Now, StatusInfo = "?STATUS,P,3.84", Device = $"{GetType().Name}.{ModelBase?.Name}@{I2CAddress}", Command = "Status" };
             }
+            else
+            {
+                _i++;
 
-            return base.send_i2c_command(command);
+                var a = _i % 10;
+                if (a == 0) _add = !_add;
+                var m = _add ? 1 : -1;
+                _redox += m * 15;
+
+                var code = $"Using WinBaseEZOMock: Class {this.GetType().Name} Command {command} Address {I2CAddress}";
+                Logger?.Information("{Code}", code);
+                return new MeasurementResult { Result = _redox, ReturnCode = 1, TimeStamp = DateTime.Now, StatusInfo = code, Device = $"{GetType().Name}.{ModelBase?.Name}@{I2CAddress}", Command = "ph" };
+            }
         }
 
-        public MeasurementResult calibrate(int value)
-        {
-            return send_i2c_command("Cal," + value);
-        }
+        return base.send_i2c_command(command);
+    }
+
+    public MeasurementResult calibrate(int value)
+    {
+        return send_i2c_command("Cal," + value);
     }
 }

@@ -1,69 +1,69 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using JetBrains.Annotations;
+using Microsoft.Extensions.Configuration;
 
-namespace PoolControl.Helper
+namespace PoolControl.Helper;
+
+public class PoolControlConfig
 {
-    public class PoolControlConfig
-    {
-        private static PoolControlConfig? _instance;
-        private static readonly object padlock = new object();
+    private static PoolControlConfig? _instance;
+    private static readonly object Padlock = new();
 
-        public static PoolControlConfig Instance
+    public static PoolControlConfig Instance
+    {
+        get
         {
-            get
+            lock (Padlock)
             {
-                lock (padlock)
-                {
-                    if (_instance == null)
-                    {
-                        _instance = new PoolControlConfig();
-                    }
-                    return _instance;
-                }
+                return _instance ??= new PoolControlConfig();
             }
-        }
 
-        public IConfiguration Config { get; private set; }
-        public Settings Settings { get; private set; }
-
-        private PoolControlConfig()
-        {
-            Config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .Build();
-            Settings = Config.GetRequiredSection("Settings").Get<Settings>();
         }
     }
 
-    public class BaseTopicSettings
+    private IConfiguration? Config { get; set; }
+    public Settings? Settings { get; private set; }
+
+    private PoolControlConfig()
     {
-        public string Command { get; set; } = "basetopic/cmd/";
-        public string State { get; set; } = "basetopic/state/";
+        Config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")
+            .Build();
+        Settings = Config.GetRequiredSection("Settings").Get<Settings>();
     }
+}
 
-    public class LWTSettings
-    {
-        public string ConnectMessage { get; set; } = "Connected";
-        public string DisconnectMessage { get; set; } = "Connection Lost";
-        public string Topic { get; set; } = "basetopic/LWT";
-    }
+[UsedImplicitly]
+public class BaseTopicSettings
+{
+    public string Command { get; set; } = "basetopic/cmd/";
+    public string State { get; set; } = "basetopic/state/";
+}
 
-    public class MQTTSettings
-    {
-        public string Password { get; set; } = "";
-        public int Port { get; set; } = 1883;
-        public string Server { get; set; } = "";
+[UsedImplicitly]
+public class LWTSettings
+{
+    public string? ConnectMessage { get; set; } = "Connected";
+    public string? DisconnectMessage { get; set; } = "Connection Lost";
+    public string Topic { get; set; } = "basetopic/LWT";
+}
 
-        public string User { get; set; } = "";
-    }
+[UsedImplicitly]
+public class MQTTSettings
+{
+    public string Password { get; set; } = "";
+    public int Port { get; set; } = 1883;
+    public string Server { get; set; } = "";
 
-    public class Settings
-    {
-        public BaseTopicSettings BaseTopic { get; set; } = null!;
-        public LWTSettings LWT { get; set; } = null!;
-        public MQTTSettings MQTT { get; set; } = null!;
+    public string User { get; set; } = "";
+}
 
-        public string PersistenceFile { get; set; } = "poolcontrolviewmodel.json";
+public class Settings
+{
+    public BaseTopicSettings BaseTopic { get; set; } = null!;
+    public LWTSettings LWT { get; set; } = null!;
+    public MQTTSettings MQTT { get; set; } = null!;
 
-        public int PersistenceSaveIntervalInSec { get; set; } = 60;
-    }
+    public string PersistenceFile { get; set; } = "poolcontrolviewmodel.json";
+
+    public int PersistenceSaveIntervalInSec { get; set; } = 60;
 }

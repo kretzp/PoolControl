@@ -2,93 +2,92 @@
 using System.IO;
 using PoolControl.ViewModels;
 using System.Runtime.InteropServices;
+using PoolControl.Helper;
 
-namespace PoolControl.Hardware
+namespace PoolControl.Hardware;
+
+public class TemperatureMeasurement : BaseMeasurement
 {
-    public class TemperatureMeasurement : BaseMeasurement
+    private string Ds18B20Address => @"/sys/bus/w1/devices/" + ModelBase?.Address + @"/w1_slave";
+    private const string WindowsDs18B20Address = "w1_slave";
+
+    private int _i;
+    private double _temp = 25.1;
+    private const double PoolTemp = 25.9;
+    private bool _add = true;
+
+    public TemperatureMeasurement()
     {
-        protected string DS18B20Address { get { return @"/sys/bus/w1/devices/" + ModelBase.Address + @"/w1_slave"; } }
-        protected string WindowsDS18B20Address { get { return "w1_slave"; } }
+        Logger = Log.Logger?.ForContext<TemperatureMeasurement>() ?? throw new ArgumentNullException(nameof(Logger));
+    }
 
-        int i = 0;
-        double temp = 25.1;
-        double pooltemp = 25.9;
-        bool add = true;
+    private MeasurementResult emulateWindowsTemp()
+    {
+        _i++;
+        var retValue = PoolTemp;
 
-        public TemperatureMeasurement()
+        if (ModelBase is { Name: "SolarHeater" })
         {
-            Logger = Log.Logger.ForContext<TemperatureMeasurement>() ?? throw new ArgumentNullException(nameof(Logger));
+            var a = _i % 10;
+            if (a == 0) _add = !_add;
+            var m = _add ? 1 : -1;
+            _temp += m * 1;
+            retValue = _temp;
         }
 
-        private MeasurementResult emulateWindowsTemp()
+        var code = $"Using WinBaseEZOMock: Sensor: {ModelBase?.Name} Temperature: {retValue}";
+        Logger?.Information("{Code}", code);
+        return new MeasurementResult { Result = retValue, ReturnCode = 1, TimeStamp = DateTime.Now, StatusInfo = code, Device = $"{GetType().Name}.{ModelBase?.Name}@{Ds18B20Address}", Command = "temperature" };
+    }
+
+    protected override MeasurementResult DoMeasurement()
+    {
+        var mr = new MeasurementResult { Device = $"{GetType().Name}.{ModelBase?.Name}", Command = "temperature" };
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            i++;
-            double retValue = pooltemp;
 
-            if (ModelBase.Name.Equals("SolarHeater"))
-            {
-                int a = i % 10;
-                if (a == 0) add = !add;
-                int m = add ? 1 : -1;
-                temp += m * 1;
-                retValue = temp;
-            }
-
-            string code = $"Using WinBaseEZOMock: Sensor: {ModelBase.Name} Temperature: {retValue}";
-            Logger.Information(code);
-            return new MeasurementResult { Result = retValue, ReturnCode = 1, TimeStamp = DateTime.Now, StatusInfo = code, Device = $"{GetType().Name}.{ModelBase.Name}@{DS18B20Address}", Command = "temperature" };
         }
 
-        public override MeasurementResult DoMeasurement()
+        var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+        try
         {
-            var mr = new MeasurementResult { Device = $"{GetType().Name}.{ModelBase.Name}", Command = "temperature" };
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            var content = File.ReadAllLines(isWindows?WindowsDs18B20Address:Ds18B20Address);
+            foreach (var t in content)
             {
-
+                Logger?.Debug("{T}",t);
             }
-
-            bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-
-            try
+            var tempData = content[1].Split(new[] { ' ' }, StringSplitOptions.None)[9][2..];
+            Logger?.Debug("{TempData}", tempData);
+            mr.TimeStamp = DateTime.Now;
+            mr.Result = double.Parse(tempData) / 1000;
+            mr.StatusInfo = "OK";
+            mr.ReturnCode = 1;
+            Logger?.Debug("Temperature {Temp}", this.GetType().Name);
+            switch (mr.Result)
             {
-                string[] inhalt = File.ReadAllLines(isWindows?WindowsDS18B20Address:DS18B20Address);
-                for (int i = 0; i < inhalt.Length; i++)
-                {
-                    Logger.Debug(inhalt[i]);
-                }
-                var tempdata = inhalt[1].Split(new char[] { ' ' }, StringSplitOptions.None)[9].Substring(2);
-                Logger.Debug(tempdata);
-                mr.TimeStamp = DateTime.Now;
-                mr.Result = double.Parse(tempdata) / 1000;
-                mr.StatusInfo = "OK";
-                mr.ReturnCode = 1;
-                Logger.Debug($"Temperature {mr.Result}");
-                if (mr.Result > 80)
-                {
-                    throw new ArgumentOutOfRangeException("Error in DS18B20, Temperature > 80 °C");
-                }
-                else if (mr.Result == 0)
-                {
-                    throw new ArgumentOutOfRangeException("Error in DS18B20, Temperature > 0 °C");
-                }
+                case > 80:
+                    throw new ArgumentException("Error in DS18B20, Temperature > 80 °C");
+                case 0:
+                    throw new ArgumentException("Error in DS18B20, Temperature > 0 °C");
             }
-            catch (Exception ex)
-            {
-                Logger.Error($"Error in getting temperature: Key: {((Temperature)ModelBase).Key}, Name: {ModelBase.Name}");
-                Logger.Error(ex.Message);
-                Logger.Verbose(ex, "Verbose Error Logging");
-                mr.Result = double.NaN;
-                mr.ReturnCode = 99;
-                mr.StatusInfo = ex.Message;
-            }
-
-            if(isWindows)
-            {
-                mr = emulateWindowsTemp();
-            }
-
-            return mr;
         }
+        catch (Exception ex)
+        {
+            Logger?.Error("Error in getting temperature: Key: {Temp}, Name: {Name}", ((Temperature)ModelBase!).Key, ModelBase.Name);
+            Logger?.Error("{Message}", ex.Message);
+            Logger?.Verbose(ex, "Verbose Error Logging");
+            mr.Result = double.NaN;
+            mr.ReturnCode = 99;
+            mr.StatusInfo = ex.Message;
+        }
+
+        if(isWindows)
+        {
+            mr = emulateWindowsTemp();
+        }
+
+        return mr;
     }
 }

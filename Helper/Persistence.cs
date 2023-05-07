@@ -1,113 +1,114 @@
-﻿using Newtonsoft.Json;
-using Serilog;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Serilog;
 
-namespace PoolControl.Helper
+namespace PoolControl.Helper;
+
+public class Persistence
 {
-    public class Persistence
+    private static Persistence? _instance;
+    private static readonly object Padlock = new object();
+
+    private bool _persistenceInUse;
+
+    public static Persistence Instance
     {
-        private static Persistence? _instance;
-        private static readonly object padlock = new object();
-
-        private bool persistenceInUse = false;
-
-        public static Persistence Instance
+        get
         {
-            get
+            lock (Padlock)
             {
-                lock (padlock)
+                return _instance ??= new Persistence(Log.Logger);
+            }
+        }
+    }
+
+    protected ILogger Logger { get; init; }
+
+    private string PersistenceFile { get; set; }
+
+    private Persistence(ILogger? logger)
+    {
+        Logger = logger?.ForContext<Persistence>() ?? throw new ArgumentNullException(nameof(Logger));
+        PersistenceFile = PoolControlConfig.Instance.Settings!.PersistenceFile;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            PersistenceFile = "win" + PersistenceFile;
+        }
+    }
+
+    public string Serialize(object? o)
+    {
+        var json = "";
+        try
+        {
+            json = JsonConvert.SerializeObject(o, Formatting.Indented);
+            Logger.Information("Persistence Serialized {Json}", json);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "Serialize Exception:");
+        }
+
+        return json;
+    }
+
+    public void Save(object? o)
+    {
+        try
+        {
+            while (_persistenceInUse)
+            {
+            }
+
+            _persistenceInUse = true;
+            using (StreamWriter file = File.CreateText(PersistenceFile))
+            {
+                var serializer = new JsonSerializer
                 {
-                    if (_instance == null)
-                    {
-                        _instance = new Persistence(Log.Logger);
-                    }
-                    return _instance;
-                }
+                    Formatting = Formatting.Indented
+                };
+                serializer.Serialize(file, o);
             }
+            Logger.Information("Persistence Saved {O}", o);
         }
-
-        protected ILogger Logger { get; set; }
-
-        protected string PersistenceFile { get; private set; }
-
-        private Persistence(ILogger logger)
+        catch (Exception ex)
         {
-            Logger = logger?.ForContext<Persistence>() ?? throw new ArgumentNullException(nameof(Logger));
-            PersistenceFile = PoolControlConfig.Instance.Settings.PersistenceFile;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                PersistenceFile = "win" + PersistenceFile;
-            }
+            Logger.Error(ex, "Save Exception:");
         }
-
-        public string Serialize(object o)
+        finally
         {
-            string json = "";
-            try
-            {
-                json = JsonConvert.SerializeObject(o, Formatting.Indented);
-                Logger.Information("Persistence Serialized {json}", json);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, "Serialize Exception:");
-            }
-
-            return json;
+            _persistenceInUse = false;
         }
+    }
 
-        public void Save(object o)
+    public T? Load<T>()
+    {
+        try
         {
-            try
+            while (_persistenceInUse)
             {
-                while (persistenceInUse) ;
-                persistenceInUse = true;
-                using (StreamWriter file = File.CreateText(PersistenceFile))
-                {
-                    JsonSerializer serializer = new JsonSerializer();
-                    serializer.Formatting = Formatting.Indented;
-                    serializer.Serialize(file, o);
-                }
-                Logger.Information("Persistence Saved {o}", o);
             }
-            catch (Exception ex)
+
+            _persistenceInUse = true;
+            using var file = File.OpenText(PersistenceFile);
+            var serializer = new JsonSerializer
             {
-                Logger.Error(ex, "Save Exception:");
-            }
-            finally
-            {
-                persistenceInUse = false;
-            }
+                Formatting = Formatting.Indented
+            };
+            var o = serializer.Deserialize<T>(new JsonTextReader(file));
+            Logger.Information("Persistence Loaded {O}", o);
+            return o;
         }
-
-        public T Load<T>()
+        catch (Exception ex)
         {
-            try
-            {
-                while (persistenceInUse) ;
-                persistenceInUse = true;
-                using StreamReader file = File.OpenText(PersistenceFile);
-                JsonSerializer serializer = new JsonSerializer();
-                serializer.Formatting = Formatting.Indented;
-                T o = serializer.Deserialize<T>(new JsonTextReader(file));
-                Logger.Information("Persistence Loaded {o}", o);
-                return o;
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, "Load Exception:");
-                return Activator.CreateInstance<T>();
-            }
-            finally
-            {
-                persistenceInUse=false;
-            }
+            Logger.Error(ex, "Load Exception:");
+            return Activator.CreateInstance<T>();
+        }
+        finally
+        {
+            _persistenceInUse=false;
         }
     }
 }

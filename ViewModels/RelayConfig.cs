@@ -1,57 +1,48 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace PoolControl.ViewModels
+namespace PoolControl.ViewModels;
+
+/// <summary>
+/// Configuration for relay to pump attachment
+/// </summary>
+[JsonObject(MemberSerialization.OptIn)]
+public class RelayConfig
 {
-    /// <summary>
-    /// Configuration for relay to pump attachment
-    /// </summary>
-    [JsonObject(MemberSerialization.OptIn)]
-    public class RelayConfig
+    private static RelayConfig? _instance;
+    private static readonly object Padlock = new object();
+
+    public static RelayConfig? Instance
     {
-        private static RelayConfig? _instance;
-        private static readonly object padlock = new object();
-
-        public static RelayConfig Instance
+        get
         {
-            get
+            lock (Padlock)
             {
-                lock (padlock)
-                {
-                    if (_instance == null)
-                    {
-                        _instance = new RelayConfig();
-                    }
-                    return _instance;
-                }
-            }
-
-            set
-            {
-                _instance = value;
+                return _instance ??= new RelayConfig();
             }
         }
 
-        private RelayConfig() { }
+        set => _instance = value;
+    }
 
-        [JsonProperty("RelayToLogicLevelConverter")]
-        public Dictionary<int, int>? RelayToLogicLevelConverterDict;
+    private RelayConfig() { }
 
-        [JsonProperty("LogicLevelConverterToGpio")]
-        public Dictionary<int, int>? LogicLevelConverterToGpioDict;
+    [JsonProperty("RelayToLogicLevelConverter")]
+    public Dictionary<int, int>? RelayToLogicLevelConverterDict;
 
-        public int GetGpioForRelayNumber(int relayNumber)
+    [JsonProperty("LogicLevelConverterToGpio")]
+    public Dictionary<int, int>? LogicLevelConverterToGpioDict;
+
+    public int GetGpioForRelayNumber(int relayNumber)
+    {
+        if (RelayToLogicLevelConverterDict != null && RelayToLogicLevelConverterDict.TryGetValue(relayNumber, out var key))
         {
-            if (RelayToLogicLevelConverterDict != null && RelayToLogicLevelConverterDict.ContainsKey(relayNumber))
+            if (LogicLevelConverterToGpioDict != null && LogicLevelConverterToGpioDict.TryGetValue(key, out var number))
             {
-                int key = RelayToLogicLevelConverterDict[relayNumber];
-                if (LogicLevelConverterToGpioDict != null && LogicLevelConverterToGpioDict.ContainsKey(key))
-                {
-                    return LogicLevelConverterToGpioDict[key];
-                }
+                return number;
             }
-
-            return -1;
         }
+
+        return -1;
     }
 }

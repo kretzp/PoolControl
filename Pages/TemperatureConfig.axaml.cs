@@ -3,26 +3,25 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 
-namespace PoolControl.Pages
+namespace PoolControl.Pages;
+
+public partial class TemperatureConfig : Window
 {
-    public partial class TemperatureConfig : Window
+    public TemperatureConfig()
     {
-        public TemperatureConfig()
-        {
-            InitializeComponent();
+        InitializeComponent();
 #if DEBUG
-            this.AttachDevTools();
+        this.AttachDevTools();
 #endif
-        }
+    }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
 
-        private void OnButtonClick(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
+    private void OnButtonClick(object sender, RoutedEventArgs e)
+    {
+        Close();
     }
 }

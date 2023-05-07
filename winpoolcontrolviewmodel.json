@@ -7,7 +7,7 @@
       "UnitSign": "°C",
       "ViewFormat": "#0.00",
       "InterfaceFormat": "#0.00",
-      "TimeStamp": "2023-05-06T14:26:18.844447+02:00",
+      "TimeStamp": "2023-05-06T17:10:00.8460774+02:00",
       "IntervalInSec": 10,
       "Name": "Pool",
       "WinterMode": false
@@ -19,7 +19,7 @@
       "UnitSign": "°C",
       "ViewFormat": "#0.00",
       "InterfaceFormat": "#0.00",
-      "TimeStamp": "2023-05-06T14:26:18.8758071+02:00",
+      "TimeStamp": "2023-05-06T17:10:00.8776088+02:00",
       "IntervalInSec": 10,
       "Name": "SolarPreRun",
       "WinterMode": false
@@ -31,7 +31,7 @@
       "UnitSign": "°C",
       "ViewFormat": "#0.00",
       "InterfaceFormat": "#0.00",
-      "TimeStamp": "2023-05-06T14:26:18.9057112+02:00",
+      "TimeStamp": "2023-05-06T17:10:00.8935405+02:00",
       "IntervalInSec": 10,
       "Name": "SolarHeater",
       "WinterMode": false
@@ -43,7 +43,7 @@
       "UnitSign": "°C",
       "ViewFormat": "#0.00",
       "InterfaceFormat": "#0.00",
-      "TimeStamp": "2023-05-06T14:25:28.9260747+02:00",
+      "TimeStamp": "2023-05-06T17:09:10.9065614+02:00",
       "IntervalInSec": 60,
       "Name": "TechnicRoom",
       "WinterMode": false
@@ -55,7 +55,7 @@
       "UnitSign": "°C",
       "ViewFormat": "#0.00",
       "InterfaceFormat": "#0.00",
-      "TimeStamp": "2023-05-06T14:25:28.9561842+02:00",
+      "TimeStamp": "2023-05-06T17:09:10.9216874+02:00",
       "IntervalInSec": 60,
       "Name": "FrostChecker",
       "WinterMode": false
@@ -93,7 +93,7 @@
       "Key": "Redox",
       "RelayNumber": 5,
       "HighIsOn": false,
-      "On": false,
+      "On": true,
       "IntervalInSec": 0,
       "Name": "RedoxSwitch",
       "WinterMode": false
@@ -196,7 +196,7 @@
     "UnitSign": "pH",
     "ViewFormat": "#0.00",
     "InterfaceFormat": "#0.000",
-    "TimeStamp": "2023-05-06T14:25:29.5021162+02:00",
+    "TimeStamp": "2023-05-06T17:09:11.3422343+02:00",
     "IntervalInSec": 60,
     "Name": "pHValue",
     "WinterMode": false
@@ -213,7 +213,7 @@
     "UnitSign": "mV",
     "ViewFormat": "#0",
     "InterfaceFormat": "#0.0",
-    "TimeStamp": "2023-05-06T14:25:29.6423899+02:00",
+    "TimeStamp": "2023-05-06T17:09:11.4353267+02:00",
     "IntervalInSec": 60,
     "Name": "RedoxValue",
     "WinterMode": false
@@ -224,12 +224,12 @@
     "ViewFormatL": "#0",
     "InterfaceFormatL": "#0",
     "NumberOfMeasurements": 5,
-    "Value": 0.013727999999999999,
+    "Value": 0.021278400000000003,
     "Address": "16/26",
     "UnitSign": "cm",
     "ViewFormat": "#0.00",
     "InterfaceFormat": "#0.00",
-    "TimeStamp": "2023-05-06T14:25:29.7977172+02:00",
+    "TimeStamp": "2023-05-06T17:09:11.576952+02:00",
     "IntervalInSec": 60,
     "Name": "Distance",
     "WinterMode": false

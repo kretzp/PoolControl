@@ -1,17 +1,16 @@
     using Newtonsoft.Json;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Serilog;
 using System;
 using System.Globalization;
-using System.Threading;
 using PoolControl.Hardware;
+    using PoolControl.Helper;
 
-namespace PoolControl.ViewModels
-{
-    // Base mode for all measurments
+    namespace PoolControl.ViewModels; 
+
+    // Base mode for all measurements
     [JsonObject(MemberSerialization.OptIn)]
-    public class MeasurementModelBase : ViewModelBase, IDisposable
+    public class MeasurementModelBase : ViewModelBase
     {
         private const string A = "PoolControl.Hardware.";
         private const string V = "Measurement";
@@ -19,22 +18,22 @@ namespace PoolControl.ViewModels
         public MeasurementModelBase()
         {
             // Send InotifyChanged to View for Label, FullText and Temperature with Unit
-            this.WhenAnyValue(ds => ds.Name, ds => ds.Value, ds => ds.ViewFormat, ds => ds.UnitSign, (name, temperature, viewFormat, unitSign) => $"{LocationName}: {temperature.ToString(viewFormat)} {unitSign}").ToPropertyEx(this, ds => ds.FullText, deferSubscription: true);
-            this.WhenAnyValue(ds => ds.Name, ds => ds.Value, (name, value) => $"{LocationName}:").ToPropertyEx(this, ds => ds.Label, deferSubscription: true);
+            this.WhenAnyValue(ds => ds.Name, ds => ds.Value, ds => ds.ViewFormat, ds => ds.UnitSign, (_, temperature, viewFormat, unitSign) => $"{LocationName}: {temperature.ToString(viewFormat)} {unitSign}").ToPropertyEx(this, ds => ds.FullText, deferSubscription: true);
+            this.WhenAnyValue(ds => ds.Name, ds => ds.Value, (_, _) => $"{LocationName}:").ToPropertyEx(this, ds => ds.Label, deferSubscription: true);
             this.WhenAnyValue(ds => ds.Value, ds => ds.ViewFormat, ds => ds.UnitSign, (value, viewFormat, unitSign) => $"{value.ToString(viewFormat)} {unitSign}").ToPropertyEx(this, ds => ds.ValueWithUnit, deferSubscription: true);
 
             // RestartReading and Publish
-            this.WhenAnyValue(ds => ds.IntervalInSec).Subscribe(value => this.RestartTimerAndPublishNewInterval());
+            this.WhenAnyValue(ds => ds.IntervalInSec).Subscribe(_ => this.RestartTimerAndPublishNewInterval());
 
-            string name = GetType().Name;
-            Type t = Type.GetType(A + name + V);
+            var name = GetType().Name;
+            var t = Type.GetType(A + name + V);
 
-            BaseMeasurement = (BaseMeasurement?)Activator.CreateInstance(t);
-            BaseMeasurement.ModelBase = this;
+            if (t != null) BaseMeasurement = (BaseMeasurement?)Activator.CreateInstance(t);
+            if (BaseMeasurement != null) BaseMeasurement.ModelBase = this;
         }
 
         [JsonIgnore]
-        public BaseMeasurement BaseMeasurement { get; set; }
+        public BaseMeasurement? BaseMeasurement { get; set; }
 
         [Reactive]
         [JsonProperty]
@@ -42,19 +41,19 @@ namespace PoolControl.ViewModels
 
         [Reactive]
         [JsonProperty]
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         [Reactive]
         [JsonProperty]
-        public string UnitSign { get; set; }
+        public string? UnitSign { get; set; }
 
         [Reactive]
         [JsonProperty]
-        public string ViewFormat { get; set; }
+        public string? ViewFormat { get; set; }
 
         [Reactive]
         [JsonProperty]
-        public string InterfaceFormat { get; set; }
+        public string? InterfaceFormat { get; set; }
 
         [Reactive]
         [JsonProperty]
@@ -62,27 +61,21 @@ namespace PoolControl.ViewModels
 
         [JsonIgnore]
         [ObservableAsProperty]
-        public string FullText { get; }
+        public string? FullText { get; }
 
         [JsonIgnore]
         [ObservableAsProperty]
-        public string Label { get; }
+        public string? Label { get; }
 
         [JsonIgnore]
         [ObservableAsProperty]
-        public string ValueWithUnit { get; }
+        public string? ValueWithUnit { get; }
 
         [JsonIgnore]
-        public string InterfaceFormatLocal
-        {
-            get { return GetInterfaceFormatLocal(Value); }
-        }
+        public string InterfaceFormatLocal => GetInterfaceFormatLocal(Value);
 
         [JsonIgnore]
-        public string InterfaceFormatDecimalPoint
-        {
-            get { return GetInterfaceFormatDecimalPoint(Value);  }
-        }
+        public string InterfaceFormatDecimalPoint => GetInterfaceFormatDecimalPoint(Value);
 
         public string GetInterfaceFormatDecimalPoint(double o)
         {
@@ -102,20 +95,20 @@ namespace PoolControl.ViewModels
 
         protected override void OnTimerTicked(object? state)
         {
-            MeasurementResult mr = BaseMeasurement.Measure();
+            var mr = BaseMeasurement?.Measure();
 
-            if (mr.ReturnCode == (int)MeasurmentResultCode.SUCCESS)
+            if (mr is { ReturnCode: (int)MeasurementResultCode.Success })
             {
-                Logger.Information($"Measurment succesful: Class: {GetType().Name} Value {Value} at {TimeStamp:yyyy-MM-dd HH:mm:ss-fff}, Status: {mr.StatusInfo}");
-                MeasurmentTaken?.Invoke(new MeasurementArgs { MeasurementResult = mr, BaseMeasurement = BaseMeasurement });
+                Logger.Information("{Message}", $"Measurement successful: Class: {GetType().Name} Value {Value} at {TimeStamp:yyyy-MM-dd HH:mm:ss-fff}, Status: {mr.StatusInfo}");
+                MeasurementTaken?.Invoke(new MeasurementArgs { BaseMeasurement = BaseMeasurement });
             }
             else
             {
-                Logger.Error($"Error: Code: {mr.ReturnCode}, Status: {mr.StatusInfo}");
+                if (mr != null) Logger.Error("Error: Code: {RetCode}, Status: {StatInf}", mr.ReturnCode, mr.StatusInfo);
             }
         }
 
-        public event MeasurementHandler MeasurmentTaken;
+        public event MeasurementHandler? MeasurementTaken;
     }
 
 
@@ -123,7 +116,5 @@ namespace PoolControl.ViewModels
 
     public class MeasurementArgs : EventArgs
     {
-        public MeasurementResult? MeasurementResult { get; set; }
-        public BaseMeasurement? BaseMeasurement { get; set; }
+        public BaseMeasurement? BaseMeasurement { get; init; }
     }
-}

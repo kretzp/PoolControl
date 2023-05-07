@@ -5,30 +5,29 @@ using Avalonia.Markup.Xaml;
 using PoolControl.ViewModels;
 using PoolControl.Views;
 
-namespace PoolControl
+namespace PoolControl;
+
+public partial class App : Application
 {
-    public partial class App : Application
+    public static Window? MainWindow { get; private set; }
+
+    public override void Initialize()
     {
-        public static Window? MainWindow { get; private set; }
+        AvaloniaXamlLoader.Load(this);
+    }
 
-        public override void Initialize()
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            AvaloniaXamlLoader.Load(this);
-        }
-
-        public override void OnFrameworkInitializationCompleted()
-        {
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            MainWindow = new MainWindow
             {
-                MainWindow = new MainWindow
-                {
-                    DataContext = new MainWindowViewModel(),
-                };
+                DataContext = new MainWindowViewModel(),
+            };
 
-                desktop.MainWindow = MainWindow;
-            }
-
-            base.OnFrameworkInitializationCompleted();
+            desktop.MainWindow = MainWindow;
         }
+
+        base.OnFrameworkInitializationCompleted();
     }
 }

@@ -3,7 +3,7 @@
 	<Design.PreviewWith>
 		<Border Padding="1">
 			<TabControl Classes="sidebar">
-				<TabItem Header="Item1gfdgfdg"/>
+				<TabItem Header="Item1"/>
 				<TabItem Header="Item2"/>
 				<TabItem Header="Item3"/>
 			</TabControl>

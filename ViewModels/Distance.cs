@@ -2,134 +2,133 @@
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PoolControl.Helper;
 
-namespace PoolControl.ViewModels
+namespace PoolControl.ViewModels;
+
+[JsonObject(MemberSerialization.OptIn)]
+public class Distance : MeasurementModelBase
 {
-    [JsonObject(MemberSerialization.OptIn)]
-    public class Distance : MeasurementModelBase
+    /// <summary>
+    /// This Model will be used to hold the data for a Distance of a Water Box, and then it will be calculated to liters
+    /// </summary>
+    public Distance()
     {
-        /// <summary>
-        /// This Model will be used to hold the data for a Distance of a Water Box, and then it will be calculatet to liters
-        /// </summary>
-        public Distance()
+        // Calculate Liter
+        this.WhenAnyValue(ds => ds.Value, getLiter).ToPropertyEx(this, ds => ds.ValueL, deferSubscription: true);
+
+        // Publish Liter
+        this.WhenAnyValue(ds => ds.ValueL).Subscribe(_ => publishMessageValueL());
+
+        // Create view
+        this.WhenAnyValue(ds => ds.NameL, ds => ds.ValueL, ds => ds.ViewFormatL, ds => ds.UnitSignL, (_, temperature, viewFormat, unitSign) => $"{LocationNameL}: {temperature.ToString(viewFormat)} {unitSign}").ToPropertyEx(this, ds => ds.FullTextL, deferSubscription: true);
+        this.WhenAnyValue(ds => ds.NameL, ds => ds.ValueL, (_, _) => $"{LocationNameL}:").ToPropertyEx(this, ds => ds.LabelL, deferSubscription: true);
+        this.WhenAnyValue(ds => ds.ValueL, ds => ds.ViewFormatL, ds => ds.UnitSignL, (value, viewFormat, unitSign) => $"{value.ToString(viewFormat)} {unitSign}").ToPropertyEx(this, ds => ds.ValueWithUnitL, deferSubscription: true);
+    }
+
+    private double getLiter(double cm)
+    {
+        return 7.854 * (90 + 9.26 - cm * 0.95);
+    }
+
+    protected void publishMessageValueL()
+    {
+        publishMessageWithType(PoolControlHelper.GetPropertyName(() => ValueL), InterfaceFormatDecimalPointL);
+    }
+
+    [Reactive]
+    [JsonProperty]
+    public string? NameL { get; set; }
+
+    public string LocationNameL
+    {
+        get
         {
-            // Calculate Liter
-            this.WhenAnyValue(ds => ds.Value, value => getLiter(value)).ToPropertyEx(this, ds => ds.ValueL, deferSubscription: true);
-
-            // Publish Liter
-            this.WhenAnyValue(ds => ds.ValueL).Subscribe(valuel => publishMessageValueL());
-
-            // Create view
-            this.WhenAnyValue(ds => ds.NameL, ds => ds.ValueL, ds => ds.ViewFormatL, ds => ds.UnitSignL, (name, temperature, viewFormat, unitSign) => $"{LocationNameL}: {temperature.ToString(viewFormat)} {unitSign}").ToPropertyEx(this, ds => ds.FullTextL, deferSubscription: true);
-            this.WhenAnyValue(ds => ds.NameL, ds => ds.ValueL, (name, value) => $"{LocationNameL}:").ToPropertyEx(this, ds => ds.LabelL, deferSubscription: true);
-            this.WhenAnyValue(ds => ds.ValueL, ds => ds.ViewFormatL, ds => ds.UnitSignL, (value, viewFormat, unitSign) => $"{value.ToString(viewFormat)} {unitSign}").ToPropertyEx(this, ds => ds.ValueWithUnitL, deferSubscription: true);
-        }
-
-        private double getLiter(double cm)
-        {
-            return 7.854 * (90 + 9.26 - cm * 0.95);
-        }
-
-        protected void publishMessageValueL()
-        {
-            publishMessageWithType(PoolControlHelper.GetPropertyName(() => ValueL), InterfaceFormatDecimalPointL);
-        }
-
-        [Reactive]
-        [JsonProperty]
-        public string NameL { get; set; }
-
-        public string LocationNameL
-        {
-            get
+            var ret = "Nix";
+            try
             {
-                string ret = "Nix";
-                try
-                {
-                    ret = (string)typeof(Resource).GetProperty(NameL).GetValue(null);
-                }
-                catch (Exception) { }
-
-                return ret;
+                if (NameL != null) ret = (string)typeof(Resource).GetProperty(NameL)?.GetValue(null)!;
             }
-        }
-
-        [Reactive]
-        [JsonProperty]
-        public string UnitSignL { get; set; }
-
-        [Reactive]
-        [JsonProperty]
-        public string ViewFormatL { get; set; }
-
-        [Reactive]
-        [JsonProperty]
-        public string InterfaceFormatL { get; set; }
-
-        [JsonIgnore]
-        public string InterfaceFormatDecimalPointL
-        {
-            get { return ValueL.ToString(InterfaceFormatL, new CultureInfo("en-US")); }
-        }
-
-        [JsonIgnore]
-        [ObservableAsProperty]
-        public double ValueL { get; }
-
-        [JsonIgnore]
-        [ObservableAsProperty]
-        public string FullTextL { get; }
-
-        [JsonIgnore]
-        [ObservableAsProperty]
-        public string LabelL { get; }
-
-        [JsonIgnore]
-        [ObservableAsProperty]
-        public string ValueWithUnitL { get; }
-
-        [Reactive]
-        [JsonProperty]
-        public int NumberOfMeasurements { get; set; }
-
-        [JsonIgnore]
-        public int Trigger
-        {
-            get
+            catch (Exception)
             {
-                int address = -1;
-                try
-                {
-                    address = int.Parse(Address.Split('/')[0]);
-                }
-                catch (Exception)
-                {
-                }
-                return address;
+                // ignored
             }
-        }
 
-        [JsonIgnore]
-        public int Echo
+            return ret;
+        }
+    }
+
+    [Reactive]
+    [JsonProperty]
+    public string? UnitSignL { get; set; }
+
+    [Reactive]
+    [JsonProperty]
+    public string? ViewFormatL { get; set; }
+
+    [Reactive]
+    [JsonProperty]
+    public string? InterfaceFormatL { get; set; }
+
+    [JsonIgnore]
+    public string InterfaceFormatDecimalPointL => ValueL.ToString(InterfaceFormatL, new CultureInfo("en-US"));
+
+    [JsonIgnore]
+    [ObservableAsProperty]
+    public double ValueL { get; }
+
+    [JsonIgnore]
+    [ObservableAsProperty]
+    public string? FullTextL { get; }
+
+    [JsonIgnore]
+    [ObservableAsProperty]
+    public string? LabelL { get; }
+
+    [JsonIgnore]
+    [ObservableAsProperty]
+    public string? ValueWithUnitL { get; }
+
+    [Reactive]
+    [JsonProperty]
+    public int NumberOfMeasurements { get; set; }
+
+    [JsonIgnore]
+    public int Trigger
+    {
+        get
         {
-            get
+            var address = -1;
+            try
             {
-                int address = -1;
-                try
-                {
-                    address = int.Parse(Address.Split('/')[1]);
-                }
-                catch (Exception)
-                {
-                }
-                return address;
+                address = int.Parse(Address?.Split('/')[0] ?? string.Empty);
             }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            return address;
+        }
+    }
+
+    [JsonIgnore]
+    public int Echo
+    {
+        get
+        {
+            var address = -1;
+            try
+            {
+                address = int.Parse(Address?.Split('/')[1] ?? string.Empty);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            return address;
         }
     }
 }

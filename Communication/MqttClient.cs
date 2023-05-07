@@ -1,200 +1,198 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
-using MQTTnet.Server;
 using Serilog;
 using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using PoolControl.Helper;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using PoolControl.Helper;
+using Log = PoolControl.Helper.Log;
 
-namespace PoolControl.Communication
+namespace PoolControl.Communication;
+
+public class PoolMqttClient
 {
-    public class PoolMqttClient
+    private const string Reason = "SHUTDOWN";
+    private const string Win = "win";
+
+    private bool Shutdown { get; set; }
+
+    private static PoolMqttClient? _instance;
+    private static readonly object Padlock = new object();
+
+    public static PoolMqttClient Instance
     {
-        private const string REASON = "SHUTDOWN";
-        private const string WIN = "win";
-
-        public bool Shutdown { get; set; }
-
-        private static PoolMqttClient? _instance;
-        private static readonly object padlock = new object();
-
-        public static PoolMqttClient Instance
+        get
         {
-            get
+            lock (Padlock)
             {
-                lock (padlock)
-                {
-                    if (_instance == null)
-                    {
-                        _instance = new PoolMqttClient(Log.Logger);
-                    }
-                    return _instance;
-                }
+                return _instance ??= new PoolMqttClient(Log.Logger);
             }
         }
+    }
 
-        private MqttFactory _mqttFactory;
-        private MQTTnet.Client.IMqttClient _mqttClient;
-        private MqttClientOptions options;
-        protected ILogger Logger { get; set; }
+    private MqttFactory? _mqttFactory;
+    private IMqttClient? _mqttClient;
+    private MqttClientOptions? _options;
+    protected ILogger Logger { get; init; }
 
-        public PoolMqttClient(ILogger logger)
+    private PoolMqttClient(ILogger? logger)
+    {
+        Logger = logger?.ForContext<PoolMqttClient>() ?? throw new ArgumentNullException(nameof(Logger));
+        _ = InitializeAsync();
+    }
+
+    private async Task InitializeAsync()
+    {
+        Logger.Information("# Start MQTT #");
+        _mqttFactory = new MqttFactory();
+        _mqttClient = _mqttFactory.CreateMqttClient();
+        _options = new MqttClientOptionsBuilder()
+            .WithTcpServer(PoolControlConfig.Instance.Settings!.MQTT.Server, PoolControlConfig.Instance.Settings.MQTT.Port)
+            .WithCredentials(PoolControlConfig.Instance.Settings.MQTT.User, PoolControlConfig.Instance.Settings.MQTT.Password)
+            .Build();
+
+        _mqttClient.DisconnectedAsync += async (e) =>
         {
-            Logger = logger?.ForContext<PoolMqttClient>() ?? throw new ArgumentNullException(nameof(Logger));
-            _ = InitlializeAsync();
-        }
-
-        public async Task InitlializeAsync()
-        {
-            Logger.Information("# Start MQTT #");
-            _mqttFactory = new MqttFactory();
-            _mqttClient = _mqttFactory.CreateMqttClient();
-            options = new MqttClientOptionsBuilder()
-                            .WithTcpServer(PoolControlConfig.Instance.Settings.MQTT.Server, PoolControlConfig.Instance.Settings.MQTT.Port)
-                            .WithCredentials(PoolControlConfig.Instance.Settings.MQTT.User, PoolControlConfig.Instance.Settings.MQTT.Password)
-                            .Build();
-
-            _mqttClient.DisconnectedAsync += async (e) =>
+            Logger.Information("# DISCONNECTED FROM SERVER #");
+            _ = Task.Delay(TimeSpan.FromSeconds(5));
+            if (!Reason.Equals(e.ReasonString))
             {
-                Logger.Information("# DISCONNECTED FROM SERVER #");
-                _ = Task.Delay(TimeSpan.FromSeconds(5));
-                if (!REASON.Equals(e.ReasonString))
+                if (Shutdown)
                 {
-                    if (Shutdown)
-                    {
-                        Logger.Information("## SHUTDOWN in Progess while connecting Async. NO CONNECTION will be restarted ##");
-                    }
-                    else
-                    {
-                        await connectAsync();
-                    }
+                    Logger.Information("## SHUTDOWN in Progress while connecting Async. NO CONNECTION will be restarted ##");
                 }
                 else
                 {
-                    Logger.Information("# NO RECONNECTION BECAUSE OF INTENTIONALLY DISONNETION #");
+                    await connectAsync();
                 }
-            };
-
-            _mqttClient.ConnectedAsync += async (e) =>
-            {
-                Logger.Information("# CONNECTED WITH SERVER #");
-                await SendLWTConnected();
-
-                // Subscribe to a topic
-                string topic = $"{PoolControlConfig.Instance.Settings.BaseTopic.Command}#";
-
-                subscribe(topic);
-            };
-
-            _mqttClient.ApplicationMessageReceivedAsync += async (e) =>
-            {
-                Logger.Information($"# Recived Topic={e.ApplicationMessage.Topic} Payload={Encoding.UTF8.GetString(e.ApplicationMessage.Payload)} QoS={e.ApplicationMessage.QualityOfServiceLevel} Retain={e.ApplicationMessage.Retain}");
-            };
-
-            await connectAsync();
-        }
-
-        private async Task SendLWTConnected()
-        {
-            string lwtTopic = PoolControlConfig.Instance.Settings.LWT.Topic;
-            string lwtConnectMessage = PoolControlConfig.Instance.Settings.LWT.ConnectMessage;
-            await publishMessage(lwtTopic, lwtConnectMessage, 2, true);
-        }
-
-        public async Task SendLWTDisconnected()
-        {
-            string lwtTopic = PoolControlConfig.Instance.Settings.LWT.Topic;
-            string lwtDisConnectMessage = PoolControlConfig.Instance.Settings.LWT.DisconnectMessage;
-            await publishMessage(lwtTopic, lwtDisConnectMessage, 2, true);
-            Logger.Information($"Topic: {lwtTopic} Payload: {lwtDisConnectMessage}");
-        }
-
-        public void register(Func<MqttApplicationMessageReceivedEventArgs, Task> handler)
-        {
-            _mqttClient.ApplicationMessageReceivedAsync += handler;
-        }
-
-        public void unRegister(Func<MqttApplicationMessageReceivedEventArgs, Task> handler)
-        {
-            _mqttClient.ApplicationMessageReceivedAsync -= handler;
-        }
-
-        public async void subscribe(string topic)
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                topic = WIN + topic;
             }
+            else
+            {
+                Logger.Information("# NO RECONNECTION BECAUSE OF INTENTIONALLY DISCONNECTION #");
+            }
+        };
 
-            await _mqttClient.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic(topic).Build());
-            Logger.Information($"# Subscribed topic={topic}");
-        }
-
-        public async void unSubscribe(string topic)
+        _mqttClient.ConnectedAsync += async (_) =>
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                topic = WIN + topic;
-            }
+            Logger.Information("# CONNECTED WITH SERVER #");
+            await sendLwtConnected();
 
-            await _mqttClient.UnsubscribeAsync(topic);
-            Logger.Information($"# Unsubscribed topic={topic}");
-        }
+            // Subscribe to a topic
+            string topic = $"{PoolControlConfig.Instance.Settings.BaseTopic.Command}#";
 
-        private async Task connectAsync()
+            subscribe(topic);
+        };
+
+        _mqttClient.ApplicationMessageReceivedAsync += (e) => {
+            Logger.Information("# Received Topic={Topic} Payload={Payload} QoS={Qos} Retain={Retain}",
+                e.ApplicationMessage.Topic, Encoding.UTF8.GetString(e.ApplicationMessage.PayloadSegment.ToArray()), e.ApplicationMessage.QualityOfServiceLevel, e.ApplicationMessage.Retain);
+            return Task.CompletedTask;
+        };
+
+        await connectAsync();
+    }
+
+    private async Task sendLwtConnected()
+    {
+        string lwtTopic = PoolControlConfig.Instance.Settings!.LWT.Topic;
+        string? lwtConnectMessage = PoolControlConfig.Instance.Settings.LWT.ConnectMessage;
+        await publishMessage(lwtTopic, lwtConnectMessage, 2, true);
+    }
+
+    private async Task sendLwtDisconnected()
+    {
+        string lwtTopic = PoolControlConfig.Instance.Settings!.LWT.Topic;
+        string? lwtDisConnectMessage = PoolControlConfig.Instance.Settings.LWT.DisconnectMessage;
+        await publishMessage(lwtTopic, lwtDisConnectMessage, 2, true);
+        Logger.Information("Topic: {Topic} Payload: {Payload}", lwtTopic, lwtDisConnectMessage);
+    }
+
+    public void register(Func<MqttApplicationMessageReceivedEventArgs, Task> handler)
+    {
+        if (_mqttClient != null) _mqttClient.ApplicationMessageReceivedAsync += handler;
+    }
+
+    public void unRegister(Func<MqttApplicationMessageReceivedEventArgs, Task> handler)
+    {
+        if (_mqttClient != null) _mqttClient.ApplicationMessageReceivedAsync -= handler;
+    }
+
+    private async void subscribe(string topic)
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            try
-            {
-                Logger.Information("# CONNECTING ... #");
-                await _mqttClient.ConnectAsync(options);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, "# RECONNECTING FAILED ##");
-            }
+            topic = Win + topic;
         }
 
-        public void Disconnect()
+        await _mqttClient.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic(topic).Build());
+        Logger.Information("# Subscribed topic={Topic}", topic);
+    }
+
+    public async void unSubscribe(string topic)
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            try
-            {
-                _ = SendLWTDisconnected();
-                Thread.Sleep(3000);
-                Shutdown = true;
-                _ = _mqttClient.DisconnectAsync(new MqttClientDisconnectOptionsBuilder().WithReason(MqttClientDisconnectOptionsReason.DisconnectWithWillMessage).Build());
-                Logger.Information("# Disconnect started because of shutdown");
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, "# DISCONNECTING FAILED #");
-            }
+            topic = Win + topic;
         }
 
-        public async Task publishMessage(string topic, string payload, int qos, bool retain)
+        await _mqttClient.UnsubscribeAsync(topic);
+        Logger.Information("# Unsubscribed topic={Topic}", topic);
+    }
+
+    private async Task connectAsync()
+    {
+        try
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                topic = WIN + topic;
-            }
-
-                var message = new MqttApplicationMessageBuilder()
-                            .WithTopic(topic)
-                            .WithPayload(payload)
-                            .WithQualityOfServiceLevel((MQTTnet.Protocol.MqttQualityOfServiceLevel)qos)
-                            .WithRetainFlag(retain)
-                            .Build();
-
-            await _mqttClient.PublishAsync(message);
-            Logger.Information($"# Published  Topic={message.Topic} Payload={Encoding.UTF8.GetString(message.Payload)} QoS={message.QualityOfServiceLevel} Retain={message.Retain}");
-
-            Process currentProc = Process.GetCurrentProcess();
-            double bytesInUse = currentProc.PrivateMemorySize64 / 1024 / 1024;
-
-            Logger.Debug("MBytes in use {bytes} in {proc}", bytesInUse, currentProc.ProcessName);
+            Logger.Information("# CONNECTING ... #");
+            if (_mqttClient != null) await _mqttClient.ConnectAsync(_options);
         }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "# RECONNECTING FAILED ##");
+        }
+    }
+
+    public void Disconnect()
+    {
+        try
+        {
+            _ = sendLwtDisconnected();
+            Thread.Sleep(3000);
+            Shutdown = true;
+            if (_mqttClient != null)
+                _ = _mqttClient.DisconnectAsync(new MqttClientDisconnectOptionsBuilder()
+                    .WithReason(MqttClientDisconnectOptionsReason.DisconnectWithWillMessage).Build());
+            Logger.Information("# Disconnect started because of shutdown");
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "# DISCONNECTING FAILED #");
+        }
+    }
+
+    public async Task publishMessage(string topic, string? payload, int qos, bool retain)
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            topic = Win + topic;
+        }
+
+        var message = new MqttApplicationMessageBuilder()
+            .WithTopic(topic)
+            .WithPayload(payload)
+            .WithQualityOfServiceLevel((MQTTnet.Protocol.MqttQualityOfServiceLevel)qos)
+            .WithRetainFlag(retain)
+            .Build();
+
+        if (_mqttClient != null) await _mqttClient.PublishAsync(message);
+        Logger.Information("# Published  Topic={Topic} Payload={Payload} QoS={Qos} Retain={Retain}", message.Topic, Encoding.UTF8.GetString(message.PayloadSegment.ToArray()), message.QualityOfServiceLevel, message.Retain);
+
+        Process currentProc = Process.GetCurrentProcess();
+        double bytesInUse = currentProc.PrivateMemorySize64 / 1024.0 / 1024.0;
+
+        Logger.Debug("MBytes in use {Bytes} in {Proc}", bytesInUse, currentProc.ProcessName);
     }
 }
