@@ -49,15 +49,15 @@
 			</StackPanel>
 		</StackPanel>
 		<StackPanel Margin="5" Width="180">
-			<Button	Content="{x:Static p:Resource.Close}" Click="OnButtonClick" Background="Red"/>
-			<Button	Content="{x:Static p:Resource.Calibration}" Command="{Binding OnCal}"/>
+			<Button Classes="CloseButton" Content="{x:Static p:Resource.Close}" Click="OnButtonClick" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
+			<Button	Classes="ConfigButton" Content="{x:Static p:Resource.Calibration}" Command="{Binding OnCal}" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
 			<NumericUpDown Classes="Numeric" Value="{Binding Cal}" ClipValueToMinMax="True" Minimum="0" Maximum="1000" FormatString="0 mV" Increment="1" Background="DarkGoldenrod"/>
 			<StackPanel Orientation="Horizontal">
-				<Button	Content="{x:Static p:Resource.Calibrated}" Command="{Binding OnCalibrated}" />
-				<Label Content="{Binding SensorsCalibrated, Mode=OneWay}"/>
+				<Button Classes="ConfigButton"	Content="{x:Static p:Resource.Calibrated}" Command="{Binding OnCalibrated}" />
+				<Label Content="{Binding SensorsCalibrated, Mode=OneWay}" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch"/>
 			</StackPanel>
-			<Button	Content="{x:Static p:Resource.Find}" Command="{Binding OnFind}" />
-			<Button	Content="{x:Static p:Resource.ClearCalibration}" Command="{Binding OnClearCalibration}" />
+			<Button Classes="ConfigButton"	Content="{x:Static p:Resource.Find}" Command="{Binding OnFind}" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
+			<Button Classes="ConfigButton"	Content="{x:Static p:Resource.ClearCalibration}" Command="{Binding OnClearCalibration}" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
 		</StackPanel>
 	</StackPanel>
 </Window>

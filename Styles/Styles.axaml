@@ -1,46 +1,36 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:uc="clr-namespace:PoolControl.UserControls"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 	<Design.PreviewWith>
 		<Border Padding="20">
-			<StackPanel Spacing="5">
-				<TextBlock Classes="Temperature" Text="Code Font Family" FontFamily="{StaticResource CodeFontFamily}" />
+			<StackPanel Spacing="5" Classes="Wide">
 				<StackPanel Orientation="Horizontal">
 					<Label Classes="Details" Content="Hallo"/>
 					<TextBox Classes="Details" Text="Hallo" HorizontalAlignment="Right"/>
 				</StackPanel>
 				<ToggleButton Classes="Switch" Content="Pumpe"/>
 				<ToggleButton Classes="SwitchButton" Content="Winter"/>
-				<Button Classes="Measurement">
-				<StackPanel Classes="Measurement">
-					<TextBlock Classes="TLabel" Text="Abstand:"/>
-					<TextBlock Classes="TMeasurement" Text="15 cm"/>
-				</StackPanel>
+				<Button Classes="Measurement" HorizontalAlignment="Left" Background="{DynamicResource TempBrush}">
+					<uc:MeasurementControl Label="Pooltemperatur:" Measurement="29,3 °C"/>
 				</Button>
-				<ListBox Classes="Temperature">
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-							<Grid Background="DarkBlue">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition/>
-									<ColumnDefinition/>
-								</Grid.ColumnDefinitions>
-								<TextBlock Classes="Temperature" Text="Hallo"/>
-							</Grid>
-						</DataTemplate>
-					</ListBox.ItemTemplate>
-					<TextBlock>fsdfsdsdf</TextBlock>
-				</ListBox>
-				<StackPanel Background="DarkCyan" Orientation="Horizontal">
-					<NumericUpDown Text="lkfjsdjf" Classes="pH" Value="7.6" MinWidth="140" HorizontalAlignment="Right" x:Name="maxph" ClipValueToMinMax="True" Minimum="6.9" Maximum="7.8" FormatString="0.0 pH" Increment="0.1"></NumericUpDown>
-				</StackPanel>
-				<NumericUpDown Text="fdsfdfsdf" Classes="pH" Value="5.8" MinWidth="140" HorizontalAlignment="Right" x:Name="maxph2" ClipValueToMinMax="True" Minimum="6.9" Maximum="7.8" FormatString="0.0 pH" Increment="0.1"/>
-				<StackPanel Classes="Time">
+				<Button Classes="Measurement" HorizontalAlignment="Left" Background="{DynamicResource Temp2Brush}">
+					<uc:MeasurementControl Label="Pooltemperatur:" Measurement="29,3 °C"/>
+				</Button>
+				<uc:DoubleMeasurementControl Classes="Measurement" Label="Pool:" FirstMeasurement="16,4 °C" SecondMeasurement="18,2 °C" HorizontalAlignment="Left"/>
+				<uc:NumControl ControlBackground="#500000" ColumnWidth="160" Label="Pumpenlaufzeit" NumValue="180" Minimum="0" Maximum="180" FormatString="0 min" Increment="10"/>
+				<StackPanel Classes="Time" Background="DarkOliveGreen">
 					<TextBlock Classes="Time" Text="Startzeit"/>
 					<StackPanel Orientation="Horizontal">
 						<TimePicker Classes="Time" />
-						<TimePicker Classes="Time"/>
 					</StackPanel>
 				</StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<Label Classes="Time" Content="Nächster Start:" FontSize="11" VerticalContentAlignment="Center"/>
+					<Label Classes="Time" Content="08.05.2023 21:30:00" FontSize="11" VerticalContentAlignment="Center"/>
+				</StackPanel>
+				<CheckBox IsChecked="True" Background="DarkCyan" Margin="4" Padding="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" Content="LED"/>
+				<Button Classes="CloseButton" Content="Schließen" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
+				<Button	Classes="ConfigButton" Content="Kalibrieren" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
 			</StackPanel>
 		</Border>
 	</Design.PreviewWith>
@@ -75,7 +65,7 @@
 		<!--Setter Property="FontFamily" Value="{StaticResource CodeFontFamily}" /-->
 		<Setter Property="FontSize" Value="18" />
 		<Setter Property="FontWeight" Value="Normal" />
-		<Setter Property="Background" Value="DarkRed" />
+		<Setter Property="Background" Value="{DynamicResource RelayGradBrush}" />
 		<Setter Property="Height" Value="55" />
 		<Setter Property="Margin" Value="4" />
 		<Setter Property="Padding" Value="0 16 0 0" />
@@ -85,7 +75,7 @@
 	<Style Selector="ToggleButton.SwitchButton">
 		<Setter Property="FontSize" Value="18" />
 		<Setter Property="FontWeight" Value="Normal" />
-		<Setter Property="Background" Value="DarkRed" />
+		<Setter Property="Background" Value="{DynamicResource RelayGradBrush}" />
 		<Setter Property="Height" Value="55" />
 		<Setter Property="Width" Value="105" />
 		<Setter Property="Margin" Value="4" />
@@ -93,10 +83,10 @@
 		<Setter Property="HorizontalContentAlignment" Value="Center" />
 	</Style>
 	<Style Selector="ToggleButton:checked /template/ ContentPresenter">
-		<Setter Property="Background" Value="DarkGreen" />
+		<Setter Property="Background" Value="{DynamicResource RelayGreenGradBrush}" />
 	</Style>
 	<Style Selector="ToggleButton:pointerover /template/ ContentPresenter">
-		<Setter Property="Background" Value="{Binding this.On}" />
+		<Setter Property="Background" Value="Orange" />
 	</Style>
 	<Style Selector="NumericUpDown.pH">
 		<Setter Property="Background" Value="DarkCyan" />
@@ -128,8 +118,14 @@
 		<Setter Property="Width" Value="105"/>
 		<Setter Property="Height" Value="55"/>
 		<Setter Property="Margin" Value="4"/>
-		<Setter Property="Background" Value="Blue"/>
+		<Setter Property="Background" Value="{DynamicResource TempBrush}"/>
 		<Setter Property="Orientation" Value="Vertical"/>
+	</Style>
+	<Style Selector="uc|DoubleMeasurementControl.Measurement">
+		<Setter Property="Width" Value="105"/>
+		<Setter Property="Height" Value="55"/>
+		<Setter Property="Margin" Value="4"/>
+		<Setter Property="Background" Value="{DynamicResource TempBrush}"/>
 	</Style>
 	<Style Selector="TextBlock.TMeasurement">
 		<Setter Property="Padding" Value="4"/>
@@ -182,6 +178,12 @@
 		<Setter Property="Margin" Value="0"/>
 		<Setter Property="Padding" Value="-1"/>
 		<Setter Property="Background" Value="Black"/>
+	</Style>
+	<Style Selector="Button.CloseButton">
+		<Setter Property="Background" Value="{DynamicResource CloseGradBrush}" />
+	</Style>
+	<Style Selector="Button.ConfigButton">
+		<Setter Property="Background" Value="{DynamicResource ButtonGradBrush}"/>
 	</Style>
 	<Style Selector="Label.Details">
 		<Setter Property="Width" Value="150"/>

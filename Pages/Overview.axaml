@@ -10,15 +10,15 @@
 		<StackPanel Classes="Wide">
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 				<Button Classes="Measurement" Click="OnButtonClick" Tag="{Binding Data.Temperatures[0]}">
-					<uc:MeasurementControl Label="{Binding Data.Temperatures[0].Label}" Measurement="{Binding Data.Temperatures[0].ValueWithUnit}" ButtonBackground="Blue"/>
+					<uc:MeasurementControl Label="{Binding Data.Temperatures[0].Label}" Measurement="{Binding Data.Temperatures[0].ValueWithUnit}" ButtonBackground="{DynamicResource TempBrush}"/>
 				</Button>
 				<Button Classes="Measurement" Click="OnButtonClick" Tag="{Binding Data.Temperatures[1]}">
-					<uc:MeasurementControl Label="{Binding Data.Temperatures[1].Label}" Measurement="{Binding Data.Temperatures[1].ValueWithUnit}" ButtonBackground="Blue"/>
+					<uc:MeasurementControl Label="{Binding Data.Temperatures[1].Label}" Measurement="{Binding Data.Temperatures[1].ValueWithUnit}" ButtonBackground="{DynamicResource TempBrush}"/>
 				</Button>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 				<Button Classes="Measurement" Click="OnButtonClick" Tag="{Binding Data.Temperatures[2]}">
-					<uc:MeasurementControl Label="{Binding Data.Temperatures[2].Label}" Measurement="{Binding Data.Temperatures[2].ValueWithUnit}" ButtonBackground="Blue"/>
+					<uc:MeasurementControl Label="{Binding Data.Temperatures[2].Label}" Measurement="{Binding Data.Temperatures[2].ValueWithUnit}" ButtonBackground="{DynamicResource TempBrush}"/>
 				</Button>
 				<StackPanel Classes="Measurement" Background="Black">
 					<Button Padding="4" Content="Exit" Height="55" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding CloseWindow}" Background="Black" Foreground="Black"/>
@@ -26,23 +26,23 @@
 			</StackPanel>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 				<Button Classes="Measurement" Click="OnButtonClick" Tag="{Binding Data.Temperatures[3]}">
-					<uc:MeasurementControl Label="{Binding Data.Temperatures[3].Label}" Measurement="{Binding Data.Temperatures[3].ValueWithUnit}" ButtonBackground="#000060" />
+					<uc:MeasurementControl Label="{Binding Data.Temperatures[3].Label}" Measurement="{Binding Data.Temperatures[3].ValueWithUnit}" ButtonBackground="{DynamicResource Temp2Brush}" />
 				</Button>
 				<Button Classes="Measurement" Click="OnButtonClick" Tag="{Binding Data.Temperatures[4]}">
-					<uc:MeasurementControl Label="{Binding Data.Temperatures[4].Label}" Measurement="{Binding Data.Temperatures[4].ValueWithUnit}" ButtonBackground="#000060"/>
+					<uc:MeasurementControl Label="{Binding Data.Temperatures[4].Label}" Measurement="{Binding Data.Temperatures[4].ValueWithUnit}" ButtonBackground="{DynamicResource Temp2Brush}"/>
 				</Button>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 				<Button Classes="Measurement" Click="OnButtonClickPh" Tag="{Binding Data.Ph}">
-					<uc:MeasurementControl Label="{Binding Data.Ph.Label}" Measurement="{Binding Data.Ph.ValueWithUnit}" ButtonBackground="DarkCyan" />
+					<uc:MeasurementControl Label="{Binding Data.Ph.Label}" Measurement="{Binding Data.Ph.ValueWithUnit}" ButtonBackground="{DynamicResource PhBrush}"/>
 				</Button>
 				<Button Classes="Measurement" Click="OnButtonClickRedox" Tag="{Binding Data.Redox}">
-					<uc:MeasurementControl Label="{Binding Data.Redox.Label}" Measurement="{Binding Data.Redox.ValueWithUnit}" ButtonBackground="DarkGoldenrod" />
+					<uc:MeasurementControl Label="{Binding Data.Redox.Label}" Measurement="{Binding Data.Redox.ValueWithUnit}" ButtonBackground="{DynamicResource RedoxBrush}"/>
 				</Button>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 				<Button Classes="Measurement" Click="OnButtonClickDistance" Tag="{Binding Data.Distance}">
-					<uc:MeasurementControl Label="{Binding Data.Distance.LabelL}" Measurement="{Binding Data.Distance.ValueWithUnitL}" ButtonBackground="DarkMagenta"/>
+					<uc:MeasurementControl Label="{Binding Data.Distance.LabelL}" Measurement="{Binding Data.Distance.ValueWithUnitL}" ButtonBackground="{DynamicResource CisternBrush}"/>
 				</Button>
 				<ToggleButton Classes="SwitchButton" Content="{Binding Data.LocationName}" IsChecked="{Binding Data.WinterMode}" />
 			</StackPanel>

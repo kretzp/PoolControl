@@ -9,7 +9,7 @@ namespace PoolControl.Helper;
 public class Persistence
 {
     private static Persistence? _instance;
-    private static readonly object Padlock = new object();
+    private static readonly object Padlock = new();
 
     private bool _persistenceInUse;
 
@@ -30,7 +30,7 @@ public class Persistence
 
     private Persistence(ILogger? logger)
     {
-        Logger = logger?.ForContext<Persistence>() ?? throw new ArgumentNullException(nameof(Logger));
+        Logger = logger?.ForContext<Persistence>() ?? throw new ArgumentNullException(nameof(logger));
         PersistenceFile = PoolControlConfig.Instance.Settings!.PersistenceFile;
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {

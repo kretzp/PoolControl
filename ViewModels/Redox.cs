@@ -21,8 +21,8 @@ public class Redox : EzoBase
         OnCal = ReactiveCommand.Create(Cal_Button_Clicked);
 
         // Publish changes via MQTT
-        this.WhenAnyValue(r => r.Off).Subscribe(ein => { publishMessageWithType(PoolControlHelper.GetPropertyName(() => Off), ein.ToString()); OnValueChange(); });
-        this.WhenAnyValue(r => r.On).Subscribe(aus => { publishMessageWithType(PoolControlHelper.GetPropertyName(() => On), aus.ToString()); OnValueChange(); });
+        this.WhenAnyValue(r => r.Off).Subscribe(ein => { PublishMessageWithType(PoolControlHelper.GetPropertyName(() => Off), ein.ToString(), true); OnValueChange(); });
+        this.WhenAnyValue(r => r.On).Subscribe(aus => { PublishMessageWithType(PoolControlHelper.GetPropertyName(() => On), aus.ToString(), true); OnValueChange(); });
     }
 
     private void Cal_Button_Clicked()

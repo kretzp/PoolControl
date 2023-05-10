@@ -15,13 +15,13 @@
 	<StackPanel>
 		<StackPanel Orientation="Horizontal">
 			<ToggleButton Classes="Switch" Content="{Binding Data.Switches[2].LocationName}" IsChecked="{Binding Data.Switches[2].On}" />
-			<uc:MeasurementControl Label="{Binding Data.Ph.Label}" Measurement="{Binding Data.Ph.ValueWithUnit}" ButtonBackground="DarkCyan" />
-			<uc:MeasurementControl Label="{Binding Data.Redox.Label}" Measurement="{Binding Data.Redox.ValueWithUnit}" ButtonBackground="DarkGoldenrod" />
+			<uc:MeasurementControl Label="{Binding Data.Ph.Label}" Measurement="{Binding Data.Ph.ValueWithUnit}" ButtonBackground="{DynamicResource PhBrush}" />
+			<uc:MeasurementControl Label="{Binding Data.Redox.Label}" Measurement="{Binding Data.Redox.ValueWithUnit}" ButtonBackground="{DynamicResource RedoxBrush}" />
 		</StackPanel>
-		<uc:NumControl ControlBackground="DarkCyan" ColumnWidth="160" Label="{x:Static p:Resource.MeasurementInterval}" NumValue="{Binding Data.Ph.IntervalInSec, Mode=TwoWay}" Minimum="0" Maximum="500" FormatString="0 sec" Increment="5"/>
-		<uc:NumControl ControlBackground="DarkCyan" ColumnWidth="160" Label="{x:Static p:Resource.MaxPh}" NumValue="{Binding Data.Ph.MaxValue, Mode=TwoWay}" Minimum="7.0" Maximum="7.5" FormatString="0.0 pH" Increment="0.1"/>
-		<uc:NumControl ControlBackground="DarkCyan" ColumnWidth="160" Label="{x:Static p:Resource.AcidInjectionPeriod}" NumValue="{Binding Data.Ph.AcidInjectionRecurringPeriod, Mode=TwoWay}" Minimum="0" Maximum="100" FormatString="0 min" Increment="1"/>
-		<uc:NumControl ControlBackground="DarkCyan" ColumnWidth="160" Label="{x:Static p:Resource.InjectionDuration}" NumValue="{Binding Data.Ph.AcidInjectionDuration, Mode=TwoWay}" Minimum="0" Maximum="120" FormatString="0 sec" Increment="1"/>
-		<CheckBox IsChecked="{Binding Data.Ph.LedOn}" Background="DarkCyan" Margin="4" Padding="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" Content="{x:Static p:Resource.LED}"/>
+		<uc:NumControl ControlBackground="{DynamicResource PhBrush}" ColumnWidth="160" Label="{x:Static p:Resource.MeasurementInterval}" NumValue="{Binding Data.Ph.IntervalInSec, Mode=TwoWay}" Minimum="0" Maximum="500" FormatString="0 sec" Increment="5"/>
+		<uc:NumControl ControlBackground="{DynamicResource PhBrush}" ColumnWidth="160" Label="{x:Static p:Resource.MaxPh}" NumValue="{Binding Data.Ph.MaxValue, Mode=TwoWay}" Minimum="7.0" Maximum="7.5" FormatString="0.0 pH" Increment="0.1"/>
+		<uc:NumControl ControlBackground="{DynamicResource PhBrush}" ColumnWidth="160" Label="{x:Static p:Resource.AcidInjectionPeriod}" NumValue="{Binding Data.Ph.AcidInjectionRecurringPeriod, Mode=TwoWay}" Minimum="0" Maximum="100" FormatString="0 min" Increment="1"/>
+		<uc:NumControl ControlBackground="{DynamicResource PhBrush}" ColumnWidth="160" Label="{x:Static p:Resource.InjectionDuration}" NumValue="{Binding Data.Ph.AcidInjectionDuration, Mode=TwoWay}" Minimum="0" Maximum="120" FormatString="0 sec" Increment="1"/>
+		<CheckBox IsChecked="{Binding Data.Ph.LedOn}" Background="{DynamicResource PhBrush}" Margin="4" Padding="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" Content="{x:Static p:Resource.LED}"/>
 	</StackPanel>
 </UserControl>

@@ -10,7 +10,7 @@ namespace PoolControl.ViewModels;
 [JsonObject(MemberSerialization.OptIn)]
 public abstract class PumpModel : ViewModelBase
 {
-    protected TimeSpan Daily = new TimeSpan(24, 0, 0);
+    protected TimeSpan Daily = new(24, 0, 0);
 
     [JsonIgnore]
     public Switch? Switch { get; set; }
@@ -60,7 +60,7 @@ public abstract class PumpModel : ViewModelBase
         RecalculateThings();
     }
 
-    protected TimeTrigger InitializeTrigger(Action? action, TimeSpan period, string name)
+    protected static TimeTrigger InitializeTrigger(Action? action, TimeSpan period, string name)
     {
         var trigger = new TimeTrigger
         {
@@ -72,7 +72,7 @@ public abstract class PumpModel : ViewModelBase
         return trigger;
     }
 
-    protected void startTrigger(TimeTrigger trigger, TimeSpan startTime)
+    protected static void StartTrigger(TimeTrigger trigger, TimeSpan startTime)
     {
         trigger.StartTime = startTime;
         trigger.InitiateTimer();

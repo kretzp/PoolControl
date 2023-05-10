@@ -49,24 +49,24 @@
 			</StackPanel>
 		</StackPanel>
 		<StackPanel Margin="5" Width="180">
-			<Button	Content="{x:Static p:Resource.Close}" Click="OnButtonClick" Background="red"/>
-			<Button	Content="{x:Static p:Resource.MidCal}" Command="{Binding OnMidCal}"/>
+			<Button Classes="CloseButton"	Content="{x:Static p:Resource.Close}" Click="OnButtonClick" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
+			<Button	Classes="ConfigButton"	Content="{x:Static p:Resource.MidCal}" Command="{Binding OnMidCal}" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
 			<NumericUpDown Classes="Numeric" Value="{Binding MidCal}" ClipValueToMinMax="True" Minimum="5" Maximum="8" FormatString="0.00 pH" Increment="0.01" Background="DarkCyan"/>
-			<Button	Content="{x:Static p:Resource.LowCal}" Command="{Binding OnLowCal}"/>
+			<Button	Classes="ConfigButton"	Content="{x:Static p:Resource.LowCal}" Command="{Binding OnLowCal}" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
 			<NumericUpDown Classes="Numeric" Value="{Binding LowCal}" ClipValueToMinMax="True" Minimum="3" Maximum="5" FormatString="0.00 pH" Increment="0.01" Background="DarkCyan"/>
-			<Button	Content="{x:Static p:Resource.HighCal}" Command="{Binding OnHighCal}"/>
+			<Button	Classes="ConfigButton"	Content="{x:Static p:Resource.HighCal}" Command="{Binding OnHighCal}" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
 			<NumericUpDown Classes="Numeric" Value="{Binding HighCal}" ClipValueToMinMax="True" Minimum="8" Maximum="10" FormatString="0.00 pH" Increment="0.01" Background="DarkCyan"/>
 			<StackPanel Orientation="Horizontal">
-				<Button	Content="{x:Static p:Resource.GetSlope}" Command="{Binding OnGetSlope}" />
-				<Label Content="{Binding Slope}"/>
+				<Button	Classes="ConfigButton"	Content="{x:Static p:Resource.GetSlope}" Command="{Binding OnGetSlope}" />
+				<Label Content="{Binding Slope}" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch"/>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal">
-				<Button	Content="{x:Static p:Resource.Calibrated}" Command="{Binding OnCalibrated}" />
-				<Label Content="{Binding SensorsCalibrated, Mode=OneWay}"/>
+				<Button	Classes="ConfigButton"	Content="{x:Static p:Resource.Calibrated}" Command="{Binding OnCalibrated}" />
+				<Label Content="{Binding SensorsCalibrated, Mode=OneWay}" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch"/>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal">
-				<Button	Content="{x:Static p:Resource.Find}" Command="{Binding OnFind}" />
-				<Button	Content="{x:Static p:Resource.ClearCalibration}" Command="{Binding OnClearCalibration}" />
+				<Button	Classes="ConfigButton"	Content="{x:Static p:Resource.Find}" Command="{Binding OnFind}" />
+				<Button	Classes="ConfigButton"	Content="{x:Static p:Resource.ClearCalibration}" Command="{Binding OnClearCalibration}" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
 			</StackPanel>
 		</StackPanel>
 	</StackPanel>

@@ -9,6 +9,9 @@ using System.Collections;
 using System.Threading;
 using PoolControl.Helper;
 using Log = PoolControl.Helper.Log;
+using PoolControl.Views;
+using Avalonia.Threading;
+using System.Threading.Tasks;
 
 namespace PoolControl.ViewModels;
 
@@ -22,6 +25,16 @@ public abstract class ViewModelBase : ReactiveObject, IDisposable
     protected ViewModelBase()
     {
         Logger = Log.Logger?.ForContext<ViewModelBase>() ?? throw new ArgumentNullException(nameof(Logger));
+    }
+
+    private static void ShowNotification(string title, string message)
+    {
+        Dispatcher.UIThread.Post(() => { AsyncShowNotification(title, message); }); 
+    }
+
+    private static void AsyncShowNotification(string title, string message)
+    {
+        (App.MainWindow as MainWindow)?.ShowNotification(title, message);
     }
 
     [JsonIgnore]
@@ -66,7 +79,7 @@ public abstract class ViewModelBase : ReactiveObject, IDisposable
     {
         Timer = RestartTimer(Timer, OnTimerTicked, Interval);
 
-        publishMessageWithType(PoolControlHelper.GetPropertyName(() => IntervalInSec), IntervalInSec.ToString());
+        PublishMessageWithType(PoolControlHelper.GetPropertyName(() => IntervalInSec), IntervalInSec.ToString(), false);
     }
 
     protected abstract void OnTimerTicked(object? state);
@@ -110,7 +123,7 @@ public abstract class ViewModelBase : ReactiveObject, IDisposable
         return timer;
     }
 
-    public void publishMessage(string? propertyName, string? value, int qos, bool retain, bool reallySend)
+    public void PublishMessage(string? propertyName, string? value, int qos, bool retain, bool reallySend, bool notifyOnReallySend = false)
     {
         if(!reallySend)
         {
@@ -124,27 +137,31 @@ public abstract class ViewModelBase : ReactiveObject, IDisposable
         else
         {
             _ = PoolMqttClient.Instance.publishMessage($"{PoolControlConfig.Instance.Settings?.BaseTopic.State}{propertyName}", value, qos, retain);
+            if (notifyOnReallySend)
+            {
+                ShowNotification($"MQTT: {PoolControlConfig.Instance.Settings?.BaseTopic.State}", $"Property: {propertyName} Payload: {value}");
+            }
         }
     }
 
-    public void publishMessage(string propertyName, string? value, int qos, bool retain)
+    public void PublishMessage(string propertyName, string? value, int qos, bool retain, bool notifyOnReallySend = false)
     {
-        publishMessage(propertyName, value, qos, retain, true);
+        PublishMessage(propertyName, value, qos, retain, true, notifyOnReallySend);
     }
 
-    public void publishMessage(string propertyName, string? value)
+    public void PublishMessage(string propertyName, string? value, bool notifyOnReallySend = false)
     {
-        publishMessage(propertyName, value, true);
+        PublishMessage(propertyName, value, true, notifyOnReallySend);
     }
 
-    public void publishMessage(string propertyName, string? value, bool reallySend)
+    public void PublishMessage(string propertyName, string? value, bool reallySend, bool notifyOnReallySend = false)
     {
-        publishMessage(propertyName, value, 0, false, reallySend);
+        PublishMessage(propertyName, value, 0, false, reallySend, notifyOnReallySend);
     }
 
-    public void publishMessageWithType(string propertyName, string? value)
+    public void PublishMessageWithType(string propertyName, string? value, bool notifyOnReallySend = false)
     {
-        publishMessage($"{this.GetType().Name}/{propertyName}", value, true);
+        PublishMessage($"{this.GetType().Name}/{propertyName}", value, true, notifyOnReallySend);
     }
 
     protected virtual void Dispose(bool disposing)

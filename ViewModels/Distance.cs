@@ -16,10 +16,10 @@ public class Distance : MeasurementModelBase
     public Distance()
     {
         // Calculate Liter
-        this.WhenAnyValue(ds => ds.Value, getLiter).ToPropertyEx(this, ds => ds.ValueL, deferSubscription: true);
+        this.WhenAnyValue(ds => ds.Value, GetLiter).ToPropertyEx(this, ds => ds.ValueL, deferSubscription: true);
 
         // Publish Liter
-        this.WhenAnyValue(ds => ds.ValueL).Subscribe(_ => publishMessageValueL());
+        this.WhenAnyValue(ds => ds.ValueL).Subscribe(_ => PublishMessageValueL());
 
         // Create view
         this.WhenAnyValue(ds => ds.NameL, ds => ds.ValueL, ds => ds.ViewFormatL, ds => ds.UnitSignL, (_, temperature, viewFormat, unitSign) => $"{LocationNameL}: {temperature.ToString(viewFormat)} {unitSign}").ToPropertyEx(this, ds => ds.FullTextL, deferSubscription: true);
@@ -27,14 +27,14 @@ public class Distance : MeasurementModelBase
         this.WhenAnyValue(ds => ds.ValueL, ds => ds.ViewFormatL, ds => ds.UnitSignL, (value, viewFormat, unitSign) => $"{value.ToString(viewFormat)} {unitSign}").ToPropertyEx(this, ds => ds.ValueWithUnitL, deferSubscription: true);
     }
 
-    private double getLiter(double cm)
+    private double GetLiter(double cm)
     {
         return 7.854 * (90 + 9.26 - cm * 0.95);
     }
 
-    protected void publishMessageValueL()
+    protected void PublishMessageValueL()
     {
-        publishMessageWithType(PoolControlHelper.GetPropertyName(() => ValueL), InterfaceFormatDecimalPointL);
+        PublishMessageWithType(PoolControlHelper.GetPropertyName(() => ValueL), InterfaceFormatDecimalPointL, false);
     }
 
     [Reactive]

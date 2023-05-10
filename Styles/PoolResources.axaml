@@ -1,0 +1,113 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+        <LinearGradientBrush x:Key="CloseGradBrush" StartPoint="0%,0%"
+                             EndPoint="100%,100%" >
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Offset="0" Color="Red"/>
+                <GradientStop Offset="1" Color="Orange"/>
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="RelayGradBrush" StartPoint="0%,0%"
+                         EndPoint="100%,100%" >
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Offset="0" Color="DarkRed"/>
+                <GradientStop Offset="1" Color="Crimson"/>
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="RelayGreenGradBrush" StartPoint="0%,0%"
+                             EndPoint="100%,100%" >
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Offset="0" Color="DarkGreen"/>
+                <GradientStop Offset="1" Color="LimeGreen"/>
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="ButtonGradBrush" StartPoint="0%,0%"
+                         EndPoint="100%,100%" >
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Offset="0" Color="ForestGreen"/>
+                <GradientStop Offset="1" Color="LimeGreen"/>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <ConicGradientBrush x:Key="TempBrush" Center="50%, 50%"
+                        Angle="270">
+        <ConicGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="DarkBlue"/>
+            <GradientStop Offset="0.25" Color="Blue"/>
+            <GradientStop Offset="0.5" Color="RoyalBlue"/>
+            <GradientStop Offset="0.75" Color="Blue"/>
+            <GradientStop Offset="1" Color="DarkBlue"/>
+        </ConicGradientBrush.GradientStops>
+    </ConicGradientBrush>
+    <ConicGradientBrush x:Key="Temp2Brush" Center="50%, 50%"
+                        Angle="270">
+        <ConicGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="Black"/>
+            <GradientStop Offset="0.25" Color="DarkBlue"/>
+            <GradientStop Offset="0.5" Color="RoyalBlue"/>
+            <GradientStop Offset="0.75" Color="DarkBlue"/>
+            <GradientStop Offset="1" Color="Black"/>
+        </ConicGradientBrush.GradientStops>
+    </ConicGradientBrush>
+    <ConicGradientBrush x:Key="PhBrush" Center="50%, 50%"
+                        Angle="270">
+        <ConicGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="DarkCyan"/>
+            <GradientStop Offset="0.25" Color="Cyan"/>
+            <GradientStop Offset="0.5" Color="DarkCyan"/>
+            <GradientStop Offset="0.75" Color="Cyan"/>
+            <GradientStop Offset="1" Color="DarkCyan"/>
+        </ConicGradientBrush.GradientStops>
+    </ConicGradientBrush>
+    <ConicGradientBrush x:Key="RedoxBrush" Center="50%, 50%"
+                        Angle="270">
+        <ConicGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="DarkGoldenrod"/>
+            <GradientStop Offset="0.25" Color="LightGoldenrodYellow"/>
+            <GradientStop Offset="0.5" Color="DarkGoldenrod"/>
+            <GradientStop Offset="0.75" Color="LightGoldenrodYellow"/>
+            <GradientStop Offset="1" Color="DarkGoldenrod"/>
+        </ConicGradientBrush.GradientStops>
+    </ConicGradientBrush>
+    <ConicGradientBrush x:Key="CisternBrush" Center="50%, 50%"
+                        Angle="270">
+        <ConicGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="DarkMagenta"/>
+            <GradientStop Offset="0.25" Color="Magenta"/>
+            <GradientStop Offset="0.5" Color="DarkMagenta"/>
+            <GradientStop Offset="0.75" Color="Magenta"/>
+            <GradientStop Offset="1" Color="DarkMagenta"/>
+        </ConicGradientBrush.GradientStops>
+    </ConicGradientBrush>
+    <ConicGradientBrush x:Key="TimeBrush" Center="50%, 50%"
+                        Angle="270">
+        <ConicGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="DarkOliveGreen"/>
+            <GradientStop Offset="0.25" Color="YellowGreen"/>
+            <GradientStop Offset="0.5" Color="DarkOliveGreen"/>
+            <GradientStop Offset="0.75" Color="YellowGreen"/>
+            <GradientStop Offset="1" Color="DarkOliveGreen"/>
+        </ConicGradientBrush.GradientStops>
+    </ConicGradientBrush>
+    <ConicGradientBrush x:Key="FilterBrush" Center="50%, 50%"
+                        Angle="270">
+        <ConicGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="DarkSlateBlue"/>
+            <GradientStop Offset="0.25" Color="Violet"/>
+            <GradientStop Offset="0.5" Color="DarkSlateBlue"/>
+            <GradientStop Offset="0.75" Color="Violet"/>
+            <GradientStop Offset="1" Color="DarkSlateBlue"/>
+        </ConicGradientBrush.GradientStops>
+    </ConicGradientBrush>
+    <ConicGradientBrush x:Key="CleanBrush" Center="50%, 50%"
+                        Angle="270">
+        <ConicGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#500000"/>
+            <GradientStop Offset="0.25" Color="#F00000"/>
+            <GradientStop Offset="0.5" Color="#500000"/>
+            <GradientStop Offset="0.75" Color="#F00000"/>
+            <GradientStop Offset="1" Color="#500000"/>
+        </ConicGradientBrush.GradientStops>
+    </ConicGradientBrush>
+</ResourceDictionary>

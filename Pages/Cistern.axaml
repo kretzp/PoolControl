@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
 			 xmlns:vm="clr-namespace:PoolControl.ViewModels"
 			 xmlns:uc="clr-namespace:PoolControl.UserControls"
              x:Class="PoolControl.Pages.Cistern">
@@ -9,9 +10,9 @@
 	<StackPanel Orientation="Vertical">
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 			<Button Classes="Measurement">
-				<uc:MeasurementControl Label="{Binding Data.Distance.Label}" Measurement="{Binding Data.Distance.ValueWithUnit}" ButtonBackground="DarkMagenta"/>
+				<uc:MeasurementControl Label="{Binding Data.Distance.Label}" Measurement="{Binding Data.Distance.ValueWithUnit}" ButtonBackground="{DynamicResource CisternBrush}"/>
 			</Button>
- 			<uc:MeasurementControl Label="{Binding Data.Distance.LabelL}" Measurement="{Binding Data.Distance.ValueWithUnitL}" ButtonBackground="DarkMagenta"/>
+ 			<uc:MeasurementControl Label="{Binding Data.Distance.LabelL}" Measurement="{Binding Data.Distance.ValueWithUnitL}" ButtonBackground="{DynamicResource CisternBrush}"/>
 		</StackPanel>
 	</StackPanel>
 </UserControl>

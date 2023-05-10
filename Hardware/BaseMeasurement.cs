@@ -18,7 +18,7 @@ public abstract class BaseMeasurement
         if (result.ReturnCode != 1) return result;
         if (ModelBase == null) return result;
             
-        ModelBase.publishMessageValue();
+        ModelBase.PublishMessageValue();
         ModelBase.Value = result.Result;
         ModelBase.TimeStamp = result.TimeStamp;
 

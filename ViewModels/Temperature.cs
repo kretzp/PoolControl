@@ -16,10 +16,10 @@ public class Temperature : MeasurementModelBase
         Logger = Log.Logger?.ForContext<Temperature>() ?? throw new ArgumentNullException(nameof(Logger));
     }
 
-    public override void publishMessageValue()
+    public override void PublishMessageValue()
     {
-        publishMessage($"Temperatures/{Key}/Temperature", InterfaceFormatDecimalPoint, !String.IsNullOrEmpty(Key));
-        publishMessage($"Temperatures/{Key}/TimeStamp", TimeStamp.ToString("yyyy-MM-ddTHH:mm:ss"), !String.IsNullOrEmpty(Key));
+        PublishMessage($"Temperatures/{Key}/Temperature", InterfaceFormatDecimalPoint, !String.IsNullOrEmpty(Key), false);
+        PublishMessage($"Temperatures/{Key}/TimeStamp", TimeStamp.ToString("yyyy-MM-ddTHH:mm:ss"), !String.IsNullOrEmpty(Key), false);
     }
 
     [Reactive]

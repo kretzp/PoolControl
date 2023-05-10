@@ -23,6 +23,9 @@
 	  <Compile Remove="MainWindow2.axaml.cs" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Content Remove="C:\Users\kretzp\.nuget\packages\sukiui\3.0.0\contentFiles\any\netstandard2.0\suki_photo.ico" />
+	</ItemGroup>
+	<ItemGroup>
     <None Remove=".gitignore" />
     <None Remove="Assets\avalonia-logo.ico" />
     <None Remove="Pages\m0nyxlgi.b5m~" />
@@ -55,6 +58,7 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="Serilog.Sinks.SyslogMessages" Version="2.0.7" />
+    <PackageReference Include="SukiUI" Version="3.0.0" />
     <PackageReference Include="System.Device.Gpio" Version="2.2.0" />
     <PackageReference Include="XamlNameReferenceGenerator" Version="1.6.1" />
    </ItemGroup>

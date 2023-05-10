@@ -11,12 +11,12 @@
 		<StackPanel Orientation="Horizontal">
 			<ToggleButton Classes="Switch" Content="{Binding Data.Switches[0].LocationName}" IsChecked="{Binding Data.Switches[0].On}" />
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-				<uc:MeasurementControl Label="{Binding Data.Temperatures[0].Label}" Measurement="{Binding Data.Temperatures[0].ValueWithUnit}" ButtonBackground="Blue"/>
-				<uc:MeasurementControl Label="{Binding Data.Temperatures[3].Label}" Measurement="{Binding Data.Temperatures[3].ValueWithUnit}" ButtonBackground="Blue"/>
+				<uc:MeasurementControl Label="{Binding Data.Temperatures[0].Label}" Measurement="{Binding Data.Temperatures[0].ValueWithUnit}" ButtonBackground="{DynamicResource TempBrush}"/>
+				<uc:MeasurementControl Label="{Binding Data.Temperatures[3].Label}" Measurement="{Binding Data.Temperatures[3].ValueWithUnit}" ButtonBackground="{DynamicResource TempBrush}"/>
 			</StackPanel>
 		</StackPanel>
-		<uc:NumControl ControlBackground="DarkSlateBlue" ColumnWidth="160" Label="{x:Static p:Resource.FilterBaseRuntime}" NumValue="{Binding Data.FilterPump.StandardFilterRunTime, Mode=TwoWay}" Minimum="60" Maximum="180" FormatString="0 min" Increment="10"/>
-		<StackPanel Classes="Time" Background="DarkOliveGreen">
+		<uc:NumControl ControlBackground="{DynamicResource FilterBrush}" ColumnWidth="160" Label="{x:Static p:Resource.FilterBaseRuntime}" NumValue="{Binding Data.FilterPump.StandardFilterRunTime, Mode=TwoWay}" Minimum="60" Maximum="180" FormatString="0 min" Increment="10"/>
+		<StackPanel Classes="Time" Background="{DynamicResource TimeBrush}">
 			<!--TextBlock Classes="Time" Text="{x:Static p:Resource.StartFilterPump}"/-->
 			<TimePicker Classes="Time" SelectedTime="{Binding Data.FilterPump.StartMorning}" MinuteIncrement="1" Header="{x:Static p:Resource.Morning}" />
 			<TimePicker Classes="Time" SelectedTime="{Binding Data.FilterPump.StartNoon}" MinuteIncrement="1" Header="{x:Static p:Resource.Noon}" />

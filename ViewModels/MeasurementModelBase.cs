@@ -87,10 +87,10 @@ using PoolControl.Hardware;
             return o.ToString(InterfaceFormat);
         }
 
-        public virtual void publishMessageValue()
+        public virtual void PublishMessageValue()
         {
-            publishMessageWithType(PoolControlHelper.GetPropertyName(() => Value), InterfaceFormatDecimalPoint);
-            publishMessageWithType(PoolControlHelper.GetPropertyName(() => TimeStamp), TimeStamp.ToString("yyyy-MM-ddTHH:mm:ss"));
+            PublishMessageWithType(PoolControlHelper.GetPropertyName(() => Value), InterfaceFormatDecimalPoint, false);
+            PublishMessageWithType(PoolControlHelper.GetPropertyName(() => TimeStamp), TimeStamp.ToString("yyyy-MM-ddTHH:mm:ss"), false);
         }
 
         protected override void OnTimerTicked(object? state)

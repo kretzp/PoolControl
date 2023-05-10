@@ -21,8 +21,8 @@ public abstract class EzoBase : MeasurementModelBase
         OnClearCalibration = ReactiveCommand.Create(ClearCalibrated_Button_Clicked);
 
         // Change LED and publish Message
-        this.WhenAnyValue(r => r.LedOn).Subscribe(_ => switchLedAndPublishMessage());
-        this.WhenAnyValue(r => r.Voltage).Subscribe(voltage => { publishMessageWithType(PoolControlHelper.GetPropertyName(() => Voltage), GetInterfaceFormatDecimalPoint(voltage)); });
+        this.WhenAnyValue(r => r.LedOn).Subscribe(_ => SwitchLedAndPublishMessage());
+        this.WhenAnyValue(r => r.Voltage).Subscribe(voltage => { PublishMessageWithType(PoolControlHelper.GetPropertyName(() => Voltage), GetInterfaceFormatDecimalPoint(voltage), false); });
     }
 
     private void ClearCalibrated_Button_Clicked()
@@ -42,16 +42,16 @@ public abstract class EzoBase : MeasurementModelBase
 
     public abstract void OnValueChange();
 
-    public override void publishMessageValue()
+    public override void PublishMessageValue()
     {
-        base.publishMessageValue();
+        base.PublishMessageValue();
         OnValueChange();
     }
 
-    protected void switchLedAndPublishMessage()
+    protected void SwitchLedAndPublishMessage()
     {
         new BaseEzoMeasurement { ModelBase = this }.switchLedState(LedOn);
-        publishMessageWithType(PoolControlHelper.GetPropertyName(() => LedOn), LedOn ? "1" : "0");
+        PublishMessageWithType(PoolControlHelper.GetPropertyName(() => LedOn), LedOn ? "1" : "0", true);
     }
 
     public ReactiveCommand<Unit, Unit> OnFind { get; }

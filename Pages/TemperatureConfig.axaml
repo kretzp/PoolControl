@@ -44,8 +44,8 @@
 				<TextBox Classes="Details" Text="{Binding InterfaceFormat}" HorizontalAlignment="Right"/>
 			</StackPanel>
 		</StackPanel>
-		<StackPanel Margin="5">
-			<Button	Content="{x:Static p:Resource.Close}" Click="OnButtonClick" Background="Red"/>
+		<StackPanel Margin="5" Width="180">
+			<Button Classes="CloseButton" Content="{x:Static p:Resource.Close}" Click="OnButtonClick" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
 		</StackPanel>
 	</StackPanel>
 </Window>

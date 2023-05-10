@@ -1,4 +1,4 @@
-#define CREATE
+#define CREATEN
 using MQTTnet.Client;
 using ReactiveUI.Fody.Helpers;
 using System;
@@ -14,6 +14,8 @@ using PoolControl.Hardware;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using PoolControl.Helper;
+using Avalonia.Controls.Notifications;
+using PoolControl.Views;
 
 namespace PoolControl.ViewModels;
 
@@ -47,17 +49,18 @@ public class MainWindowViewModel : ViewModelBase
 #if CREATE
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                Data = new PoolData();
-                Data.Name = "Winter";
-                Data.TemperaturesDict = new Dictionary<string, Temperature>
+            Data = new PoolData
+            {
+                Name = "Winter",
+                TemperaturesDict = new Dictionary<string, Temperature>
                 {
                     { "Pool", new Temperature { Address = "28-0114536eebaa", Name = "Pool", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN } },
                     { "SolarPreRun", new Temperature { Address = "28-041670557dff", Name = "SolarPreRun", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN } },
                     { "SolarHeater", new Temperature { Address = "28-0315a43260ff", Name = "SolarHeater", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 10, Value = double.NaN } },
                     { "Technikraum", new Temperature { Address = "28-0317609128ff", Name = "TechnicRoom", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 60, Value = double.NaN } },
                     { "FrostChecker", new Temperature { Address = "28-0416705896ff", Name = "FrostChecker", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "°C", IntervalInSec = 60, Value = double.NaN } }
-                };
-                Data.SwitchesDict = new Dictionary<string, Switch>
+                },
+                SwitchesDict = new Dictionary<string, Switch>
                 {
                     { "FilterPump", new Switch { RelayNumber = 8, Name = "FilterPump", HighIsOn = false, On = false } },
                     { "SolarHeater", new Switch { RelayNumber = 7, Name = "SolarHeater", HighIsOn = false, On = false } },
@@ -67,14 +70,15 @@ public class MainWindowViewModel : ViewModelBase
                     { "Three", new Switch { RelayNumber = 3, Name = "Three", HighIsOn = false, On = false } },
                     { "Two", new Switch { RelayNumber = 2, Name = "Two", HighIsOn = false, On = false } },
                     { "One", new Switch { RelayNumber = 1, Name = "One", HighIsOn = false, On = false } }
-                };
-                Data.FilterPump = new FilterPump { StandardFilterRunTime = 180, StartMorning = new TimeSpan(8, 0, 0), StartNoon = new TimeSpan(14, 0, 0), FilterOff = new TimeSpan(20, 0, 0) };
-                Data.SolarHeater = new SolarHeater { SolarHeaterCleaningTime = new TimeSpan(21, 30, 0), SolarHeaterCleaningDuration = 180, TurnOnDiff = 6.0, TurnOffDiff = 3.0, MaxPoolTemp = 29.5 };
-                Data.Ph = new Ph { Name = "pHValue", MaxValue = 7.3, AcidInjectionDuration = 20, AcidInjectionRecurringPeriod = 10, IntervalInSec = 60, Address = "99", LedOn = true, ViewFormat = "#0.00", InterfaceFormat = "#0.000", UnitSign = "pH", Value = double.NaN };
-                Data.Redox = new Redox { Name = "RedoxValue", On = 750, Off = 840, IntervalInSec = 60, Address = "98", LedOn = true, ViewFormat = "#0", InterfaceFormat = "#0.0", UnitSign = "mV", Value = double.NaN };
-                Data.Distance = new Distance { Address = "16/26", Name = "Distance", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "cm", NameL = "Volume", ViewFormatL = "#0", InterfaceFormatL = "#0", UnitSignL = "L", IntervalInSec = 60, Value = double.NaN, NumberOfMeasurements = 5 };
-                Data.RelayConfig = RelayConfig.Instance;
-                if (Data.RelayConfig != null)
+                },
+                FilterPump = new FilterPump { StandardFilterRunTime = 180, StartMorning = new TimeSpan(8, 0, 0), StartNoon = new TimeSpan(14, 0, 0), FilterOff = new TimeSpan(20, 0, 0) },
+                SolarHeater = new SolarHeater { SolarHeaterCleaningTime = new TimeSpan(21, 30, 0), SolarHeaterCleaningDuration = 180, TurnOnDiff = 6.0, TurnOffDiff = 3.0, MaxPoolTemp = 29.5 },
+                Ph = new Ph { Name = "pHValue", MaxValue = 7.3, AcidInjectionDuration = 20, AcidInjectionRecurringPeriod = 10, IntervalInSec = 60, Address = "99", LedOn = true, ViewFormat = "#0.00", InterfaceFormat = "#0.000", UnitSign = "pH", Value = double.NaN },
+                Redox = new Redox { Name = "RedoxValue", On = 750, Off = 840, IntervalInSec = 60, Address = "98", LedOn = true, ViewFormat = "#0", InterfaceFormat = "#0.0", UnitSign = "mV", Value = double.NaN },
+                Distance = new Distance { Address = "16/26", Name = "Distance", ViewFormat = "#0.00", InterfaceFormat = "#0.00", UnitSign = "cm", NameL = "Volume", ViewFormatL = "#0", InterfaceFormatL = "#0", UnitSignL = "L", IntervalInSec = 60, Value = double.NaN, NumberOfMeasurements = 5 },
+                RelayConfig = RelayConfig.Instance
+            };
+            if (Data.RelayConfig != null)
                 {
                     Data.RelayConfig.RelayToLogicLevelConverterDict = new Dictionary<int, int>();
                     for (var i = 1; i < 9; i++)
@@ -236,7 +240,7 @@ public class MainWindowViewModel : ViewModelBase
 
         if (topic.ToLower().Equals("sendstate"))
         {
-            publishMessage("json", Persistence.Instance.Serialize(Data));
+            PublishMessage("json", Persistence.Instance.Serialize(Data), false);
         }
         else if (topic.ToLower().StartsWith("i2c/"))
         {
@@ -252,7 +256,7 @@ public class MainWindowViewModel : ViewModelBase
                 mr = new MeasurementResult { Result = 99, ReturnCode = 99, StatusInfo = ex.Message, TimeStamp = DateTime.Now };
             }
 
-            publishMessage(topic, Persistence.Instance.Serialize(mr), (int)arg.ApplicationMessage.QualityOfServiceLevel, arg.ApplicationMessage.Retain);
+            PublishMessage(topic, Persistence.Instance.Serialize(mr), (int)arg.ApplicationMessage.QualityOfServiceLevel, arg.ApplicationMessage.Retain, false);
         }
         else
         {

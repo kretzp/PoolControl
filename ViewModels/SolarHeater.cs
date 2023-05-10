@@ -19,11 +19,11 @@ public class SolarHeater : PumpModel
         TurnOnTrigger = InitializeTrigger(StartTimerTriggered, Daily, GetTimerName(PoolControlHelper.GetPropertyName(() => TurnOnTrigger)));
         TurnOffTrigger = InitializeTrigger(EndTimerTriggered, Daily, GetTimerName(PoolControlHelper.GetPropertyName(() => TurnOffTrigger)));
 
-        this.WhenAnyValue(x => x.TurnOnDiff).Subscribe(switchOnDiff => publishMessageWithType(PoolControlHelper.GetPropertyName(() => TurnOnDiff), PoolControlHelper.format1Decimal(switchOnDiff)));
-        this.WhenAnyValue(x => x.TurnOffDiff).Subscribe(switchOffDiff => publishMessageWithType(PoolControlHelper.GetPropertyName(() => TurnOffDiff), PoolControlHelper.format1Decimal(switchOffDiff)));
-        this.WhenAnyValue(x => x.MaxPoolTemp).Subscribe(maxPoolTemp => publishMessageWithType(PoolControlHelper.GetPropertyName(() => MaxPoolTemp), PoolControlHelper.format1Decimal(maxPoolTemp)));
-        this.WhenAnyValue(x => x.SolarHeaterCleaningDuration).Subscribe(cleaningDuration => { publishMessageWithType(PoolControlHelper.GetPropertyName(() => SolarHeaterCleaningDuration), cleaningDuration.ToString()); RecalculateSolarHeatingCleaning(); });
-        this.WhenAnyValue(x => x.SolarHeaterCleaningTime).Subscribe(cleaningPoint => { publishMessageWithType(PoolControlHelper.GetPropertyName(() => SolarHeaterCleaningTime), cleaningPoint.ToString()); RecalculateSolarHeatingCleaning(); });
+        this.WhenAnyValue(x => x.TurnOnDiff).Subscribe(switchOnDiff => PublishMessageWithType(PoolControlHelper.GetPropertyName(() => TurnOnDiff), PoolControlHelper.format1Decimal(switchOnDiff), true));
+        this.WhenAnyValue(x => x.TurnOffDiff).Subscribe(switchOffDiff => PublishMessageWithType(PoolControlHelper.GetPropertyName(() => TurnOffDiff), PoolControlHelper.format1Decimal(switchOffDiff), true));
+        this.WhenAnyValue(x => x.MaxPoolTemp).Subscribe(maxPoolTemp => PublishMessageWithType(PoolControlHelper.GetPropertyName(() => MaxPoolTemp), PoolControlHelper.format1Decimal(maxPoolTemp), true));
+        this.WhenAnyValue(x => x.SolarHeaterCleaningDuration).Subscribe(cleaningDuration => { PublishMessageWithType(PoolControlHelper.GetPropertyName(() => SolarHeaterCleaningDuration), cleaningDuration.ToString(), true); RecalculateSolarHeatingCleaning(); });
+        this.WhenAnyValue(x => x.SolarHeaterCleaningTime).Subscribe(cleaningPoint => { PublishMessageWithType(PoolControlHelper.GetPropertyName(() => SolarHeaterCleaningTime), cleaningPoint.ToString(), true); RecalculateSolarHeatingCleaning(); });
     }
 
     public override void OnTemperatureChange(MeasurementArgs args)
@@ -81,8 +81,8 @@ public class SolarHeater : PumpModel
 
     public void RecalculateSolarHeatingCleaning()
     {
-        startTrigger(TurnOnTrigger, SolarHeaterCleaningTime);
-        startTrigger(TurnOffTrigger, SolarHeaterCleaningTime.Add(new TimeSpan(0, 0, SolarHeaterCleaningDuration)));
+        StartTrigger(TurnOnTrigger, SolarHeaterCleaningTime);
+        StartTrigger(TurnOffTrigger, SolarHeaterCleaningTime.Add(new TimeSpan(0, 0, SolarHeaterCleaningDuration)));
         NextStart = TurnOnTrigger.TriggerTime;
         NextEnd = TurnOffTrigger.TriggerTime;
     }
