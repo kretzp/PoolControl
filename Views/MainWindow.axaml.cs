@@ -8,10 +8,15 @@ namespace PoolControl.Views;
 
 public partial class MainWindow : Window
 {
-    private readonly WindowNotificationManager? notificationManager;
+    private WindowNotificationManager? notificationManager;
     public MainWindow()
     {
         InitializeComponent();
+        Loaded += MainWindow_Loaded;
+    }
+
+    private void MainWindow_Loaded(object? sender, RoutedEventArgs e)
+    {
         notificationManager = new WindowNotificationManager(this)
         {
             Position = NotificationPosition.BottomRight,

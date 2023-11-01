@@ -45,6 +45,8 @@ public class MainWindowViewModel : ViewModelBase
 
 #if !CREATE
         Data = Persistence.Instance.Load<PoolData>();
+        Logger.Information("Persistence Data Loaded!");
+        Logger.Information(Data.ToString());
 #endif
 #if CREATE
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))

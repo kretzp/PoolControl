@@ -349,7 +349,7 @@ namespace PoolControl {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Next start: ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die start: ähnelt.
         /// </summary>
         public static string NextStart {
             get {

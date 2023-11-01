@@ -189,6 +189,6 @@
 		<Setter Property="Width" Value="150"/>
 	</Style>
 	<Style Selector="TextBox.Details">
-		<Setter Property="Width" Value="123"/>
+		<Setter Property="Width" Value="150"/>
 	</Style>
 </Styles>
