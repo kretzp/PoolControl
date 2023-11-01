@@ -21,7 +21,7 @@ public class TemperatureMeasurement : BaseMeasurement
         Logger = Log.Logger?.ForContext<TemperatureMeasurement>() ?? throw new ArgumentNullException(nameof(Logger));
     }
 
-    private MeasurementResult emulateWindowsTemp()
+    private MeasurementResult EmulateWindowsTemp()
     {
         _i++;
         var retValue = PoolTemp;
@@ -85,7 +85,7 @@ public class TemperatureMeasurement : BaseMeasurement
 
         if(isWindows)
         {
-            mr = emulateWindowsTemp();
+            mr = EmulateWindowsTemp();
         }
 
         return mr;

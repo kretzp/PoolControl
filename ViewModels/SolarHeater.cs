@@ -94,7 +94,7 @@ public class SolarHeater : PumpModel
 
     protected override void OnTimerTicked(object? state)
     {
-        throw new NotImplementedException();
+        // Nothing has to be done
     }
 
     [JsonIgnore]

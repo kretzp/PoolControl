@@ -27,17 +27,17 @@ public abstract class EzoBase : MeasurementModelBase
 
     private void ClearCalibrated_Button_Clicked()
     {
-        ((BaseEzoMeasurement)BaseMeasurement!).clearCalibration();
+        ((BaseEzoMeasurement)BaseMeasurement!).ClearCalibration();
     }
 
     private void Calibrated_Button_Clicked()
     {
-        SensorsCalibrated = (int)((BaseEzoMeasurement)BaseMeasurement!).deviceCalibrated().Result;
+        SensorsCalibrated = (int)((BaseEzoMeasurement)BaseMeasurement!).DeviceCalibrated().Result;
     }
 
     private void Find_Button_Clicked()
     {
-        ((BaseEzoMeasurement)BaseMeasurement!).findDevice();
+        ((BaseEzoMeasurement)BaseMeasurement!).FindDevice();
     }
 
     public abstract void OnValueChange();
@@ -50,7 +50,7 @@ public abstract class EzoBase : MeasurementModelBase
 
     protected void SwitchLedAndPublishMessage()
     {
-        new BaseEzoMeasurement { ModelBase = this }.switchLedState(LedOn);
+        new BaseEzoMeasurement { ModelBase = this }.SwitchLedState(LedOn);
         PublishMessageWithType(PoolControlHelper.GetPropertyName(() => LedOn), LedOn ? "1" : "0", true);
     }
 

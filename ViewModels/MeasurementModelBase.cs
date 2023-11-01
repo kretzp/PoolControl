@@ -1,10 +1,10 @@
-    using Newtonsoft.Json;
+using Newtonsoft.Json;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
 using System.Globalization;
 using PoolControl.Hardware;
-    using PoolControl.Helper;
+using PoolControl.Helper;
 
     namespace PoolControl.ViewModels; 
 

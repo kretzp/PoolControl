@@ -1,5 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
 		xmlns:vm="clr-namespace:PoolControl.ViewModels"
 		xmlns:p="clr-namespace:PoolControl"
         Width="480" Height="320" Design.Width="480" Design.Height="320"

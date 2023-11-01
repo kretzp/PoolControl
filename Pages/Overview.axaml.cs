@@ -11,11 +11,6 @@ public partial class Overview : UserControl
         InitializeComponent();
     }
 
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
-
     private void OnButtonClick(object sender, RoutedEventArgs e)
     {
         var temperatureConfig = new TemperatureConfig();

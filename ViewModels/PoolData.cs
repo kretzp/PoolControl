@@ -69,7 +69,7 @@ public class PoolData : ViewModelBase
     [Reactive]
     public List<Temperature>? Temperatures { get; set; }
 
-    [JsonProperty("Temperatures")]
+    [JsonProperty(nameof(Temperatures))]
     public Dictionary<string, Temperature>? TemperaturesDict { get; set; }
     public Dictionary<string, object>? TemperaturesObj { get; set; }
 
@@ -106,15 +106,15 @@ public class PoolData : ViewModelBase
     public void OpenGpioEchoAndTrigger()
     {
         if (Distance == null) return;
-        Gpio.Instance.openPinModeOutput(Distance.Trigger, true);
-        Gpio.Instance.openPinModeInput(Distance.Echo, true);
+        Gpio.Instance.OpenPinModeOutput(Distance.Trigger, true);
+        Gpio.Instance.OpenPinModeInput(Distance.Echo, true);
     }
 
     public void CloseGpioEchoAndTrigger()
     {
         if (Distance == null) return;
-        Gpio.Instance.close(Distance.Trigger);
-        Gpio.Instance.close(Distance.Echo);
+        Gpio.Instance.Close(Distance.Trigger);
+        Gpio.Instance.Close(Distance.Echo);
     }
 
     public void OpenGpioSwitches()
@@ -123,7 +123,7 @@ public class PoolData : ViewModelBase
         foreach (var sw in Switches.Where(_ => RelayConfig != null))
         {
             if (RelayConfig != null)
-                Gpio.Instance.openPinModeOutput(RelayConfig.GetGpioForRelayNumber(sw.RelayNumber), sw.HighIsOn);
+                Gpio.Instance.OpenPinModeOutput(RelayConfig.GetGpioForRelayNumber(sw.RelayNumber), sw.HighIsOn);
         }
     }
 
@@ -132,7 +132,7 @@ public class PoolData : ViewModelBase
         if (Switches == null) return;
         foreach (var sw in Switches.Where(_ => RelayConfig != null))
         {
-            if (RelayConfig != null) Gpio.Instance.close(RelayConfig.GetGpioForRelayNumber(sw.RelayNumber));
+            if (RelayConfig != null) Gpio.Instance.Close(RelayConfig.GetGpioForRelayNumber(sw.RelayNumber));
         }
     }
 
@@ -142,7 +142,7 @@ public class PoolData : ViewModelBase
         foreach (var sw in Switches.Where(_ => RelayConfig != null))
         {
             if (RelayConfig != null)
-                Gpio.Instance.off(RelayConfig.GetGpioForRelayNumber(sw.RelayNumber), sw.HighIsOn);
+                Gpio.Instance.Off(RelayConfig.GetGpioForRelayNumber(sw.RelayNumber), sw.HighIsOn);
         }
     }
 

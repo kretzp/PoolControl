@@ -18,9 +18,12 @@
 		<uc:NumControl ControlBackground="{DynamicResource FilterBrush}" ColumnWidth="160" Label="{x:Static p:Resource.FilterBaseRuntime}" NumValue="{Binding Data.FilterPump.StandardFilterRunTime, Mode=TwoWay}" Minimum="60" Maximum="180" FormatString="0 min" Increment="10"/>
 		<StackPanel Classes="Time" Background="{DynamicResource TimeBrush}">
 			<!--TextBlock Classes="Time" Text="{x:Static p:Resource.StartFilterPump}"/-->
-			<TimePicker Classes="Time" SelectedTime="{Binding Data.FilterPump.StartMorning}" MinuteIncrement="1" Header="{x:Static p:Resource.Morning}" />
-			<TimePicker Classes="Time" SelectedTime="{Binding Data.FilterPump.StartNoon}" MinuteIncrement="1" Header="{x:Static p:Resource.Noon}" />
-			<TimePicker Classes="Time" SelectedTime="{Binding Data.FilterPump.FilterOff}" MinuteIncrement="1" Header="{x:Static p:Resource.FilterOff}" />
+			<Label Classes="Time" Content="{x:Static p:Resource.Morning}"/>
+			<TimePicker Classes="Time" SelectedTime="{Binding Data.FilterPump.StartMorning}" MinuteIncrement="1" />
+			<Label Classes="Time" Content="{x:Static p:Resource.Noon}"/>
+			<TimePicker Classes="Time" SelectedTime="{Binding Data.FilterPump.StartNoon}" MinuteIncrement="1"/>
+			<Label Classes="Time" Content="{x:Static p:Resource.FilterOff}"/>
+			<TimePicker Classes="Time" SelectedTime="{Binding Data.FilterPump.FilterOff}" MinuteIncrement="1"/>
 		</StackPanel>
 		<StackPanel Orientation="Horizontal">
 			<Label Classes="Time" Content="{x:Static p:Resource.NextStart}"/>

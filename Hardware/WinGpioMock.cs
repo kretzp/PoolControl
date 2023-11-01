@@ -8,7 +8,7 @@ namespace PoolControl.Hardware;
 public class WinGpioMock : IGpio
 {
     private static IGpio? _instance;
-    private static readonly object Padlock = new object();
+    private static readonly object Padlock = new();
 
     private ILogger Logger { get; init; }
 
@@ -28,40 +28,40 @@ public class WinGpioMock : IGpio
         }
     }
 
-    public void openPinModeOutput(int pin, bool highIsOn)
+    public void OpenPinModeOutput(int pin, bool highIsOn)
     {
-        open(pin, PinMode.Output, highIsOn);
+        Open(pin, PinMode.Output, highIsOn);
     }
 
-    public void openPinModeOutput(int[] pins, bool highIsOn)
+    public void OpenPinModeOutput(int[] pins, bool highIsOn)
     {
         foreach (var t in pins)
         {
-            openPinModeOutput(t, highIsOn);
+            OpenPinModeOutput(t, highIsOn);
         }
     }
 
-    public void close(int pin)
+    public void Close(int pin)
     {
         if (pin == 0)
         {
-            Logger.Warning("Try pin 0 close");
+            Logger.Warning("Try pin 0 Close");
             return;
         }
-        Logger.Debug("Try to close {Pin}", pin);
+        Logger.Debug("Try to Close {Pin}", pin);
         Logger.Information("Using WinGpioMock");
         Logger.Information("Closed {Pin}", pin);
     }
 
-    public void close(int[] pins, bool highIsOn)
+    public void Close(int[] pins, bool highIsOn)
     {
         foreach (var t in pins)
         {
-            close(t);
+            Close(t);
         }
     }
 
-    public void doSwitch(int pin, bool state, bool highIsOn)
+    public void DoSwitch(int pin, bool state, bool highIsOn)
     {
         if (pin == 0)
         {
@@ -72,16 +72,16 @@ public class WinGpioMock : IGpio
         Logger.Information("Using WinGpioMock");
         Logger.Information("state {State} highIsOn {HighIsOn} pin {Pin}", state, highIsOn, pin);
     }
-    public void doSwitch(int[] pin, bool state, bool highIsOn)
+    public void DoSwitch(int[] pin, bool state, bool highIsOn)
     {
         foreach (var t in pin)
         {
-            doSwitch(t, state, highIsOn);
+            DoSwitch(t, state, highIsOn);
         }
     }
 
 
-    public void on(int pin, bool highIsOn)
+    public void On(int pin, bool highIsOn)
     {
         if (pin == 0)
         {
@@ -93,15 +93,15 @@ public class WinGpioMock : IGpio
         Logger.Information("On {Pin}", pin);
     }
 
-    public void on(int[] pin, bool highIsOn)
+    public void On(int[] pin, bool highIsOn)
     {
         foreach (var t in pin)
         {
-            on(t, highIsOn);
+            On(t, highIsOn);
         }
     }
 
-    public void off(int pin, bool highIsOn)
+    public void Off(int pin, bool highIsOn)
     {
         if (pin == 0)
         {
@@ -112,22 +112,22 @@ public class WinGpioMock : IGpio
         Logger.Information("Using WinGpioMock");
         Logger.Information("Off {Pin}", pin);
     }
-    public void off(int[] pin, bool highIsOn)
+    public void Off(int[] pin, bool highIsOn)
     {
         foreach (var t in pin)
         {
-            off(t, highIsOn);
+            Off(t, highIsOn);
         }
     }
 
-    public void dispose()
+    public void Dispose()
     {
         Logger.Debug("Try to dispose");
         Logger.Information("Using WinGpioMock");
         Logger.Information("Disposed");
     }
 
-    public void open(int pin, PinMode mode, bool highIsOn)
+    public void Open(int pin, PinMode mode, bool highIsOn)
     {
         if (pin == 0)
         {
@@ -139,12 +139,12 @@ public class WinGpioMock : IGpio
         Logger.Information("Opened {Pin} {Mode}", pin, mode);
     }
 
-    public void openPinModeInput(int pin, bool highIsOn)
+    public void OpenPinModeInput(int pin, bool highIsOn)
     {
-        open(pin, PinMode.Input, highIsOn);
+        Open(pin, PinMode.Input, highIsOn);
     }
 
-    public int readPin(int pin)
+    public int ReadPin(int pin)
     {
         return (int)(DateTime.Now.Ticks % 2);
     }

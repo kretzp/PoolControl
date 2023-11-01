@@ -27,7 +27,7 @@ public class Redox : EzoBase
 
     private void Cal_Button_Clicked()
     {
-        ((RedoxMeasurement)BaseMeasurement!).calibrate(Cal);
+        ((RedoxMeasurement)BaseMeasurement!).Calibrate(Cal);
     }
 
     public ReactiveCommand<Unit, Unit> OnCal { get; }

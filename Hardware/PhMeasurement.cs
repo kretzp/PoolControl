@@ -7,7 +7,6 @@ using PoolControl.Helper;
 
 namespace PoolControl.Hardware;
 
-[UsedImplicitly]
 public class PhMeasurement : BaseEzoMeasurement
 {
     public decimal? Temperature { get; set; }
@@ -21,9 +20,9 @@ public class PhMeasurement : BaseEzoMeasurement
         Logger = Log.Logger?.ForContext<PhMeasurement>() ?? throw new ArgumentNullException(nameof(Logger));
     }
 
-    protected override MeasurementResult send_i2c_command(string command)
+    protected override MeasurementResult Send_i2c_command(string command)
     {
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return base.send_i2c_command(command);
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return base.Send_i2c_command(command);
         if (command.ToLower().Equals("status"))
         {
             return new MeasurementResult { Result = 3.85, ReturnCode = 1, TimeStamp = DateTime.Now, StatusInfo = "?STATUS,P,3.85", Device = $"{GetType().Name}.{ModelBase?.Name}@{I2CAddress}", Command = "Status" };
@@ -45,65 +44,65 @@ public class PhMeasurement : BaseEzoMeasurement
     }
 
 
-    public MeasurementResult midCalibration(double where)
+    public MeasurementResult MidCalibration(double where)
     {
-        return calibrate("mid", where);
+        return Calibrate("mid", where);
     }
 
-    public MeasurementResult lowCalibration(double where)
+    public MeasurementResult LowCalibration(double where)
     {
-        return calibrate("low", where);
+        return Calibrate("low", where);
     }
 
-    public MeasurementResult highCalibration(double where)
+    public MeasurementResult HighCalibration(double where)
     {
-        return calibrate("high", where);
+        return Calibrate("high", where);
     }
 
-    private MeasurementResult calibrate(string where, double what)
+    private MeasurementResult Calibrate(string where, double what)
     {
-        return send_i2c_command(String.Format(new CultureInfo("en-US"), "Cal,{0},{1:#0.00}", where, what));
+        return Send_i2c_command(String.Format(new CultureInfo("en-US"), "Cal,{0},{1:#0.00}", where, what));
     }
 
-    public MeasurementResult slope()
+    public MeasurementResult Slope()
     {
-        return send_i2c_command("Slope,?");
+        return Send_i2c_command("Slope,?");
     }
 
-    public MeasurementResult extendedPhScaleOn()
+    public MeasurementResult ExtendedPhScaleOn()
     {
-        return send_i2c_command("pHext,1");
+        return Send_i2c_command("pHext,1");
     }
 
-    public MeasurementResult extendedPhScaleOff()
+    public MeasurementResult ExtendedPhScaleOff()
     {
-        return send_i2c_command("pHext,0");
+        return Send_i2c_command("pHext,0");
     }
 
-    public MeasurementResult getExtendedPhScale()
+    public MeasurementResult GetExtendedPhScale()
     {
-        return send_i2c_command("pHext,?");
+        return Send_i2c_command("pHext,?");
     }
 
-    public MeasurementResult getTemperatureCompensation()
+    public MeasurementResult GetTemperatureCompensation()
     {
-        return send_i2c_command("T,?");
+        return Send_i2c_command("T,?");
     }
 
-    public MeasurementResult setTemperatureCompensation(decimal temperature)
+    public MeasurementResult SetTemperatureCompensation(decimal temperature)
     {
-        return send_i2c_command(String.Format(new CultureInfo("en-US"), "T,{0:#0.0}", temperature));
+        return Send_i2c_command(String.Format(new CultureInfo("en-US"), "T,{0:#0.0}", temperature));
     }
 
-    private MeasurementResult takeReadingTemperatureCompensation(decimal? temperature)
+    private MeasurementResult TakeReadingTemperatureCompensation(decimal? temperature)
     {
         if (temperature != null)
         {
-            return send_i2c_command(String.Format(new CultureInfo("en-US"), "RT,{0:#0.0}", temperature));
+            return Send_i2c_command(String.Format(new CultureInfo("en-US"), "RT,{0:#0.0}", temperature));
         }
         else
         {
-            return takeReading();
+            return TakeReading();
         }
     }
 
@@ -112,6 +111,6 @@ public class PhMeasurement : BaseEzoMeasurement
         MeasurementResult vmr = DoVoltageMeasurement();
         ((EzoBase)ModelBase!).Voltage = vmr.Result;
 
-        return takeReadingTemperatureCompensation(Temperature);
+        return TakeReadingTemperatureCompensation(Temperature);
     }
 }

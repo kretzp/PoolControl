@@ -5,6 +5,10 @@ VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoolControl", "PoolControl.csproj", "{887CCB16-1E5C-4CE6-916D-119DDEBA7D62}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaApplication3", "..\AvaloniaApplication3\AvaloniaApplication3.csproj", "{7D5F8FA0-130A-4E0A-8534-A114D79F9598}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaApplication3.Desktop", "..\AvaloniaApplication3.Desktop\AvaloniaApplication3.Desktop.csproj", "{0F4BD8D2-F14A-47E3-8853-815F7A8D8773}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{887CCB16-1E5C-4CE6-916D-119DDEBA7D62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{887CCB16-1E5C-4CE6-916D-119DDEBA7D62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{887CCB16-1E5C-4CE6-916D-119DDEBA7D62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D5F8FA0-130A-4E0A-8534-A114D79F9598}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D5F8FA0-130A-4E0A-8534-A114D79F9598}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D5F8FA0-130A-4E0A-8534-A114D79F9598}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D5F8FA0-130A-4E0A-8534-A114D79F9598}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F4BD8D2-F14A-47E3-8853-815F7A8D8773}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F4BD8D2-F14A-47E3-8853-815F7A8D8773}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F4BD8D2-F14A-47E3-8853-815F7A8D8773}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F4BD8D2-F14A-47E3-8853-815F7A8D8773}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

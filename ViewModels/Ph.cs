@@ -32,22 +32,22 @@ public class Ph : EzoBase
 
     private void GetSlope_Button_Clicked()
     {
-        Slope = ((PhMeasurement)BaseMeasurement!).slope().StatusInfo;
+        Slope = ((PhMeasurement)BaseMeasurement!).Slope().StatusInfo;
     }
 
     private void MidCal_Button_Clicked()
     {
-        ((PhMeasurement)BaseMeasurement!).midCalibration(MidCal);
+        ((PhMeasurement)BaseMeasurement!).MidCalibration(MidCal);
     }
 
     private void LowCal_Button_Clicked()
     {
-        ((PhMeasurement)BaseMeasurement!).lowCalibration(LowCal);
+        ((PhMeasurement)BaseMeasurement!).LowCalibration(LowCal);
     }
 
     private void HighCal_Button_Clicked()
     {
-        ((PhMeasurement)BaseMeasurement!).highCalibration(HighCal);
+        ((PhMeasurement)BaseMeasurement!).HighCalibration(HighCal);
     }
 
     public void RestartPhTimerAndPublishNewInterval()

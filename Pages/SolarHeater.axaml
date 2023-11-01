@@ -20,7 +20,7 @@
 		<uc:NumControl ControlBackground="{DynamicResource CleanBrush}" ColumnWidth="160" Label="{x:Static p:Resource.MaxPoolTemp}" NumValue="{Binding Data.SolarHeater.MaxPoolTemp, Mode=TwoWay}" Minimum="10" Maximum="32" FormatString="0.0 °C" Increment="0.1"/>
 		<uc:NumControl ControlBackground="{DynamicResource FilterBrush}" ColumnWidth="160" Label="{x:Static p:Resource.CleaningDuration}" NumValue="{Binding Data.SolarHeater.SolarHeaterCleaningDuration, Mode=TwoWay}" Minimum="10" Maximum="500" FormatString="0 sec" Increment="10"/>
 		<StackPanel Classes="Time" Background="{DynamicResource TimeBrush}">
-			<TimePicker Classes="Time" SelectedTime="{Binding Data.SolarHeater.SolarHeaterCleaningTime}" MinuteIncrement="1" Header="{x:Static p:Resource.CleaningTime}" />
+			<TimePicker Classes="Time" SelectedTime="{Binding Data.SolarHeater.SolarHeaterCleaningTime}" MinuteIncrement="1"/>
 		</StackPanel>
 		<StackPanel Orientation="Horizontal">
 			<Label Classes="Time" Content="{x:Static p:Resource.NextStart}" FontSize="11" VerticalContentAlignment="Center"/>

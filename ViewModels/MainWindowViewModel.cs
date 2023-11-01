@@ -185,7 +185,7 @@ public class MainWindowViewModel : ViewModelBase
             Data.OpenGpioSwitches();
             foreach (var sw in Data.Switches)
             {
-                sw.switchRelay();
+                sw.SwitchRelay();
             }
 
             // Open Trigger and Echo Gpio
@@ -212,7 +212,7 @@ public class MainWindowViewModel : ViewModelBase
         Data?.GpioSwitchesOff();
         Data?.CloseGpioSwitches();
         Data?.CloseGpioEchoAndTrigger();
-        Gpio.Instance.dispose();
+        Gpio.Instance.Dispose();
 
         PoolMqttClient.Instance.Disconnect();
 

@@ -6,7 +6,6 @@ using PoolControl.Helper;
 namespace PoolControl.Hardware;
 
 
-[UsedImplicitly]
 public class RedoxMeasurement : BaseEzoMeasurement
 {
     private int _i;
@@ -18,7 +17,7 @@ public class RedoxMeasurement : BaseEzoMeasurement
         Logger = Log.Logger?.ForContext<RedoxMeasurement>() ?? throw new ArgumentNullException(nameof(Logger));
     }
 
-    protected override MeasurementResult send_i2c_command(string command)
+    protected override MeasurementResult Send_i2c_command(string command)
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
@@ -41,11 +40,11 @@ public class RedoxMeasurement : BaseEzoMeasurement
             }
         }
 
-        return base.send_i2c_command(command);
+        return base.Send_i2c_command(command);
     }
 
-    public MeasurementResult calibrate(int value)
+    public MeasurementResult Calibrate(int value)
     {
-        return send_i2c_command("Cal," + value);
+        return Send_i2c_command("Cal," + value);
     }
 }

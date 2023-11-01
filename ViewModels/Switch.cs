@@ -18,7 +18,7 @@ public class Switch : ViewModelBase
     {
         Logger = Log.Logger?.ForContext<Switch>() ?? throw new ArgumentNullException(nameof(Logger));
 
-        this.WhenAnyValue(s => s.On).Subscribe(_ => switchRelay());
+        this.WhenAnyValue(s => s.On).Subscribe(_ => SwitchRelay());
     }
 
     [Reactive]
@@ -33,16 +33,16 @@ public class Switch : ViewModelBase
     [Reactive]
     public bool On { get; set; }
 
-    public void switchRelay()
+    public void SwitchRelay()
     {
         Logger.Debug("Switch {Key} {On} changed", Key, On);
         if (RelayConfig.Instance != null)
-            Gpio.Instance.doSwitch(RelayConfig.Instance.GetGpioForRelayNumber(RelayNumber), On, HighIsOn);
+            Gpio.Instance.DoSwitch(RelayConfig.Instance.GetGpioForRelayNumber(RelayNumber), On, HighIsOn);
         PublishMessage($"Switches/{Key}/On", On ? "1" : "0", 2, true, !string.IsNullOrEmpty(Key));
     }
 
     protected override void OnTimerTicked(object? state)
     {
-        throw new NotImplementedException();
+        // Nothing has to be done
     }
 }

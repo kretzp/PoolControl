@@ -37,96 +37,96 @@ public class BaseEzoMeasurement : BaseMeasurement
             Logger = Log.Logger.ForContext<BaseEzoMeasurement>() ?? throw new ArgumentNullException(nameof(Logger));
     }
 
-    private MeasurementResult getDeviceInformation()
+    private MeasurementResult GetDeviceInformation()
     {
-        return send_i2c_command("i");
+        return Send_i2c_command("i");
     }
 
-    private MeasurementResult getDeviceStatus()
+    private MeasurementResult GetDeviceStatus()
     {
-        return send_i2c_command("Status");
+        return Send_i2c_command("Status");
     }
 
-    private MeasurementResult getLedState()
+    private MeasurementResult GetLedState()
     {
-        return send_i2c_command("L,?");
+        return Send_i2c_command("L,?");
     }
 
-    public MeasurementResult setLedStateOn()
+    public MeasurementResult SetLedStateOn()
     {
-        return send_i2c_command("L,1");
+        return Send_i2c_command("L,1");
     }
-    public MeasurementResult setLedStateOff()
+    public MeasurementResult SetLedStateOff()
     {
-        return send_i2c_command("L,0");
+        return Send_i2c_command("L,0");
     }
 
-    public MeasurementResult switchLedState(bool state)
+    public MeasurementResult SwitchLedState(bool state)
     {
         var sw = state ? "1" : "0";
-        return send_i2c_command($"L,{sw}");
+        return Send_i2c_command($"L,{sw}");
     }
 
-    public MeasurementResult findDevice()
+    public MeasurementResult FindDevice()
     {
-        return send_i2c_command("Find");
+        return Send_i2c_command("Find");
     }
 
-    public MeasurementResult terminateFind()
+    public MeasurementResult TerminateFind()
     {
-        return getLedState();
+        return GetLedState();
     }
 
-    protected MeasurementResult takeReading()
+    protected MeasurementResult TakeReading()
     {
-        return send_i2c_command("R");
+        return Send_i2c_command("R");
     }
 
-    public MeasurementResult sleep()
+    public MeasurementResult Sleep()
     {
-        return send_i2c_command("Sleeps");
+        return Send_i2c_command("Sleeps");
     }
 
-    public MeasurementResult awake()
+    public MeasurementResult Awake()
     {
-        return getDeviceInformation();
+        return GetDeviceInformation();
     }
 
-    public MeasurementResult factoryReset()
+    public MeasurementResult FactoryReset()
     {
-        return send_i2c_command("Factory");
+        return Send_i2c_command("Factory");
     }
 
-    public MeasurementResult deviceCalibrated()
+    public MeasurementResult DeviceCalibrated()
     {
-        return send_i2c_command("Cal,?");
+        return Send_i2c_command("Cal,?");
     }
 
-    public MeasurementResult clearCalibration()
+    public MeasurementResult ClearCalibration()
     {
-        return send_i2c_command("Cal,clear");
+        return Send_i2c_command("Cal,clear");
     }
 
-    private MeasurementResult setName(string name)
+    private MeasurementResult SetName(string name)
     {
-        return send_i2c_command("Name," + name);
+        return Send_i2c_command("Name," + name);
     }
 
-    public MeasurementResult clearName()
+    public MeasurementResult ClearName()
     {
-        return setName("");
+        return SetName("");
     }
 
-    public MeasurementResult getName()
+    public MeasurementResult GetName()
     {
-        return send_i2c_command("Name,?");
+        return Send_i2c_command("Name,?");
     }
 
     /*
      * Parts of this section has been used from
      * https://github.com/letscontrolit/ESPEasy
      * */
-    protected virtual MeasurementResult send_i2c_command(string command)
+    protected virtual MeasurementResult Send_i2c_command(string command)
     {
         var ezoResult = new MeasurementResult { ReturnCode = (int)MeasurementResultCode.Pending, StatusInfo = "Error: ", Result = double.NaN, Device = $"{GetType().Name}@{I2CAddress}", Command = command };
 
@@ -264,12 +264,12 @@ public class BaseEzoMeasurement : BaseMeasurement
         var vmr = DoVoltageMeasurement();
         ((EzoBase)ModelBase!).Voltage = vmr.Result;
 
-        return takeReading();
+        return TakeReading();
     }
 
     protected MeasurementResult DoVoltageMeasurement()
     {
-        var mr = getDeviceStatus();
+        var mr = GetDeviceStatus();
         if (mr.Result <= 0)
         {
             throw new ArgumentOutOfRangeException($"Error in {GetType().Name}  <= 0");

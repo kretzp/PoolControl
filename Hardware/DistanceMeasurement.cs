@@ -15,23 +15,23 @@ public class DistanceMeasurement : BaseMeasurement
     private double MeasureOneTime()
     {
         // Set Trigger High
-        Gpio.Instance.on(((Distance)ModelBase!).Trigger, true);
+        Gpio.Instance.On(((Distance)ModelBase!).Trigger, true);
 
         // Set Trigger Low after 1 ms
         Thread.Sleep(1);
-        Gpio.Instance.off(((Distance)ModelBase).Trigger, true);
+        Gpio.Instance.Off(((Distance)ModelBase).Trigger, true);
 
         DateTime start = DateTime.Now;
         DateTime end = DateTime.Now;
 
         // Start/Stop time
-        while (Gpio.Instance.readPin(((Distance)ModelBase).Echo) == 0)
+        while (Gpio.Instance.ReadPin(((Distance)ModelBase).Echo) == 0)
         {
             start = DateTime.Now;
         }
 
         // Here is a possible memory leak, if sensor doesn't respond
-        while (Gpio.Instance.readPin(((Distance)ModelBase).Echo) == 1)
+        while (Gpio.Instance.ReadPin(((Distance)ModelBase).Echo) == 1)
         {
             end = DateTime.Now;
         }

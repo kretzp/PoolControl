@@ -1,13 +1,14 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:PoolControl"
-             x:Class="PoolControl.App">
+             x:Class="PoolControl.App"
+			 RequestedThemeVariant="Dark">
 	<Application.DataTemplates>
 		<local:ViewLocator/>
 	</Application.DataTemplates>
 
 	<Application.Styles>
-		<FluentTheme Mode="Dark" />
+		<FluentTheme/>
 		<StyleInclude Source="/Styles/Styles.axaml" />
 		<StyleInclude Source="/Styles/SideBar.axaml" />
 	</Application.Styles>

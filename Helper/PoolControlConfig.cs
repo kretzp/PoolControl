@@ -32,14 +32,12 @@ public class PoolControlConfig
     }
 }
 
-[UsedImplicitly]
 public class BaseTopicSettings
 {
     public string Command { get; set; } = "basetopic/cmd/";
     public string State { get; set; } = "basetopic/state/";
 }
 
-[UsedImplicitly]
 public class LWTSettings
 {
     public string? ConnectMessage { get; set; } = "Connected";
@@ -47,7 +45,6 @@ public class LWTSettings
     public string Topic { get; set; } = "basetopic/LWT";
 }
 
-[UsedImplicitly]
 public class MQTTSettings
 {
     public string Password { get; set; } = "";

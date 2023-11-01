@@ -47,7 +47,7 @@
 				<ToggleButton Classes="SwitchButton" Content="{Binding Data.LocationName}" IsChecked="{Binding Data.WinterMode}" />
 			</StackPanel>
 		</StackPanel>
-		<ListBox Items="{Binding Data.Switches}">
+		<ListBox ItemsSource="{Binding Data.Switches}">
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<Border>
