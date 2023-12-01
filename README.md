@@ -1,8 +1,8 @@
 # PoolControl
 
-Update: This software is in production in my pool environment for about 1 month without any issues ;-)
+Update: This software is in production in my pool environment for about 1 year without any issues ;-)
 
-This is a brandnew Pool Control Software based on an Raspberry Pi, coded in .net CORE 6.0. It runs with mocks in an Windows Environment.
+This is a brandnew Pool Control Software based on an Raspberry Pi, coded in .net CORE 8.0. It runs with mocks in an Windows Environment.
 Hardware:
 - Raspberry Pi 3B+ 1GB
 - Waveshare 3,5" TouchDisplay
