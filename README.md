@@ -4,7 +4,7 @@ Update: This software is in production in my pool environment for about 1 year w
 
 This is a brandnew Pool Control Software based on an Raspberry Pi, coded in .net CORE 8.0. It runs with mocks in an Windows Environment.
 Hardware:
-- Raspberry Pi 3B+ 1GB
+- Raspberry Pi 4 4GB (Raspberry Pi 3B+ 1GB is sufficient)
 - Waveshare 3,5" TouchDisplay
 - Raspberry Pi GPIO Extension Board 4x GPIO Header of Pi (beyond the Display)
 - 8-Kanal-Relais 5V
