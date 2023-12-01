@@ -41,7 +41,7 @@ Features:
 - I integrated this in Openhab as generic MQTT Thing
 - Notification of manual inputs with related MQTT topigs
 
-The printable .stl files could be found here:
+The printable .stl files could be found here (Housing for Raspberry Pi 3B+ an 4):
 https://www.thingiverse.com/thing:5383565
 
 Impressions:
