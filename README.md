@@ -15,7 +15,7 @@ Hardware:
 
 Software	
 - OS: Raspbian bullseye 5.15.32 mit voller Desktop-Unterstützung
-- .net Core 6.0, in Visual Studio C#
+- .net Core 8.0, in Visual Studio C#
 - Avalonia UI Touch-UI with XAML and ReactiveUI / Fody
 - Mulit Language with Resource-File, german und englisch implemented
 - Serilog als Logger, Console, File, Syslog
