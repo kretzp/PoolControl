@@ -47,8 +47,13 @@ https://www.thingiverse.com/thing:5383565
 To install, I assume, that you have a raspberry pi running with a Desktop environment. If not, checkout https://www.raspberrypi.com/software/ an download the imager and install latest raspberry pi os (32bit) with Desktop environment (bookworm is not working with waveshare at the moment but bullseye does!).
 To install the Waveshare 3,5" TouchDisplay follow the instructions on the waveshare page. I use 3.5 inch RPi LCD (V) Rev2.0:
 https://www.waveshare.com/wiki/3.5inch_RPi_LCD_(B)
-
-
+In short:
+```
+git clone https://github.com/waveshare/LCD-show.git
+cd LCD-show/
+chmod +x LCD35B-show-V2
+ ./LCD35B-show-V2 
+```
 
 Impressions:
 
