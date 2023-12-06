@@ -44,6 +44,12 @@ Features:
 The printable .stl files could be found here (Housing for Raspberry Pi 3B+ an 4):
 https://www.thingiverse.com/thing:5383565
 
+To install, I assume, that you have a raspberry pi running with a Desktop environment. If not, checkout https://www.raspberrypi.com/software/ an download the imager and install latest raspberry pi os (32bit) with Desktop environment (bookworm in my case).
+To install the Waveshare 3,5" TouchDisplay follow the instructions on the waveshare page. I use 3.5 inch RPi LCD (V) Rev2.0:
+https://www.waveshare.com/wiki/3.5inch_RPi_LCD_(B)
+
+
+
 Impressions:
 
 ![image](https://github.com/kretzp/PoolControl/assets/15065072/2dc5f03b-1807-45f2-bb3f-ea02dfd2967f)
