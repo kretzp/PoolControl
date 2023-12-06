@@ -52,9 +52,12 @@ In short:
 git clone https://github.com/waveshare/LCD-show.git
 cd LCD-show/
 chmod +x LCD35B-show-V2
- ./LCD35B-show-V2 
+./LCD35B-show-V2 
 ```
-
+Then install .net:
+```
+wget -O - https://raw.githubusercontent.com/pjgpetecodes/dotnet8pi/main/install.sh | sudo bash
+```
 Impressions:
 
 ![image](https://github.com/kretzp/PoolControl/assets/15065072/2dc5f03b-1807-45f2-bb3f-ea02dfd2967f)
