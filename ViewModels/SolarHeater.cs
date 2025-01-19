@@ -66,7 +66,13 @@ public class SolarHeater : PumpModel
 
         var baseTemperature = Math.Min(SolarPreLoopTemperature.Value, SolarPoolTemperature.Value);
 
-        if (SolarHeaterTemperature.Value > baseTemperature + TurnOnDiff)
+        if(WinterMode)
+        {
+            Switch!.On = false;
+
+            Logger.Information($"Wintermode!!! {Switch.Name} On({Switch.On}) SolarHeater({SolarHeaterTemperature.Value:#0.0}) > Pool({baseTemperature:#0.0}) + Aus({TurnOffDiff:#0.0}) = Sum({baseTemperature:#0.0}) Max({MaxPoolTemp:#0.0})");
+        }
+        else if (SolarHeaterTemperature.Value > baseTemperature + TurnOnDiff)
         {
             Switch!.On = baseTemperature < MaxPoolTemp;
             Logger.Information($"{Switch.Name} On({Switch.On}) SolarHeater({SolarHeaterTemperature.Value:#0.0}) > Pool({baseTemperature:#0.0}) + Ein({TurnOnDiff:#0.0}) = Sum({baseTemperature:#0.0}) Max({MaxPoolTemp:#0.0})");
