@@ -3,7 +3,7 @@
 		xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
 		xmlns:vm="clr-namespace:PoolControl.ViewModels"
 		xmlns:p="clr-namespace:PoolControl"
-        Width="1024" Height="600" Design.Width="1024" Design.Height="600"
+        Width="1024" Height="568" Design.Width="1024" Design.Height="568"
 		WindowDecorations="None"
         x:Class="PoolControl.Pages.PhConfig"
         Title="PhConfig">

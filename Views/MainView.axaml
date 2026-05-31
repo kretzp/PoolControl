@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:pages="clr-namespace:PoolControl.Pages;assembly=PoolControl"
 			 xmlns:p="clr-namespace:PoolControl"
-			 Width="1024" Height="600" Design.Width="1024" Design.Height="600"
+			 Width="1024" Height="568" Design.Width="1024" Design.Height="568"
 			 x:Class="PoolControl.Views.MainView"
 			 FontSize="12">
 	<Panel>

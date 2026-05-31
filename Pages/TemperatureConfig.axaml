@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:vm="clr-namespace:PoolControl.ViewModels"
 		xmlns:p="clr-namespace:PoolControl"
-        Width="1024" Height="600" Design.Width="1024" Design.Height="600"
+        Width="1024" Height="568" Design.Width="1024" Design.Height="568"
 		WindowDecorations="None"
         x:Class="PoolControl.Pages.TemperatureConfig"
         Title="TemperatureConfig">
@@ -44,7 +44,7 @@
 				<TextBox Classes="Details" Text="{Binding InterfaceFormat}" HorizontalAlignment="Right"/>
 			</StackPanel>
 		</StackPanel>
-		<StackPanel Margin="5" Width="100">
+		<StackPanel Margin="5" Width="150">
 			<Button Classes="CloseButton" Content="{x:Static p:Resource.Close}" Click="OnButtonClick" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
 		</StackPanel>
 	</StackPanel>

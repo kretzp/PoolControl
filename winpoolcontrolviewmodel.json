@@ -7,7 +7,7 @@
       "UnitSign": "°C",
       "ViewFormat": "#0.00",
       "InterfaceFormat": "#0.00",
-      "TimeStamp": "2026-05-31T21:38:30.1262037+02:00",
+      "TimeStamp": "2026-05-31T22:32:31.3797723+02:00",
       "IntervalInSec": 10,
       "Name": "Pool",
       "WinterMode": false
@@ -19,19 +19,19 @@
       "UnitSign": "°C",
       "ViewFormat": "#0.00",
       "InterfaceFormat": "#0.00",
-      "TimeStamp": "2026-05-31T21:38:30.1390811+02:00",
+      "TimeStamp": "2026-05-31T22:32:31.3797633+02:00",
       "IntervalInSec": 10,
       "Name": "SolarPreRun",
       "WinterMode": false
     },
     "SolarHeater": {
       "Key": "SolarHeater",
-      "Value": 26.1,
+      "Value": 27.1,
       "Address": "28-0315a43260ff",
       "UnitSign": "°C",
       "ViewFormat": "#0.00",
       "InterfaceFormat": "#0.00",
-      "TimeStamp": "2026-05-31T21:38:30.1551679+02:00",
+      "TimeStamp": "2026-05-31T22:32:31.3950937+02:00",
       "IntervalInSec": 10,
       "Name": "SolarHeater",
       "WinterMode": false

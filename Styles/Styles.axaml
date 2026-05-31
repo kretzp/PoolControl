@@ -150,12 +150,12 @@
 		<Setter Property="Background" Value="{DynamicResource TempBrush}"/>
 	</Style>
 	<Style Selector="TextBlock.TMeasurement">
-		<Setter Property="Padding" Value="4"/>
-		<Setter Property="FontSize" Value="22"/>
+		<Setter Property="Padding" Value="20"/>
+		<Setter Property="FontSize" Value="30"/>
 		<Setter Property="HorizontalAlignment" Value="Right"/>
 	</Style>
 	<Style Selector="TextBlock.TMeasurementLittle">
-		<Setter Property="Padding" Value="4"/>
+		<Setter Property="Padding" Value="5"/>
 		<Setter Property="FontSize" Value="18"/>
 		<Setter Property="HorizontalAlignment" Value="Right"/>
 	</Style>
@@ -205,15 +205,29 @@
 	</Style>
 	<Style Selector="Button.CloseButton">
 		<Setter Property="Background" Value="{DynamicResource CloseGradBrush}" />
+		<Setter Property="Height" Value="50"/>
+		<Setter Property="FontSize" Value="22"/>
+		<Setter Property="VerticalAlignment" Value="Center"/>
 	</Style>
 	<Style Selector="Button.ConfigButton">
 		<Setter Property="Background" Value="{DynamicResource ButtonGradBrush}"/>
+		<Setter Property="Height" Value="50"/>
+		<Setter Property="FontSize" Value="22"/>
+		<Setter Property="VerticalAlignment" Value="Center"/>
 	</Style>
 	<Style Selector="Label.Details">
 		<Setter Property="Width" Value="250"/>
 	</Style>
 	<Style Selector="TextBox.Details">
-		<Setter Property="Width" Value="250"/>
+		<Setter Property="Width" Value="400"/>
+		<Setter Property="Height" Value="50"/>
+		<Setter Property="FontSize" Value="22"/>
+		<Setter Property="VerticalAlignment" Value="Center"/>
+	</Style>
+	<Style Selector="Label.Details">
+		<Setter Property="Height" Value="50"/>
+		<Setter Property="FontSize" Value="22"/>
+		<Setter Property="VerticalAlignment" Value="Center"/>
 	</Style>
 	<Style Selector="CheckBox.LEDCheckbox">
 		<Setter Property="Height" Value="50"/>
