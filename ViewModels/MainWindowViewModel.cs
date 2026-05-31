@@ -195,7 +195,7 @@ public class MainWindowViewModel : ViewModelBase
         }
 
         // Subscribe events after loading Data, so that loading does not fire events!
-        PoolMqttClient.Instance.register(MqttClient_ApplicationMessageReceivedAsync);
+        PoolMqttClient.Instance.Register(MqttClient_ApplicationMessageReceivedAsync);
 
         Logger.Information("MainWindowViewModel Initialized");
     }

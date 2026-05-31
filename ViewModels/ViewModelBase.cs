@@ -136,7 +136,7 @@ public abstract class ViewModelBase : ReactiveObject, IDisposable
         }
         else
         {
-            _ = PoolMqttClient.Instance.publishMessage($"{PoolControlConfig.Instance.Settings?.BaseTopic.State}{propertyName}", value, qos, retain);
+            _ = PoolMqttClient.Instance.PublishMessage($"{PoolControlConfig.Instance.Settings?.BaseTopic.State}{propertyName}", value, qos, retain);
             if (notifyOnReallySend)
             {
                 ShowNotification($"MQTT: {PoolControlConfig.Instance.Settings?.BaseTopic.State}", $"Property: {propertyName} Payload: {value}");
@@ -167,27 +167,19 @@ public abstract class ViewModelBase : ReactiveObject, IDisposable
     protected virtual void Dispose(bool disposing)
     {
         if (_disposedValue) return;
+
         if (disposing)
         {
-            // Dispose stuff
-        }
-
-        foreach (PropertyInfo pi in GetType().GetProperties())
-        {
-            if(pi.GetValue(this) is IEnumerable enumerable)
+            // Dispose managed resources explicitly. Derived types should override
+            // this method if they hold additional disposable resources.
+            try
             {
-                foreach(var item in enumerable)
-                {
-                    if(item is IDisposable dp)
-                    {
-                        dp.Dispose();
-                    }
-                }
+                Timer?.Dispose();
+                Timer = null;
             }
-
-            if (pi.GetValue(this) is IDisposable disposable)
+            catch (Exception ex)
             {
-                disposable.Dispose();
+                Logger?.Error(ex, "Error disposing ViewModelBase managed resources");
             }
         }
 
