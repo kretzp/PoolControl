@@ -29,14 +29,14 @@ public class FilterPump : PumpModel
         EndTriggerNoon = InitializeTrigger(EndTimerTriggered, Daily, GetTimerName(PoolControlHelper.GetPropertyName(() => EndTriggerNoon)));
         FilterOffTrigger = InitializeTrigger(EndTimerTriggered, Daily, GetTimerName(PoolControlHelper.GetPropertyName(() => FilterOffTrigger)));
 
-        this.WhenAnyValue(x => x.StandardFilterRunTime).Subscribe(standardFilterTime => { PublishMessage(PoolControlHelper.GetPropertyName(() => StandardFilterRunTime), standardFilterTime.ToString(), true    ); Recalculate(); });
-        this.WhenAnyValue(x => x.StartMorning).Subscribe(startMorning => { PublishMessage(PoolControlHelper.GetPropertyName(() => StartMorning), startMorning.ToString(), true); Recalculate(); });
-        this.WhenAnyValue(x => x.StartNoon).Subscribe(startAfternoon => { PublishMessage(PoolControlHelper.GetPropertyName(() => StartNoon), startAfternoon.ToString(), true); Recalculate(); });
-        this.WhenAnyValue(x => x.FilterOff).Subscribe(filterOff => { PublishMessage(PoolControlHelper.GetPropertyName(() => FilterOff), filterOff.ToString(), true); Recalculate(); });
+        this.WhenAnyValue(x => x.StandardFilterRunTime).Subscribe(standardFilterTime => { _ = PublishMessageAsync(PoolControlHelper.GetPropertyName(() => StandardFilterRunTime), standardFilterTime.ToString(), true    ); Recalculate(); });
+        this.WhenAnyValue(x => x.StartMorning).Subscribe(startMorning => { _ = PublishMessageAsync(PoolControlHelper.GetPropertyName(() => StartMorning), startMorning.ToString(), true); Recalculate(); });
+        this.WhenAnyValue(x => x.StartNoon).Subscribe(startAfternoon => { _ = PublishMessageAsync(PoolControlHelper.GetPropertyName(() => StartNoon), startAfternoon.ToString(), true); Recalculate(); });
+        this.WhenAnyValue(x => x.FilterOff).Subscribe(filterOff => { _ = PublishMessageAsync(PoolControlHelper.GetPropertyName(() => FilterOff), filterOff.ToString(), true); Recalculate(); });
         this.WhenAnyValue(x => x.NextStart)
-            .Subscribe(nextStart => PublishMessage(PoolControlHelper.GetPropertyName(() => NextStart),
+            .Subscribe(nextStart => _ = PublishMessageAsync(PoolControlHelper.GetPropertyName(() => NextStart),
                 nextStart?.ToString(DateTimeFormat), true));
-        this.WhenAnyValue(x => x.NextEnd).Subscribe(nextEnd => PublishMessage(PoolControlHelper.GetPropertyName(() => NextEnd), nextEnd?.ToString(DateTimeFormat), true));
+        this.WhenAnyValue(x => x.NextEnd).Subscribe(nextEnd => _ = PublishMessageAsync(PoolControlHelper.GetPropertyName(() => NextEnd), nextEnd?.ToString(DateTimeFormat), true));
     }
 
     public override void OnTemperatureChange(MeasurementArgs args)

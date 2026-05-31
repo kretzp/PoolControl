@@ -26,7 +26,7 @@ public class MainWindowViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> CloseWindow { get; }
 
 
-    public MainWindowViewModel()
+    public MainWindowViewModel(IPoolMqttClient mqttClient) : base(mqttClient)
     {
         Logger = Log.Logger?.ForContext<MainWindowViewModel>() ?? throw new ArgumentNullException(nameof(Logger));
 
@@ -40,8 +40,6 @@ public class MainWindowViewModel : ViewModelBase
         this.WhenAnyValue(ds => ds.IntervalInSec).Subscribe(_ => this.RestartTimerAndPublishNewInterval());
 
         IntervalInSec = PoolControlConfig.Instance.Settings!.PersistenceSaveIntervalInSec;
-
-        _ = PoolMqttClient.Instance;
 
 #if !CREATE
         Data = Persistence.Instance.Load<PoolData>();
@@ -231,7 +229,7 @@ public class MainWindowViewModel : ViewModelBase
         App.MainWindow?.Close();
     }
 
-    private Task MqttClient_ApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs arg)
+    private async Task MqttClient_ApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs arg)
     {
         object? baseObject = Data;
         var objectNameToSet = "";
@@ -242,7 +240,7 @@ public class MainWindowViewModel : ViewModelBase
 
         if (topic.ToLower().Equals("sendstate"))
         {
-            PublishMessage("json", Persistence.Instance.Serialize(Data), false);
+            await PublishMessageAsync("json", Persistence.Instance.Serialize(Data), false).ConfigureAwait(false);
         }
         else if (topic.ToLower().StartsWith("i2c/"))
         {
@@ -258,7 +256,7 @@ public class MainWindowViewModel : ViewModelBase
                 mr = new MeasurementResult { Result = 99, ReturnCode = 99, StatusInfo = ex.Message, TimeStamp = DateTime.Now };
             }
 
-            PublishMessage(topic, Persistence.Instance.Serialize(mr), (int)arg.ApplicationMessage.QualityOfServiceLevel, arg.ApplicationMessage.Retain, false);
+            await PublishMessageAsync(topic, Persistence.Instance.Serialize(mr), (int)arg.ApplicationMessage.QualityOfServiceLevel, arg.ApplicationMessage.Retain, false).ConfigureAwait(false);
         }
         else
         {
@@ -304,7 +302,7 @@ public class MainWindowViewModel : ViewModelBase
             }
         }
 
-        return arg.AcknowledgeAsync(new CancellationToken());
+        await arg.AcknowledgeAsync(new CancellationToken()).ConfigureAwait(false);
     }
 
     protected override void OnTimerTicked(object? state)

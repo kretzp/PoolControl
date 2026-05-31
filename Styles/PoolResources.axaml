@@ -9,11 +9,25 @@
                 <GradientStop Offset="1" Color="Orange"/>
             </LinearGradientBrush.GradientStops>
         </LinearGradientBrush>
+        <LinearGradientBrush x:Key="CloseGradBrushPointOver" StartPoint="0%,0%"
+                             EndPoint="100%,100%" >
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Offset="0" Color="Red"/>
+                <GradientStop Offset="1" Color="Yellow"/>
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
         <LinearGradientBrush x:Key="RelayGradBrush" StartPoint="0%,0%"
                          EndPoint="100%,100%" >
             <LinearGradientBrush.GradientStops>
                 <GradientStop Offset="0" Color="DarkRed"/>
                 <GradientStop Offset="1" Color="Crimson"/>
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="RelayGradBrushPointOver" StartPoint="0%,0%"
+                         EndPoint="100%,100%" >
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Offset="0" Color="DarkOrange"/>
+                <GradientStop Offset="1" Color="OrangeRed"/>
             </LinearGradientBrush.GradientStops>
         </LinearGradientBrush>
         <LinearGradientBrush x:Key="RelayGreenGradBrush" StartPoint="0%,0%"
@@ -23,13 +37,27 @@
                 <GradientStop Offset="1" Color="LimeGreen"/>
             </LinearGradientBrush.GradientStops>
         </LinearGradientBrush>
+        <LinearGradientBrush x:Key="RelayGreenGradBrushPointOver" StartPoint="0%,0%"
+                             EndPoint="100%,100%" >
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Offset="0" Color="LimeGreen"/>
+                <GradientStop Offset="1" Color="YellowGreen"/>
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
         <LinearGradientBrush x:Key="ButtonGradBrush" StartPoint="0%,0%"
                          EndPoint="100%,100%" >
             <LinearGradientBrush.GradientStops>
                 <GradientStop Offset="0" Color="ForestGreen"/>
                 <GradientStop Offset="1" Color="LimeGreen"/>
-        </LinearGradientBrush.GradientStops>
-    </LinearGradientBrush>
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="ButtonGradBrushPointOver" StartPoint="0%,0%"
+                         EndPoint="100%,100%" >
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Offset="0" Color="ForestGreen"/>
+                <GradientStop Offset="1" Color="YellowGreen"/>
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
     <ConicGradientBrush x:Key="TempBrush" Center="50%, 50%"
                         Angle="270">
         <ConicGradientBrush.GradientStops>

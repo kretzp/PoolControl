@@ -25,7 +25,7 @@ public class Ph : EzoBase
         OnGetSlope = ReactiveCommand.Create(GetSlope_Button_Clicked);
 
         // Publish changes via MQTT
-        this.WhenAnyValue(p => p.MaxValue).Subscribe(value => PublishMessageWithType(PoolControlHelper.GetPropertyName(() => MaxValue), PoolControlHelper.format1Decimal(value), true));
+        this.WhenAnyValue(p => p.MaxValue).Subscribe(value => { _ = PublishMessageWithTypeAsync(PoolControlHelper.GetPropertyName(() => MaxValue), PoolControlHelper.format1Decimal(value), true); });
         this.WhenAnyValue(p => p.AcidInjectionDuration).Subscribe(_ => RestartPhTimerAndPublishNewInterval());
         this.WhenAnyValue(p => p.AcidInjectionRecurringPeriod).Subscribe(_ => RestartPhTimerAndPublishNewInterval());
     }
@@ -55,8 +55,8 @@ public class Ph : EzoBase
         PhTimerOn = RestartTimer(PhTimerOn, CheckPh, PhInterval);
         PhTimerOff = RestartTimer(PhTimerOff, PhPumpOff, PhInterval + 1000 * AcidInjectionDuration, PhInterval);
 
-        PublishMessageWithType(PoolControlHelper.GetPropertyName(() => AcidInjectionDuration), AcidInjectionDuration.ToString(), true);
-        PublishMessageWithType(PoolControlHelper.GetPropertyName(() => AcidInjectionRecurringPeriod), AcidInjectionRecurringPeriod.ToString(), true);
+        _ = PublishMessageWithTypeAsync(PoolControlHelper.GetPropertyName(() => AcidInjectionDuration), AcidInjectionDuration.ToString(), true);
+        _ = PublishMessageWithTypeAsync(PoolControlHelper.GetPropertyName(() => AcidInjectionRecurringPeriod), AcidInjectionRecurringPeriod.ToString(), true);
     }
 
     private void PhPumpOff(object? state)

@@ -22,9 +22,12 @@ public abstract class ViewModelBase : ReactiveObject, IDisposable
 
     protected ILogger Logger { get; set; }
 
-    protected ViewModelBase()
+    protected IPoolMqttClient MqttClient { get; }
+
+    protected ViewModelBase(IPoolMqttClient? mqttClient = null)
     {
         Logger = Log.Logger?.ForContext<ViewModelBase>() ?? throw new ArgumentNullException(nameof(Logger));
+        MqttClient = mqttClient ?? PoolMqttClient.Instance;
     }
 
     private static void ShowNotification(string title, string message)
@@ -79,7 +82,7 @@ public abstract class ViewModelBase : ReactiveObject, IDisposable
     {
         Timer = RestartTimer(Timer, OnTimerTicked, Interval);
 
-        PublishMessageWithType(PoolControlHelper.GetPropertyName(() => IntervalInSec), IntervalInSec.ToString(), false);
+        _ = PublishMessageWithTypeAsync(PoolControlHelper.GetPropertyName(() => IntervalInSec), IntervalInSec.ToString(), false);
     }
 
     protected abstract void OnTimerTicked(object? state);
@@ -123,45 +126,47 @@ public abstract class ViewModelBase : ReactiveObject, IDisposable
         return timer;
     }
 
-    public void PublishMessage(string? propertyName, string? value, int qos, bool retain, bool reallySend, bool notifyOnReallySend = false)
+    public Task PublishMessageAsync(string? propertyName, string? value, int qos, bool retain, bool reallySend, bool notifyOnReallySend = false)
     {
-        if(!reallySend)
+        if (!reallySend)
         {
             Logger.Warning("Property {PropertyName} should not be sent for value {Value}. MQTT Message will not be published", propertyName, value);
-            return;
+            return Task.CompletedTask;
         }
+
         if (propertyName == null)
         {
             Logger.Warning("Property is null for value {Value}. MQTT Message will not be published", value);
+            return Task.CompletedTask;
         }
-        else
+
+        var task = MqttClient.PublishAsync($"{PoolControlConfig.Instance.Settings?.BaseTopic.State}{propertyName}", value, qos, retain);
+        if (notifyOnReallySend)
         {
-            _ = PoolMqttClient.Instance.PublishMessage($"{PoolControlConfig.Instance.Settings?.BaseTopic.State}{propertyName}", value, qos, retain);
-            if (notifyOnReallySend)
-            {
-                ShowNotification($"MQTT: {PoolControlConfig.Instance.Settings?.BaseTopic.State}", $"Property: {propertyName} Payload: {value}");
-            }
+            ShowNotification($"MQTT: {PoolControlConfig.Instance.Settings?.BaseTopic.State}", $"Property: {propertyName} Payload: {value}");
         }
+
+        return task;
     }
 
-    public void PublishMessage(string propertyName, string? value, int qos, bool retain, bool notifyOnReallySend = false)
+    public Task PublishMessageAsync(string propertyName, string? value, int qos, bool retain, bool notifyOnReallySend = false)
     {
-        PublishMessage(propertyName, value, qos, retain, true, notifyOnReallySend);
+        return PublishMessageAsync(propertyName, value, qos, retain, true, notifyOnReallySend);
     }
 
-    public void PublishMessage(string propertyName, string? value, bool notifyOnReallySend = false)
+    public Task PublishMessageAsync(string propertyName, string? value, bool notifyOnReallySend = false)
     {
-        PublishMessage(propertyName, value, true, notifyOnReallySend);
+        return PublishMessageAsync(propertyName, value, true, notifyOnReallySend);
     }
 
-    public void PublishMessage(string propertyName, string? value, bool reallySend, bool notifyOnReallySend = false)
+    public Task PublishMessageAsync(string propertyName, string? value, bool reallySend, bool notifyOnReallySend = false)
     {
-        PublishMessage(propertyName, value, 0, false, reallySend, notifyOnReallySend);
+        return PublishMessageAsync(propertyName, value, 0, false, reallySend, notifyOnReallySend);
     }
 
-    public void PublishMessageWithType(string propertyName, string? value, bool notifyOnReallySend = false)
+    public Task PublishMessageWithTypeAsync(string propertyName, string? value, bool notifyOnReallySend = false)
     {
-        PublishMessage($"{this.GetType().Name}/{propertyName}", value, true, notifyOnReallySend);
+        return PublishMessageAsync($"{this.GetType().Name}/{propertyName}", value, true, notifyOnReallySend);
     }
 
     protected virtual void Dispose(bool disposing)

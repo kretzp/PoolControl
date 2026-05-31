@@ -12,7 +12,7 @@ using Log = PoolControl.Helper.Log;
 
 namespace PoolControl.Communication;
 
-public class PoolMqttClient : IDisposable
+public class PoolMqttClient : IPoolMqttClient
 {
     private const string Reason = "SHUTDOWN";
     private const string Win = "win";
@@ -45,9 +45,9 @@ public class PoolMqttClient : IDisposable
 
     protected ILogger Logger { get; init; }
 
-    private PoolMqttClient(ILogger? logger)
+    public PoolMqttClient(ILogger? logger = null)
     {
-        Logger = logger?.ForContext<PoolMqttClient>() ?? throw new ArgumentNullException(nameof(Logger));
+        Logger = logger?.ForContext<PoolMqttClient>() ?? Log.Logger?.ForContext<PoolMqttClient>() ?? throw new ArgumentNullException(nameof(logger));
         _ = InitializeAsync(_cancellationTokenSource.Token);
     }
 
@@ -159,7 +159,7 @@ public class PoolMqttClient : IDisposable
         }
     }
 
-    private async Task SubscribeAsync(string topic, CancellationToken cancellationToken)
+    public async Task SubscribeAsync(string topic, CancellationToken cancellationToken = default)
     {
         if (_mqttClient == null)
         {
@@ -246,6 +246,16 @@ public class PoolMqttClient : IDisposable
         await _mqttClient.DisconnectAsync(new MqttClientDisconnectOptionsBuilder().Build(), cancellationToken).ConfigureAwait(false);
 
         _cancellationTokenSource.Cancel();
+    }
+
+    public Task PublishAsync(string topic, string? payload, int qos, bool retain, CancellationToken cancellationToken = default)
+    {
+        return PublishMessage(topic, payload, qos, retain, cancellationToken);
+    }
+
+    public Task EnsureConnectedAsync(CancellationToken cancellationToken = default)
+    {
+        return ConnectAsync(cancellationToken);
     }
 
     public async Task PublishMessage(string topic, string? payload, int qos, bool retain, CancellationToken cancellationToken = default)

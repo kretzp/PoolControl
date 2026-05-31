@@ -3,7 +3,7 @@
 		xmlns:vm="clr-namespace:PoolControl.ViewModels"
 		xmlns:p="clr-namespace:PoolControl"
         Width="480" Height="320" Design.Width="480" Design.Height="320"
-		SystemDecorations="None"
+		WindowDecorations="None"
         x:Class="PoolControl.Pages.RedoxConfig"
         Title="RedoxConfig">
 	<Design.DataContext>

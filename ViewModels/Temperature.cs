@@ -18,8 +18,8 @@ public class Temperature : MeasurementModelBase
 
     public override void PublishMessageValue()
     {
-        PublishMessage($"Temperatures/{Key}/Temperature", InterfaceFormatDecimalPoint, !String.IsNullOrEmpty(Key), false);
-        PublishMessage($"Temperatures/{Key}/TimeStamp", TimeStamp.ToString("yyyy-MM-ddTHH:mm:ss"), !String.IsNullOrEmpty(Key), false);
+        _ = PublishMessageAsync($"Temperatures/{Key}/Temperature", InterfaceFormatDecimalPoint, !String.IsNullOrEmpty(Key), false);
+        _ = PublishMessageAsync($"Temperatures/{Key}/TimeStamp", TimeStamp.ToString("yyyy-MM-ddTHH:mm:ss"), !String.IsNullOrEmpty(Key), false);
     }
 
     [Reactive]

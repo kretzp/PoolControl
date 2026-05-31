@@ -89,8 +89,8 @@ using PoolControl.Helper;
 
         public virtual void PublishMessageValue()
         {
-            PublishMessageWithType(PoolControlHelper.GetPropertyName(() => Value), InterfaceFormatDecimalPoint, false);
-            PublishMessageWithType(PoolControlHelper.GetPropertyName(() => TimeStamp), TimeStamp.ToString("yyyy-MM-ddTHH:mm:ss"), false);
+            _ = PublishMessageWithTypeAsync(PoolControlHelper.GetPropertyName(() => Value), InterfaceFormatDecimalPoint, false);
+            _ = PublishMessageWithTypeAsync(PoolControlHelper.GetPropertyName(() => TimeStamp), TimeStamp.ToString("yyyy-MM-ddTHH:mm:ss"), false);
         }
 
         protected override void OnTimerTicked(object? state)

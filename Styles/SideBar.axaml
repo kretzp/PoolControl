@@ -52,13 +52,13 @@
 
 	<Style Selector="TabControl.sidebar > TabItem">
 		<Setter Property="BorderThickness" Value="0"/>
-		<Setter Property="FontSize" Value="14"/>
+		<Setter Property="FontSize" Value="22"/>
 		<Setter Property="FontWeight" Value="Medium"/>
 		<Setter Property="Margin" Value="4 0 0 4"/>
 		<Setter Property="Padding" Value="2"/>
-		<Setter Property="Height" Value="30"/>
+		<Setter Property="Height" Value="50"/>
 		<Setter Property="MinWidth" Value="107"/>
-		<Setter Property="MaxWidth" Value="107"/>
+		<Setter Property="MaxWidth" Value="200"/>
 		<Setter Property="HorizontalContentAlignment" Value="Stretch" />
 		<Setter Property="(ScrollViewer.HorizontalScrollBarVisibility)" Value="Auto"/>
 		<Setter Property="(ScrollViewer.VerticalScrollBarVisibility)" Value="Auto"/>

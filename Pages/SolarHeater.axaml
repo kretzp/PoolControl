@@ -23,8 +23,8 @@
 			<TimePicker Classes="Time" SelectedTime="{Binding Data.SolarHeater.SolarHeaterCleaningTime}" MinuteIncrement="1"/>
 		</StackPanel>
 		<StackPanel Orientation="Horizontal">
-			<Label Classes="Time" Content="{x:Static p:Resource.NextStart}" FontSize="11" VerticalContentAlignment="Center"/>
-			<Label Classes="Time" Content="{Binding Data.SolarHeater.NextStart}" FontSize="11" VerticalContentAlignment="Center"/>
+			<Label Classes="Time" Content="{x:Static p:Resource.NextStart}" VerticalContentAlignment="Center"/>
+			<Label Classes="Time" Content="{Binding Data.SolarHeater.NextStart}" VerticalContentAlignment="Center"/>
 		</StackPanel>
 	</StackPanel>
 </UserControl>

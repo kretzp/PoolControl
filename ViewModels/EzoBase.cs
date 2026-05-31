@@ -22,7 +22,7 @@ public abstract class EzoBase : MeasurementModelBase
 
         // Change LED and publish Message
         this.WhenAnyValue(r => r.LedOn).Subscribe(_ => SwitchLedAndPublishMessage());
-        this.WhenAnyValue(r => r.Voltage).Subscribe(voltage => { PublishMessageWithType(PoolControlHelper.GetPropertyName(() => Voltage), GetInterfaceFormatDecimalPoint(voltage), false); });
+        this.WhenAnyValue(r => r.Voltage).Subscribe(voltage => { _ = PublishMessageWithTypeAsync(PoolControlHelper.GetPropertyName(() => Voltage), GetInterfaceFormatDecimalPoint(voltage), false); });
     }
 
     private void ClearCalibrated_Button_Clicked()
@@ -51,7 +51,7 @@ public abstract class EzoBase : MeasurementModelBase
     protected void SwitchLedAndPublishMessage()
     {
         new BaseEzoMeasurement { ModelBase = this }.SwitchLedState(LedOn);
-        PublishMessageWithType(PoolControlHelper.GetPropertyName(() => LedOn), LedOn ? "1" : "0", true);
+        _ = PublishMessageWithTypeAsync(PoolControlHelper.GetPropertyName(() => LedOn), LedOn ? "1" : "0", true);
     }
 
     public ReactiveCommand<Unit, Unit> OnFind { get; }

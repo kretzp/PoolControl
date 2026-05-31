@@ -34,7 +34,7 @@ public class Distance : MeasurementModelBase
 
     protected void PublishMessageValueL()
     {
-        PublishMessageWithType(PoolControlHelper.GetPropertyName(() => ValueL), InterfaceFormatDecimalPointL, false);
+        _ = PublishMessageWithTypeAsync(PoolControlHelper.GetPropertyName(() => ValueL), InterfaceFormatDecimalPointL, false);
     }
 
     [Reactive]

@@ -41,7 +41,7 @@
 
 	<Style Selector="Grid.TemperatureGrid">
 		<Setter Property="Background" Value="DarkBlue" />
-		<Setter Property="Height" Value="55" />
+		<Setter Property="Height" Value="105" />
 		<Setter Property="Margin" Value="4 4 4 4" />
 	</Style>
 	<Style Selector="TextBlock.Temperature">
@@ -50,49 +50,68 @@
 		<Setter Property="FontWeight" Value="Normal" />
 		<Setter Property="VerticalAlignment" Value="Center" />
 		<Setter Property="HorizontalAlignment" Value="Right" />
-		<Setter Property="Padding" Value="5" />
+		<Setter Property="Padding" Value="20" />
 	</Style>
 	<Style Selector="TextBlock.TemperatureLabel">
 		<!--Setter Property="FontFamily" Value="{StaticResource CodeFontFamily}" /-->
-		<Setter Property="FontSize" Value="16" />
+		<Setter Property="FontSize" Value="22" />
 		<Setter Property="FontWeight" Value="Light" />
 		<Setter Property="Background" Value="DarkBlue" />
 		<Setter Property="Foreground" Value="LightGray" />
 		<Setter Property="HorizontalAlignment" Value="Left" />
-		<Setter Property="Padding" Value="5" />
+		<Setter Property="Padding" Value="20" />
 	</Style>
 	<Style Selector="ToggleButton.Switch">
 		<!--Setter Property="FontFamily" Value="{StaticResource CodeFontFamily}" /-->
-		<Setter Property="FontSize" Value="18" />
+		<Setter Property="FontSize" Value="22" />
 		<Setter Property="FontWeight" Value="Normal" />
 		<Setter Property="Background" Value="{DynamicResource RelayGradBrush}" />
-		<Setter Property="Height" Value="55" />
+		<Setter Property="Height" Value="105" />
 		<Setter Property="Margin" Value="4" />
-		<Setter Property="Padding" Value="0 16 0 0" />
-		<Setter Property="MinWidth" Value="133" />
+		<Setter Property="Padding" Value="0 0 0 0" />
+		<Setter Property="MinWidth" Value="260" />
 		<Setter Property="HorizontalContentAlignment" Value="Center" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
 	</Style>
 	<Style Selector="ToggleButton.SwitchButton">
-		<Setter Property="FontSize" Value="18" />
+		<Setter Property="FontSize" Value="22" />
 		<Setter Property="FontWeight" Value="Normal" />
 		<Setter Property="Background" Value="{DynamicResource RelayGradBrush}" />
-		<Setter Property="Height" Value="55" />
-		<Setter Property="Width" Value="105" />
+		<Setter Property="Height" Value="105" />
+		<Setter Property="Width" Value="260" />
 		<Setter Property="Margin" Value="4" />
-		<Setter Property="Padding" Value="0 16 0 0" />
+		<Setter Property="Padding" Value="0 0 0 0" />
 		<Setter Property="HorizontalContentAlignment" Value="Center" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
 	</Style>
-	<Style Selector="ToggleButton:checked /template/ ContentPresenter">
+	<Style Selector="ToggleButton.StateButton">
+		<Setter Property="FontSize" Value="22" />
+		<Setter Property="FontWeight" Value="Normal" />
+		<Setter Property="Background" Value="{DynamicResource RelayGradBrush}" />
+		<Setter Property="Height" Value="105" />
+		<Setter Property="Width" Value="260" />
+		<Setter Property="Margin" Value="4" />
+		<Setter Property="Padding" Value="0 0 0 0" />
+		<Setter Property="HorizontalContentAlignment" Value="Center" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+	</Style>
+	<Style Selector="ToggleButton:pointerover:checked /template/ ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource RelayGreenGradBrushPointOver}" />
+	</Style>
+	<Style Selector="ToggleButton:pointerover:not(:checked) /template/ ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource RelayGradBrushPointOver}" />
+	</Style>
+	<Style Selector="ToggleButton:not(:pointerover):checked /template/ ContentPresenter">
 		<Setter Property="Background" Value="{DynamicResource RelayGreenGradBrush}" />
 	</Style>
-	<Style Selector="ToggleButton:pointerover /template/ ContentPresenter">
-		<Setter Property="Background" Value="Orange" />
+	<Style Selector="ToggleButton:not(:pointerover):not(:checked) /template/ ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource RelayGradBrush}" />
 	</Style>
 	<Style Selector="NumericUpDown.pH">
 		<Setter Property="Background" Value="DarkCyan" />
-		<Setter Property="FontSize" Value="18" />
+		<Setter Property="FontSize" Value="22" />
 		<Setter Property="Margin" Value="4 4 4 4" />
-		<Setter Property="Height" Value="55" />
+		<Setter Property="Height" Value="105" />
 		<Setter Property="Padding" Value="10 16 10 0" />
 		<Setter Property="BorderThickness" Value="2"/>
 	</Style>
@@ -100,7 +119,7 @@
 		<Setter Property="Background" Value="DarkCyan" />
 		<Setter Property="FontSize" Value="40" />
 		<Setter Property="Margin" Value="4 4 4 4" />
-		<Setter Property="Height" Value="55" />
+		<Setter Property="Height" Value="105" />
 	</Style>
 	<Style Selector="ListBox">
 		<Setter Property="Margin" Value="0" />
@@ -115,35 +134,38 @@
 		<Setter Property="Margin" Value="0"/>
 	</Style>
 	<Style Selector="StackPanel.Measurement">
-		<Setter Property="Width" Value="105"/>
-		<Setter Property="Height" Value="55"/>
+		<Setter Property="Width" Value="260"/>
+		<Setter Property="Height" Value="105"/>
 		<Setter Property="Margin" Value="4"/>
 		<Setter Property="Background" Value="{DynamicResource TempBrush}"/>
 		<Setter Property="Orientation" Value="Vertical"/>
 	</Style>
+	<Style Selector="StackPanel.Measurement:pointerover /template/ ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource TempBrushPointOver}"/>
+	</Style>
 	<Style Selector="uc|DoubleMeasurementControl.Measurement">
 		<Setter Property="Width" Value="105"/>
-		<Setter Property="Height" Value="55"/>
+		<Setter Property="Height" Value="105"/>
 		<Setter Property="Margin" Value="4"/>
 		<Setter Property="Background" Value="{DynamicResource TempBrush}"/>
 	</Style>
 	<Style Selector="TextBlock.TMeasurement">
 		<Setter Property="Padding" Value="4"/>
-		<Setter Property="FontSize" Value="18"/>
+		<Setter Property="FontSize" Value="22"/>
 		<Setter Property="HorizontalAlignment" Value="Right"/>
 	</Style>
 	<Style Selector="TextBlock.TMeasurementLittle">
 		<Setter Property="Padding" Value="4"/>
-		<Setter Property="FontSize" Value="12"/>
+		<Setter Property="FontSize" Value="18"/>
 		<Setter Property="HorizontalAlignment" Value="Right"/>
 	</Style>
 	<Style Selector="TextBlock.TLabel">
-		<Setter Property="FontSize" Value="12"/>
+		<Setter Property="FontSize" Value="18"/>
 		<Setter Property="Padding" Value="4"/>
 		<Setter Property="Foreground" Value="LightGray"/>
 	</Style>
 	<Style Selector="Label.SpinnerLabel">
-		<Setter Property="FontSize" Value="14"/>
+		<Setter Property="FontSize" Value="18"/>
 		<Setter Property="VerticalContentAlignment" Value="Center"/>
 		<Setter Property="HorizontalAlignment" Value="Left"/>
 	</Style>
@@ -151,12 +173,12 @@
 		<Setter Property="FontWeight" Value="Normal"/>
 		<Setter Property="HorizontalAlignment"  Value="Stretch"/>
 		<Setter Property="Margin" Value="4 4 4 4"/>										
-		<Setter Property="FontSize" Value="14"/>
+		<Setter Property="FontSize" Value="18"/>
 	</Style>
 	<Style Selector="TextBlock.Time">
 		<Setter Property="FontWeight" Value="Normal"/>
 		<Setter Property="Margin" Value="4 4 4 4"/>
-		<Setter Property="FontSize" Value="14"/>
+		<Setter Property="FontSize" Value="18"/>
 	</Style>
 	<Style Selector="Grid.Numeric">
 		<Setter Property="Margin" Value="4 4 4 4"/>
@@ -168,10 +190,12 @@
 	</Style>
 	<Style Selector="NumericUpDown.Numeric">
 		<Setter Property="HorizontalContentAlignment" Value="Right"/>
+		<Setter Property="VerticalAlignment" Value="Center"/>
 		<Setter Property="FontSize" Value="18"/>
+		<Setter Property="Height" Value="50"/>
 	</Style>
 	<Style Selector="Label.Time">
-		<Setter Property="FontSize" Value="11"/>
+		<Setter Property="FontSize" Value="18"/>
 		<Setter Property="VerticalContentAlignment" Value="Center"/>
 	</Style>
 	<Style Selector="Button.Measurement">
@@ -186,9 +210,14 @@
 		<Setter Property="Background" Value="{DynamicResource ButtonGradBrush}"/>
 	</Style>
 	<Style Selector="Label.Details">
-		<Setter Property="Width" Value="150"/>
+		<Setter Property="Width" Value="250"/>
 	</Style>
 	<Style Selector="TextBox.Details">
-		<Setter Property="Width" Value="150"/>
+		<Setter Property="Width" Value="250"/>
+	</Style>
+	<Style Selector="CheckBox.LEDCheckbox">
+		<Setter Property="Height" Value="50"/>
+		<Setter Property="FontSize" Value="22"/>
+		<Setter Property="VerticalAlignment" Value="Center"/>
 	</Style>
 </Styles>

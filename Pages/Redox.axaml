@@ -21,6 +21,6 @@
 		<uc:NumControl ControlBackground="{DynamicResource RedoxBrush}" ColumnWidth="160" Label="{x:Static p:Resource.MeasurementInterval}" NumValue="{Binding Data.Redox.IntervalInSec, Mode=TwoWay}" Minimum="0" Maximum="500" FormatString="0 sec" Increment="5"/>
 		<uc:NumControl ControlBackground="{DynamicResource RedoxBrush}" ColumnWidth="160" Label="{x:Static p:Resource.RedoxOn}" NumValue="{Binding Data.Redox.On, Mode=TwoWay}" Minimum="100" Maximum="1000" FormatString="0 mV" Increment="10"/>
 		<uc:NumControl ControlBackground="{DynamicResource RedoxBrush}" ColumnWidth="160" Label="{x:Static p:Resource.RedoxOff}" NumValue="{Binding Data.Redox.Off, Mode=TwoWay}" Minimum="100" Maximum="1000" FormatString="0 mV" Increment="10"/>
-		<CheckBox IsChecked="{Binding Data.Redox.LedOn}" Background="{DynamicResource RedoxBrush}" Margin="4" Padding="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" Content="{x:Static p:Resource.LED}"/>
+		<CheckBox Classes="LEDCheckbox" IsChecked="{Binding Data.Redox.LedOn}" Background="{DynamicResource RedoxBrush}" Margin="4" Padding="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" Content="{x:Static p:Resource.LED}"/>
 	</StackPanel>
 </UserControl>
