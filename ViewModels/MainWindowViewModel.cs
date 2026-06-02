@@ -33,6 +33,7 @@ public class MainWindowViewModel : ViewModelBase
         Logger.Information("#################################################");
         Logger.Information("########### Program started #####################");
         Logger.Information("#################################################");
+        Logger.Information("Platform: {Platform}", RuntimeInformation.OSDescription);
 
         CloseWindow = ReactiveCommand.Create(Close_Button_Clicked);
 
