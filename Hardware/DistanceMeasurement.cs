@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Diagnostics;
 using PoolControl.Helper;
 using PoolControl.ViewModels;
 
@@ -7,61 +8,51 @@ namespace PoolControl.Hardware;
 
 public class DistanceMeasurement : BaseMeasurement
 {
+    private static readonly TimeSpan EchoTimeout = TimeSpan.FromMilliseconds(50);
+    private readonly IGpio? _gpio;
+    private int _measurementInProgress;
+
     public DistanceMeasurement()
     {
         Logger = Log.Logger?.ForContext<DistanceMeasurement>() ?? throw new ArgumentNullException(nameof(Logger));
     }
 
-    private double MeasureOneTime()
+    internal DistanceMeasurement(IGpio gpio) : this()
     {
-        // Set Trigger High
-        Gpio.Instance.On(((Distance)ModelBase!).Trigger, true);
-
-        // Set Trigger Low after 1 ms
-        Thread.Sleep(1);
-        Gpio.Instance.Off(((Distance)ModelBase).Trigger, true);
-
-        DateTime start = DateTime.Now;
-        DateTime end = DateTime.Now;
-
-        // Start/Stop time
-        while (Gpio.Instance.ReadPin(((Distance)ModelBase).Echo) == 0)
-        {
-            start = DateTime.Now;
-        }
-
-        // Here is a possible memory leak, if sensor doesn't respond
-        while (Gpio.Instance.ReadPin(((Distance)ModelBase).Echo) == 1)
-        {
-            end = DateTime.Now;
-        }
-
-        // Time gone
-        var diff = end.Ticks - start.Ticks;
-
-        // Calculate speed of sound (343,2 m / s)
-        return diff * 0.003432 / 2;
+        _gpio = gpio ?? throw new ArgumentNullException(nameof(gpio));
     }
 
-    private double MeasureMultipleTimes()
+    private static double MeasureOneTime(IGpio gpio, int trigger, int echo, CancellationToken stopToken)
     {
+        gpio.On(trigger, true);
         try
         {
-            var distance = 0.0;
-            var no = ((Distance)ModelBase!).NumberOfMeasurements;
-            for (var i = 0; i < no; i++)
-            {
-                distance += MeasureOneTime();
-            }
-
-            return distance / no;
+            Thread.Sleep(1);
         }
-        catch (Exception ex)
+        finally
         {
-            Logger?.Error("Error: {Message}", ex.Message);
+            gpio.Off(trigger, true);
         }
 
-        return -1.0;
+        var watch = Stopwatch.StartNew();
+
+        while (gpio.ReadPin(echo) == 0)
+        {
+            stopToken.ThrowIfCancellationRequested();
+            if (watch.Elapsed >= EchoTimeout)
+                throw new TimeoutException("Distance sensor: no echo received within 50 ms.");
+        }
+
+        watch.Restart();
+        while (gpio.ReadPin(echo) == 1)
+        {
+            stopToken.ThrowIfCancellationRequested();
+            if (watch.Elapsed >= EchoTimeout)
+                throw new TimeoutException("Distance sensor: echo remained high for more than 50 ms.");
+        }
+
+        // Monotonic timing is unaffected by wall-clock corrections.
+        return watch.Elapsed.TotalSeconds * 34320 / 2;
     }
 
     protected override MeasurementResult DoMeasurement()
@@ -69,18 +60,45 @@ public class DistanceMeasurement : BaseMeasurement
         var result = new MeasurementResult
         {
             Device = GetType().Name, Command = "length",
-            Result = MeasureMultipleTimes(),
-            TimeStamp = DateTime.Now
+            Result = -1,
+            TimeStamp = DateTime.Now,
+            ReturnCode = (int)MeasurementResultCode.Pending,
+            StatusInfo = "Distance measurement already in progress."
         };
-        if (result.Result < 0)
+        // Skip overlapping callbacks rather than queueing measurements.
+        if (Interlocked.CompareExchange(ref _measurementInProgress, 1, 0) != 0)
+            return result;
+
+        try
         {
-            result.ReturnCode = 99;
-            result.StatusInfo = "Error";
-        }
-        else
-        {
-            result.ReturnCode = 1;
+            var model = ModelBase as Distance ?? throw new InvalidOperationException("Distance model is missing.");
+            var count = model.NumberOfMeasurements;
+            if (count <= 0)
+                throw new ArgumentOutOfRangeException(nameof(model.NumberOfMeasurements), "At least one measurement is required.");
+
+            var gpio = _gpio ?? Gpio.Instance;
+            var (trigger, echo) = model.OpenedPins ?? (model.Trigger, model.Echo);
+            var distance = 0.0;
+            for (var i = 0; i < count; i++)
+            {
+                StopToken.ThrowIfCancellationRequested();
+                distance += MeasureOneTime(gpio, trigger, echo, StopToken);
+            }
+
+            result.Result = distance / count;
+            result.ReturnCode = (int)MeasurementResultCode.Success;
             result.StatusInfo = "OK";
+        }
+        catch (Exception ex)
+        {
+            Logger?.Error("Error: {Message}", ex.Message);
+            result.ReturnCode = 99;
+            result.StatusInfo = ex.Message;
+        }
+        finally
+        {
+            result.TimeStamp = DateTime.Now;
+            Interlocked.Exchange(ref _measurementInProgress, 0);
         }
 
         return result;

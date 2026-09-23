@@ -29,12 +29,14 @@ public partial class App : Application
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            var viewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
             MainWindow = new MainWindow
             {
-                DataContext = _serviceProvider.GetRequiredService<MainWindowViewModel>(),
+                DataContext = viewModel,
             };
 
             desktop.MainWindow = MainWindow;
+            viewModel.Start();
         }
 
         base.OnFrameworkInitializationCompleted();
@@ -42,7 +44,9 @@ public partial class App : Application
 
     private static void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton<IPoolMqttClient, PoolMqttClient>();
+        // Deserialized child view models use PoolMqttClient.Instance as their fallback.
+        // Register that same object so DI-managed view models share one connection.
+        services.AddSingleton<IPoolMqttClient>(PoolMqttClient.Instance);
         services.AddSingleton<MainWindowViewModel>();
     }
 }

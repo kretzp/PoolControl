@@ -453,3 +453,10 @@ $RECYCLE.BIN/
 !.vscode/launch.json
 !.vscode/extensions.json
 /*.DotSettings
+
+# Isolated UI builds and rendered integration-test output
+/artifacts/
+
+# Local application logs
+log*.txt
+*.log

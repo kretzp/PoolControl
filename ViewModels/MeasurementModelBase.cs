@@ -3,6 +3,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
 using System.Globalization;
+using System.Threading.Tasks;
 using PoolControl.Hardware;
 using PoolControl.Helper;
 
@@ -10,8 +11,14 @@ using PoolControl.Helper;
 
     // Base mode for all measurements
     [JsonObject(MemberSerialization.OptIn)]
-    public class MeasurementModelBase : ViewModelBase
+    public class MeasurementModelBase : ViewModelBase, IUsesIntervalTimer
     {
+        public override Task StopAsync()
+        {
+            BaseMeasurement?.RequestStop();
+            return base.StopAsync();
+        }
+
         private const string A = "PoolControl.Hardware.";
         private const string V = "Measurement";
 

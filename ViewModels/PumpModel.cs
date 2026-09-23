@@ -1,5 +1,8 @@
 ﻿using Newtonsoft.Json;
 using PoolControl.Time;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System;
 
 namespace PoolControl.ViewModels;
@@ -10,6 +13,9 @@ namespace PoolControl.ViewModels;
 [JsonObject(MemberSerialization.OptIn)]
 public abstract class PumpModel : ViewModelBase
 {
+    private readonly List<TimeTrigger> _triggers = new();
+
+    public override Task StopAsync() => Task.WhenAll(_triggers.Select(t => t.StopAsync()).Append(base.StopAsync()));
     protected TimeSpan Daily = new(24, 0, 0);
 
     [JsonIgnore]
@@ -60,7 +66,7 @@ public abstract class PumpModel : ViewModelBase
         RecalculateThings();
     }
 
-    protected static TimeTrigger InitializeTrigger(Action? action, TimeSpan period, string name)
+    protected TimeTrigger InitializeTrigger(Action? action, TimeSpan period, string name)
     {
         var trigger = new TimeTrigger
         {
@@ -68,6 +74,7 @@ public abstract class PumpModel : ViewModelBase
             Period = period
         };
         trigger.OnTimeTriggered += action;
+        _triggers.Add(trigger);
 
         return trigger;
     }

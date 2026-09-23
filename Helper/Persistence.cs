@@ -11,7 +11,7 @@ public class Persistence
     private static Persistence? _instance;
     private static readonly object Padlock = new();
 
-    private bool _persistenceInUse;
+    private readonly object _persistenceLock = new();
 
     public static Persistence Instance
     {
@@ -56,59 +56,70 @@ public class Persistence
 
     public void Save(object? o)
     {
-        try
+        lock (_persistenceLock)
         {
-            while (_persistenceInUse)
+            string? temporaryFile = null;
+            try
             {
-            }
+                var destinationFile = Path.GetFullPath(PersistenceFile);
+                var directory = Path.GetDirectoryName(destinationFile)
+                    ?? throw new InvalidOperationException($"Persistence path '{destinationFile}' has no directory.");
+                Directory.CreateDirectory(directory);
+                temporaryFile = Path.Combine(directory,
+                    $".{Path.GetFileName(destinationFile)}.{Guid.NewGuid():N}.tmp");
 
-            _persistenceInUse = true;
-            using (StreamWriter file = File.CreateText(PersistenceFile))
-            {
-                var serializer = new JsonSerializer
+                using (var stream = new FileStream(temporaryFile, FileMode.CreateNew, FileAccess.Write,
+                           FileShare.None, 4096, FileOptions.WriteThrough))
+                using (var file = new StreamWriter(stream))
                 {
-                    Formatting = Formatting.Indented
-                };
-                serializer.Serialize(file, o);
+                    var serializer = new JsonSerializer
+                    {
+                        Formatting = Formatting.Indented
+                    };
+                    serializer.Serialize(file, o);
+                    file.Flush();
+                    stream.Flush(flushToDisk: true);
+                }
+
+                File.Move(temporaryFile, destinationFile, overwrite: true);
+                temporaryFile = null;
+                Logger.Information("Persistence Saved {O}", o);
             }
-            Logger.Information("Persistence Saved {O}", o);
-        }
-        catch (Exception ex)
-        {
-            Logger.Error(ex, "Save Exception:");
-        }
-        finally
-        {
-            _persistenceInUse = false;
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Save Exception:");
+            }
+            finally
+            {
+                if (temporaryFile != null)
+                {
+                    try { File.Delete(temporaryFile); }
+                    catch (Exception ex) { Logger.Warning(ex, "Could not delete temporary persistence file {File}", temporaryFile); }
+                }
+            }
         }
     }
 
     public T? Load<T>()
     {
-        try
+        lock (_persistenceLock)
         {
-            while (_persistenceInUse)
+            try
             {
+                using var file = File.OpenText(PersistenceFile);
+                var serializer = new JsonSerializer
+                {
+                    Formatting = Formatting.Indented
+                };
+                var o = serializer.Deserialize<T>(new JsonTextReader(file));
+                Logger.Information("Persistence Loaded {O}", o);
+                return o;
             }
-
-            _persistenceInUse = true;
-            using var file = File.OpenText(PersistenceFile);
-            var serializer = new JsonSerializer
+            catch (Exception ex)
             {
-                Formatting = Formatting.Indented
-            };
-            var o = serializer.Deserialize<T>(new JsonTextReader(file));
-            Logger.Information("Persistence Loaded {O}", o);
-            return o;
-        }
-        catch (Exception ex)
-        {
-            Logger.Error(ex, "Load Exception:");
-            return Activator.CreateInstance<T>();
-        }
-        finally
-        {
-            _persistenceInUse=false;
+                Logger.Error(ex, "Load Exception:");
+                return Activator.CreateInstance<T>();
+            }
         }
     }
 }

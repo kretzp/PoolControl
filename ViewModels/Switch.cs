@@ -35,10 +35,17 @@ public class Switch : ViewModelBase
 
     public void SwitchRelay()
     {
+        if (!IsStarted) return;
         Logger.Debug("Switch {Key} {On} changed", Key, On);
         if (RelayConfig.Instance != null)
             Gpio.Instance.DoSwitch(RelayConfig.Instance.GetGpioForRelayNumber(RelayNumber), On, HighIsOn);
         _ = PublishMessageAsync($"Switches/{Key}/On", On ? "1" : "0", 2, true, !string.IsNullOrEmpty(Key));
+    }
+
+    protected override void OnStarted()
+    {
+        base.OnStarted();
+        SwitchRelay();
     }
 
     protected override void OnTimerTicked(object? state)

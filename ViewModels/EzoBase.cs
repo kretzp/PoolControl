@@ -50,8 +50,15 @@ public abstract class EzoBase : MeasurementModelBase
 
     protected void SwitchLedAndPublishMessage()
     {
-        new BaseEzoMeasurement { ModelBase = this }.SwitchLedState(LedOn);
+        if (!IsStarted) return;
+        ((BaseEzoMeasurement)BaseMeasurement!).SwitchLedState(LedOn);
         _ = PublishMessageWithTypeAsync(PoolControlHelper.GetPropertyName(() => LedOn), LedOn ? "1" : "0", true);
+    }
+
+    protected override void OnStarted()
+    {
+        base.OnStarted();
+        SwitchLedAndPublishMessage();
     }
 
     public ReactiveCommand<Unit, Unit> OnFind { get; }

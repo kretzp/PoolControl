@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 
 namespace PoolControl.Helper;
@@ -13,37 +15,79 @@ public class Result
 
 public static class PropertySetter
 {
-    private static bool setProperty(object? parent, PropertyInfo? myPropInfo, string value)
+    private static bool TrySetProperty(object? parent, PropertyInfo? property, string value, out string? error)
     {
-        if (myPropInfo?.PropertyType == typeof(decimal))
+        error = null;
+        if (parent == null || property?.CanWrite != true)
         {
-            myPropInfo.SetValue(parent, decimal.Parse(value, new CultureInfo("en-US")));
-        }
-        else if (myPropInfo?.PropertyType == typeof(int))
-        {
-            myPropInfo.SetValue(parent, int.Parse(value, new CultureInfo("en-US")));
-        }
-        else if (myPropInfo?.PropertyType == typeof(double))
-        {
-            myPropInfo.SetValue(parent, double.Parse(value, new CultureInfo("en-US")));
-        }
-        else if (myPropInfo?.PropertyType == typeof(float))
-        {
-            myPropInfo.SetValue(parent, float.Parse(value, new CultureInfo("en-US")));
-        }
-        else if (myPropInfo?.PropertyType == typeof(string))
-        {
-            myPropInfo.SetValue(parent, value);
-        }
-        else if (myPropInfo?.PropertyType == typeof(bool))
-        {
-            myPropInfo.SetValue(parent, !(value.StartsWith("0") || value.ToLower().StartsWith("fa") || value.ToLower().StartsWith("of")));
-        }
-        else
-        {
+            error = "Property does not exist or is read-only.";
             return false;
         }
 
+        object? converted;
+        if (property.PropertyType == typeof(decimal))
+        {
+            converted = decimal.Parse(value, CultureInfo.InvariantCulture);
+        }
+        else if (property.PropertyType == typeof(int))
+        {
+            converted = int.Parse(value, CultureInfo.InvariantCulture);
+        }
+        else if (property.PropertyType == typeof(double))
+        {
+            converted = double.Parse(value, CultureInfo.InvariantCulture);
+            if (!double.IsFinite((double)converted))
+            {
+                error = "Non-finite numeric values are not allowed.";
+                return false;
+            }
+        }
+        else if (property.PropertyType == typeof(float))
+        {
+            converted = float.Parse(value, CultureInfo.InvariantCulture);
+            if (!float.IsFinite((float)converted))
+            {
+                error = "Non-finite numeric values are not allowed.";
+                return false;
+            }
+        }
+        else if (property.PropertyType == typeof(string))
+        {
+            converted = value;
+        }
+        else if (property.PropertyType == typeof(bool))
+        {
+            converted = value.Trim().ToLowerInvariant() switch
+            {
+                "1" or "true" or "on" or "yes" => true,
+                "0" or "false" or "off" or "no" => false,
+                _ => null
+            };
+            if (converted == null)
+            {
+                error = "Boolean values must be true/false, 1/0, on/off or yes/no.";
+                return false;
+            }
+        }
+        else if (property.PropertyType == typeof(TimeSpan))
+        {
+            converted = TimeSpan.Parse(value, CultureInfo.InvariantCulture);
+        }
+        else
+        {
+            error = $"Type {property.PropertyType.Name} is not supported.";
+            return false;
+        }
+
+        var validationResults = new List<ValidationResult>();
+        var validationContext = new ValidationContext(parent) { MemberName = property.Name };
+        if (!Validator.TryValidateProperty(converted, validationContext, validationResults))
+        {
+            error = string.Join(" ", validationResults.Select(result => result.ErrorMessage));
+            return false;
+        }
+
+        property.SetValue(parent, converted);
         return true;
     }
 
@@ -64,8 +108,6 @@ public static class PropertySetter
     {
         var info = $"setting Object: {baseObject} Object2: {objectNameToSet} Key: {key} Property: {propertyName} Value: {propertyValue}";
             
-        PropertyInfo? childPropertyInfo = null;
-
         try
         {
             object? propertyObject;
@@ -85,13 +127,13 @@ public static class PropertySetter
 
                     propertyObject = dict[key];
                 }
-
-                childPropertyInfo = propertyObject?.GetType().GetProperty(propertyName);
             }
 
-            if (!setProperty(propertyObject, childPropertyInfo, propertyValue))
+            var childPropertyInfo = propertyObject?.GetType().GetProperty(propertyName);
+
+            if (!TrySetProperty(propertyObject, childPropertyInfo, propertyValue, out var error))
             {
-                return new Result { Success = false, Message = $"Error while setting Object: {propertyObject} Object2: {objectNameToSet} Key: {key} Property: {childPropertyInfo?.Name} Value: {propertyValue}" };
+                return new Result { Success = false, Message = $"{error} Error while setting Object: {propertyObject} Object2: {objectNameToSet} Key: {key} Property: {childPropertyInfo?.Name} Value: {propertyValue}" };
             }
         }
         catch (Exception ex)

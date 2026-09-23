@@ -2,11 +2,11 @@
 using MQTTnet.Client;
 using ReactiveUI.Fody.Helpers;
 using System;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 using PoolControl.Communication;
 using ReactiveUI;
 using System.Reactive;
@@ -19,9 +19,11 @@ using PoolControl.Views;
 
 namespace PoolControl.ViewModels;
 
-public class MainWindowViewModel : ViewModelBase
+public class MainWindowViewModel : ViewModelBase, IUsesIntervalTimer
 {
-    private static readonly char PropertySplitter = '/';
+    private readonly SemaphoreSlim _messageGate = new(1, 1);
+    private volatile bool _stopping;
+    private Task? _shutdownTask;
 
     public ReactiveCommand<Unit, Unit> CloseWindow { get; }
 
@@ -182,124 +184,179 @@ public class MainWindowViewModel : ViewModelBase
                 Persistence.Instance.Save(Data);
             }
 #endif
-            // Open GPIO and handle Switches
-            Data.OpenGpioSwitches();
-            foreach (var sw in Data.Switches)
-            {
-                sw.SwitchRelay();
-            }
-
-            // Open Trigger and Echo Gpio
-            Data.OpenGpioEchoAndTrigger();
         }
-
-        // Subscribe events after loading Data, so that loading does not fire events!
-        PoolMqttClient.Instance.Register(MqttClient_ApplicationMessageReceivedAsync);
 
         Logger.Information("MainWindowViewModel Initialized");
     }
 
-    // Close Gpio in Destruction
-    ~MainWindowViewModel()
+    protected override void OnStarted()
     {
-        Data?.CloseGpioSwitches();
-        Data?.CloseGpioEchoAndTrigger();
+        var configurationObjects = new object?[] { this, Data }
+            .Concat(Data?.ConfiguredChildren().Cast<object?>() ?? Enumerable.Empty<object?>());
+        var validationErrors = ConfigurationValidator.Validate(configurationObjects);
+        if (validationErrors.Count > 0)
+        {
+            throw new InvalidOperationException("Invalid configuration: " + string.Join("; ", validationErrors));
+        }
+
+        // The complete object graph and relay mapping are configured before hardware starts.
+        Data?.OpenGpioSwitches();
+        Data?.OpenGpioEchoAndTrigger();
+        Data?.Start();
+        MqttClient.Register(MqttClient_ApplicationMessageReceivedAsync);
+        base.OnStarted();
     }
 
     private void Close_Button_Clicked()
     {
-        Persistence.Instance.Save(Data);
-
-        Data?.GpioSwitchesOff();
-        Data?.CloseGpioSwitches();
-        Data?.CloseGpioEchoAndTrigger();
-        Gpio.Instance.Dispose();
-
-        PoolMqttClient.Instance.Disconnect();
-
-        Thread.Sleep(3000);
-
-        Logger.Information("-----------------------------------------------------");
-        Logger.Information("---------------------- Closing Application ----------");
-        Logger.Information("-----------------------------------------------------");
-
-        ((Serilog.Core.Logger)Logger).Dispose();
-
-        //Dispose();
-
+        // The window closing handler also covers Alt+F4 and the window decoration.
         App.MainWindow?.Close();
     }
 
+    public Task ShutdownAsync() => _shutdownTask ??= ShutdownCoreAsync();
+
+    private async Task ShutdownCoreAsync()
+    {
+        _stopping = true;
+        MqttClient.UnRegister(MqttClient_ApplicationMessageReceivedAsync);
+
+        // Stop scheduling immediately, then await callbacks and any command in flight.
+        var stopped = Task.WhenAll(StopAsync(), Data?.StopAsync() ?? Task.CompletedTask);
+        await _messageGate.WaitAsync();
+        _messageGate.Release();
+        await stopped;
+
+        Persistence.Instance.Save(Data);
+        try
+        {
+            Data?.GpioSwitchesOff();
+            Data?.CloseGpioSwitches();
+            Data?.CloseGpioEchoAndTrigger();
+        }
+        finally { Gpio.Instance.Dispose(); }
+
+        await DisconnectForShutdownAsync(MqttClient);
+        Logger.Information("Application shutdown completed");
+    }
+
+    private async Task DisconnectForShutdownAsync(IPoolMqttClient client)
+    {
+        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        try { await client.DisconnectAsync(timeout.Token); }
+        catch (Exception ex) { Logger.Warning(ex, "MQTT shutdown failed"); }
+        finally { client.Dispose(); }
+    }
+
     private async Task MqttClient_ApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs arg)
+    {
+        if (_stopping) return;
+        await _messageGate.WaitAsync().ConfigureAwait(false);
+        try
+        {
+            if (!_stopping) await ProcessMqttMessageAsync(arg).ConfigureAwait(false);
+        }
+        finally { _messageGate.Release(); }
+    }
+
+    private async Task ProcessMqttMessageAsync(MqttApplicationMessageReceivedEventArgs arg)
     {
         object? baseObject = Data;
         var objectNameToSet = "";
         var key = "";
 
-        var propertyValue = Encoding.UTF8.GetString(arg.ApplicationMessage.PayloadSegment.ToArray());
-        var topic = arg.ApplicationMessage.Topic.Replace(PoolControlConfig.Instance.Settings!.BaseTopic.Command, "");
+        if (!MqttTopic.TryGetCommandPath(arg.ApplicationMessage.Topic,
+                PoolControlConfig.Instance.Settings!.BaseTopic.Command, out var topic))
+        {
+            Logger.Warning("Ignoring MQTT message outside command topic: {Topic}", arg.ApplicationMessage.Topic);
+            await arg.AcknowledgeAsync(CancellationToken.None).ConfigureAwait(false);
+            return;
+        }
 
-        if (topic.ToLower().Equals("sendstate"))
+        if (!MqttCommandInput.TrySplitPath(topic, out var commandPath, out var pathError))
+        {
+            Logger.Warning("Ignoring invalid MQTT command topic {Topic}: {Reason}", arg.ApplicationMessage.Topic, pathError);
+            await arg.AcknowledgeAsync(CancellationToken.None).ConfigureAwait(false);
+            return;
+        }
+
+        if (commandPath.Length == 1 && commandPath[0].Equals("sendstate", StringComparison.OrdinalIgnoreCase))
         {
             await PublishMessageAsync("json", Persistence.Instance.Serialize(Data), false).ConfigureAwait(false);
         }
-        else if (topic.ToLower().StartsWith("i2c/"))
-        {
-            var deviceName = topic.Split("/")[1];
-            var i2CObject = (Data!.GetType().GetProperty(deviceName)!.GetValue(Data) as MeasurementModelBase)!.BaseMeasurement;
-            MeasurementResult? mr;
-            try
-            {
-                mr  = (MeasurementResult)i2CObject!.GetType().GetMethod("send_i2c_command")!.Invoke(i2CObject, new object[] { propertyValue })!;
-            }
-            catch (Exception ex)
-            {
-                mr = new MeasurementResult { Result = 99, ReturnCode = 99, StatusInfo = ex.Message, TimeStamp = DateTime.Now };
-            }
-
-            await PublishMessageAsync(topic, Persistence.Instance.Serialize(mr), (int)arg.ApplicationMessage.QualityOfServiceLevel, arg.ApplicationMessage.Retain, false).ConfigureAwait(false);
-        }
         else
         {
-
-            try
+            if (!MqttCommandInput.TryDecodePayload(arg.ApplicationMessage.PayloadSegment.ToArray(),
+                    out var propertyValue, out var payloadError))
             {
-                string propertyName;
-                if (topic.Contains(PropertySplitter))
+                Logger.Warning("Ignoring invalid MQTT payload for {Topic}: {Reason}", arg.ApplicationMessage.Topic, payloadError);
+                await arg.AcknowledgeAsync(CancellationToken.None).ConfigureAwait(false);
+                return;
+            }
+
+            if (commandPath[0].Equals("i2c", StringComparison.OrdinalIgnoreCase))
+            {
+                MeasurementResult? mr;
+                try
                 {
-                    string[] properties = topic.Split(PropertySplitter);
-
-                    objectNameToSet = properties[0];
-
-                    if (properties.Length == 2)
+                    if (commandPath.Length != 2)
                     {
-                        propertyName = properties[1];
+                        throw new ArgumentException($"Invalid I2C command topic '{topic}'.", nameof(topic));
+                    }
+
+                    var deviceName = commandPath[1];
+                    var measurement = Data?.GetType().GetProperty(deviceName)?.GetValue(Data) as MeasurementModelBase;
+                    if (measurement?.BaseMeasurement is not IEzoCommandDevice commandDevice)
+                    {
+                        throw new InvalidOperationException($"Device '{deviceName}' does not support I2C commands.");
+                    }
+
+                    mr = commandDevice.SendCommand(propertyValue);
+                }
+                catch (Exception ex)
+                {
+                    mr = new MeasurementResult { Result = 99, ReturnCode = 99, StatusInfo = ex.Message, TimeStamp = DateTime.Now };
+                }
+
+                await PublishMessageAsync(topic, Persistence.Instance.Serialize(mr), (int)arg.ApplicationMessage.QualityOfServiceLevel, arg.ApplicationMessage.Retain, false).ConfigureAwait(false);
+            }
+            else
+            {
+                try
+                {
+                    string propertyName;
+                    if (commandPath.Length > 1)
+                    {
+                        objectNameToSet = commandPath[0];
+                        if (commandPath.Length == 2)
+                        {
+                            propertyName = commandPath[1];
+                        }
+                        else
+                        {
+                            key = commandPath[1];
+                            propertyName = commandPath[2];
+                        }
                     }
                     else
                     {
-                        key = properties[1];
-                        propertyName = properties[2];
+                        propertyName = commandPath[0];
+                    }
+
+                    var result = PropertySetter.setProperty(baseObject, propertyName, propertyValue, objectNameToSet, key);
+
+                    if (result.Success)
+                    {
+                        if (result.Message != null) Logger.Debug("{Message}", result.Message);
+                    }
+                    else
+                    {
+                        if (result.Message != null) Logger.Error("{Message}", result.Message);
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    propertyName = topic;
+                    Logger.Error(ex, "Error: topic: {Topic} payload: {Payload}", arg.ApplicationMessage.Topic, arg.ApplicationMessage.PayloadSegment.ToArray());
                 }
-
-                var result = PropertySetter.setProperty(baseObject, propertyName, propertyValue, objectNameToSet, key);
-
-                if (result.Success)
-                {
-                    if (result.Message != null) Logger.Debug("{Message}", result.Message);
-                }
-                else
-                {
-                    if (result.Message != null) Logger.Error("{Message}", result.Message);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, "Error: topic: {Topic} payload: {Payload}", arg.ApplicationMessage.Topic, arg.ApplicationMessage.PayloadSegment.ToArray());
             }
         }
 

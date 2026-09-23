@@ -4,6 +4,7 @@ using System;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using PoolControl.Hardware;
 using PoolControl.Helper;
 
@@ -15,6 +16,28 @@ namespace PoolControl.ViewModels;
 [JsonObject(MemberSerialization.OptIn)]
 public class PoolData : ViewModelBase
 {
+    internal IEnumerable<ViewModelBase> ConfiguredChildren()
+    {
+        var children = new List<ViewModelBase>();
+        if (Switches != null) children.AddRange(Switches);
+        if (SwitchesDict != null) children.AddRange(SwitchesDict.Values);
+        children.AddRange(new ViewModelBase?[] { FilterPump, SolarHeater }.OfType<ViewModelBase>());
+        if (Temperatures != null) children.AddRange(Temperatures);
+        if (TemperaturesDict != null) children.AddRange(TemperaturesDict.Values);
+        children.AddRange(new ViewModelBase?[] { Ph, Redox, Distance }.OfType<ViewModelBase>());
+        return children.Distinct();
+    }
+
+    public override void Start()
+    {
+        foreach (var child in ConfiguredChildren()) child.Start();
+        base.Start();
+    }
+
+    public override Task StopAsync()
+    {
+        return Task.WhenAll(ConfiguredChildren().Select(c => c.StopAsync()).Append(base.StopAsync()));
+    }
     public PoolData()
     {
         Logger = Log.Logger?.ForContext<PoolData>() ?? throw new ArgumentNullException(nameof(Logger));
@@ -108,13 +131,16 @@ public class PoolData : ViewModelBase
         if (Distance == null) return;
         Gpio.Instance.OpenPinModeOutput(Distance.Trigger, true);
         Gpio.Instance.OpenPinModeInput(Distance.Echo, true);
+        Distance.OpenedPins = (Distance.Trigger, Distance.Echo);
     }
 
     public void CloseGpioEchoAndTrigger()
     {
         if (Distance == null) return;
-        Gpio.Instance.Close(Distance.Trigger);
-        Gpio.Instance.Close(Distance.Echo);
+        var pins = Distance.OpenedPins ?? (Distance.Trigger, Distance.Echo);
+        Gpio.Instance.Close(pins.Item1);
+        Gpio.Instance.Close(pins.Item2);
+        Distance.OpenedPins = null;
     }
 
     public void OpenGpioSwitches()

@@ -1,5 +1,20 @@
 # PoolControl
 
+## Aktueller Entwicklungsstand (23.09.2026)
+
+Das Projekt verwendet aktuell **.NET 10** und **Avalonia 12**. Die historischen
+Installationshinweise weiter unten beschreiben den ursprünglichen Aufbau und sind
+keine Anleitung für das aktuelle Deployment.
+
+- [Bedienung der modernen Oberfläche](docs/Modern-UI.md)
+- [Architektur, Änderungen und Grenzen des Checkpoints](docs/Checkpoint-Modern-UI.md)
+- [Raspberry-Pi-Deployment, SSH und Wiederherstellung](docs/Deployment-Raspberry-Pi.md)
+- [Testübersicht und reproduzierbare Prüfung](Tests/README.md)
+- [Geplante gemeinsame Desktop-/Web-Codebasis](docs/Web-Architektur.md)
+
+Die lokale Anwendung mit moderner und klassischer Oberfläche ist implementiert.
+Eine Browseroberfläche ist noch nicht implementiert.
+
 Update: This software is in production in my pool environment for about 1 year without any issues ;-)
 
 This is a brandnew Pool Control Software based on an Raspberry Pi, coded in .net CORE 8.0. It runs with mocks in an Windows Environment.

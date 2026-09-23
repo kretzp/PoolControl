@@ -46,6 +46,7 @@ public class Redox : EzoBase
 
     public override void OnValueChange()
     {
+        if (!IsStarted) return;
         if(WinterMode)
         {
             Logger.Information("{Message}", $"WinterMode: Ein({Switch?.On}) Redox({Value:#0})");

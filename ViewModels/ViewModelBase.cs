@@ -19,6 +19,24 @@ namespace PoolControl.ViewModels;
 public abstract class ViewModelBase : ReactiveObject, IDisposable
 {
     private bool _disposedValue;
+    private int _started;
+    private readonly PoolControl.Time.TimerLifetime _timerLifetime = new();
+
+    protected bool IsStarted => Volatile.Read(ref _started) == 1;
+
+    public virtual void Start()
+    {
+        if (Interlocked.Exchange(ref _started, 1) == 1) return;
+        OnStarted();
+    }
+
+    protected virtual void OnStarted() => RestartTimerAndPublishNewInterval();
+
+    public virtual Task StopAsync()
+    {
+        Interlocked.Exchange(ref _started, 0);
+        return _timerLifetime.StopAsync();
+    }
 
     protected ILogger Logger { get; set; }
 
@@ -45,6 +63,7 @@ public abstract class ViewModelBase : ReactiveObject, IDisposable
 
     [Reactive]
     [JsonProperty]
+    [TimerInterval]
     public int IntervalInSec { get; set; }
 
     [JsonIgnore]
@@ -62,24 +81,12 @@ public abstract class ViewModelBase : ReactiveObject, IDisposable
     [JsonIgnore]
     public string LocationName
     {
-        get
-        {
-            var ret = "Nix";
-            try
-            {
-                ret = (string)typeof(Resource).GetProperty(Name)?.GetValue(null)!;
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
-
-            return ret;
-        }
+        get => Resource.ResourceManager.GetString(Name ?? "", Resource.Culture) ?? Name ?? "";
     }
 
     public void RestartTimerAndPublishNewInterval()
     {
+        if (!IsStarted) return;
         Timer = RestartTimer(Timer, OnTimerTicked, Interval);
 
         _ = PublishMessageWithTypeAsync(PoolControlHelper.GetPropertyName(() => IntervalInSec), IntervalInSec.ToString(), false);
@@ -94,40 +101,12 @@ public abstract class ViewModelBase : ReactiveObject, IDisposable
 
     protected Timer? RestartTimer(Timer? timer, TimerCallback callback, int dueTime, int interval)
     {
-        if (timer == null && interval > 0)
-        {
-            var autoEvent = new AutoResetEvent(false);
-            timer = new Timer(callback, autoEvent, dueTime, interval);
-        }
-        else
-        {
-            if (interval <= 0)
-            {
-                if (Timer != null)
-                {
-                    timer?.Dispose();
-                    timer = null;
-                    Logger.Debug("Timer deleted");
-                }
-            }
-            else
-            {
-                if (timer != null && timer.Change(dueTime, interval))
-                {
-                    Logger.Debug("Timer set: dueTime {DueTime} interval {Interval}", dueTime, interval);
-                }
-                else
-                {
-                    Logger.Debug("Timer set: dueTime {DueTime} interval {Interval} error", dueTime, interval);
-                }
-            }
-        }
-
-        return timer;
+        return _timerLifetime.Restart(timer, callback, TimeSpan.FromMilliseconds(dueTime), TimeSpan.FromMilliseconds(interval));
     }
 
     public Task PublishMessageAsync(string? propertyName, string? value, int qos, bool retain, bool reallySend, bool notifyOnReallySend = false)
     {
+        if (!IsStarted) return Task.CompletedTask;
         if (!reallySend)
         {
             Logger.Warning("Property {PropertyName} should not be sent for value {Value}. MQTT Message will not be published", propertyName, value);
@@ -179,7 +158,7 @@ public abstract class ViewModelBase : ReactiveObject, IDisposable
             // this method if they hold additional disposable resources.
             try
             {
-                Timer?.Dispose();
+                StopAsync().GetAwaiter().GetResult();
                 Timer = null;
             }
             catch (Exception ex)

@@ -4,6 +4,7 @@ using System;
 using Newtonsoft.Json;
 using System.Threading;
 using System.Reactive;
+using System.ComponentModel.DataAnnotations;
 using PoolControl.Hardware;
 using PoolControl.Helper;
 
@@ -52,11 +53,18 @@ public class Ph : EzoBase
 
     public void RestartPhTimerAndPublishNewInterval()
     {
+        if (!IsStarted) return;
         PhTimerOn = RestartTimer(PhTimerOn, CheckPh, PhInterval);
         PhTimerOff = RestartTimer(PhTimerOff, PhPumpOff, PhInterval + 1000 * AcidInjectionDuration, PhInterval);
 
         _ = PublishMessageWithTypeAsync(PoolControlHelper.GetPropertyName(() => AcidInjectionDuration), AcidInjectionDuration.ToString(), true);
         _ = PublishMessageWithTypeAsync(PoolControlHelper.GetPropertyName(() => AcidInjectionRecurringPeriod), AcidInjectionRecurringPeriod.ToString(), true);
+    }
+
+    protected override void OnStarted()
+    {
+        base.OnStarted();
+        RestartPhTimerAndPublishNewInterval();
     }
 
     private void PhPumpOff(object? state)
@@ -131,10 +139,12 @@ public class Ph : EzoBase
 
     [Reactive]
     [JsonProperty]
+    [Range(1, 3600, ErrorMessage = "AcidInjectionDuration must be between 1 and 3600 seconds.")]
     public int AcidInjectionDuration { get; set; }
 
     [Reactive]
     [JsonProperty]
+    [Range(1, 1440, ErrorMessage = "AcidInjectionRecurringPeriod must be between 1 and 1440 minutes.")]
     public int AcidInjectionRecurringPeriod { get; set; }
 
 

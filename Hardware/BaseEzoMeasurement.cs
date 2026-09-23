@@ -4,11 +4,12 @@ using System.Device.I2c;
 using System.Globalization;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using PoolControl.Helper;
 
 namespace PoolControl.Hardware;
 
-public class BaseEzoMeasurement : BaseMeasurement
+public class BaseEzoMeasurement : BaseMeasurement, IEzoCommandDevice
 {
     private const int BufferSize = 32;
     private const int MillisToWait = 1000;
@@ -35,6 +36,13 @@ public class BaseEzoMeasurement : BaseMeasurement
     {
         if (Log.Logger != null)
             Logger = Log.Logger.ForContext<BaseEzoMeasurement>() ?? throw new ArgumentNullException(nameof(Logger));
+    }
+
+    public MeasurementResult SendCommand(string command)
+    {
+        ArgumentNullException.ThrowIfNull(command);
+        StopToken.ThrowIfCancellationRequested();
+        return Send_i2c_command(command);
     }
 
     private MeasurementResult GetDeviceInformation()
@@ -139,6 +147,7 @@ public class BaseEzoMeasurement : BaseMeasurement
 
             do
             {
+                StopToken.ThrowIfCancellationRequested();
                 ezoResult.ReturnCode = (int)MeasurementResultCode.Pending;
                 Logger?.Information("> cmd = {Command} to Address {I2CAddress}", command, I2CAddress);
                 ReadOnlySpan<byte> writeBuffer = new(Encoding.ASCII.GetBytes(command));
@@ -155,10 +164,11 @@ public class BaseEzoMeasurement : BaseMeasurement
 
 
                 Logger?.Debug("  Waiting {MillisToWait} before fetching answer", MillisToWait);
-                Thread.Sleep(MillisToWait);
+                Task.Delay(MillisToWait, StopToken).GetAwaiter().GetResult();
 
                 while (ezoResult.ReturnCode == (int)MeasurementResultCode.Pending)
                 {
+                    StopToken.ThrowIfCancellationRequested();
                     Span<byte> readBuffer = new(new byte[BufferSize]);
                     i2C.Read(readBuffer);
 

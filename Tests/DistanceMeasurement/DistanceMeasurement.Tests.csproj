@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../Hardware/BaseMeasurement.cs" Link="Hardware/BaseMeasurement.cs" />
+    <Compile Include="../../Hardware/DistanceMeasurement.cs" Link="Hardware/DistanceMeasurement.cs" />
+    <Compile Include="../../Hardware/MeasurementResult.cs" Link="Hardware/MeasurementResult.cs" />
+    <Compile Include="../../Hardware/IGpio.cs" Link="Hardware/IGpio.cs" />
+    <PackageReference Include="Serilog" Version="3.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Device.Gpio" Version="3.0.0" />
+  </ItemGroup>
+</Project>

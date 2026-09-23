@@ -1,0 +1,88 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="PoolControl.Views.ModernView"
+             FontSize="17" Foreground="{DynamicResource ModernInk}">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Light">
+          <SolidColorBrush x:Key="ModernBackground">#EDF3F5</SolidColorBrush>
+          <SolidColorBrush x:Key="ModernSurface">#FFFFFF</SolidColorBrush>
+          <SolidColorBrush x:Key="ModernInk">#163441</SolidColorBrush>
+          <SolidColorBrush x:Key="ModernMuted">#506976</SolidColorBrush>
+          <SolidColorBrush x:Key="ModernSoft">#E6F4F3</SolidColorBrush>
+          <SolidColorBrush x:Key="ModernAccent">#08786F</SolidColorBrush>
+          <SolidColorBrush x:Key="ModernLine">#DBE5E9</SolidColorBrush>
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+          <SolidColorBrush x:Key="ModernBackground">#101D26</SolidColorBrush>
+          <SolidColorBrush x:Key="ModernSurface">#1B2B36</SolidColorBrush>
+          <SolidColorBrush x:Key="ModernInk">#ECF4F7</SolidColorBrush>
+          <SolidColorBrush x:Key="ModernMuted">#A9BDC8</SolidColorBrush>
+          <SolidColorBrush x:Key="ModernSoft">#203F43</SolidColorBrush>
+          <SolidColorBrush x:Key="ModernAccent">#6EDACF</SolidColorBrush>
+          <SolidColorBrush x:Key="ModernLine">#344853</SolidColorBrush>
+        </ResourceDictionary>
+      </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+  <UserControl.Styles>
+    <Style Selector="TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource ModernInk}"/>
+    </Style>
+    <Style Selector="Button.modern">
+      <Setter Property="MinHeight" Value="52"/>
+      <Setter Property="MinWidth" Value="52"/>
+      <Setter Property="Padding" Value="14,8"/>
+      <Setter Property="CornerRadius" Value="12"/>
+      <Setter Property="FontSize" Value="17"/>
+      <Setter Property="Background" Value="{DynamicResource ModernSurface}"/>
+      <Setter Property="Foreground" Value="{DynamicResource ModernInk}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource ModernLine}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Button.modern.selected">
+      <Setter Property="Background" Value="{DynamicResource ModernSoft}"/>
+      <Setter Property="Foreground" Value="{DynamicResource ModernAccent}"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+    <Style Selector="TextBlock.muted">
+      <Setter Property="Foreground" Value="{DynamicResource ModernMuted}"/>
+    </Style>
+  </UserControl.Styles>
+  <ThemeVariantScope x:Name="Appearance">
+  <Panel Background="{DynamicResource ModernBackground}">
+    <Grid x:Name="Shell" RowDefinitions="64,*,80">
+      <Border Background="{DynamicResource ModernSurface}" Padding="20,6">
+        <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="8">
+          <TextBlock Text="≈ PoolControl" FontWeight="SemiBold" FontSize="23" VerticalAlignment="Center"/>
+          <Button x:Name="LanguageButton" Grid.Column="1" Classes="modern" Click="ChangeLanguage"/>
+          <Button x:Name="ThemeButton" Grid.Column="2" Classes="modern" Click="ChangeTheme"/>
+          <Button x:Name="ClassicButton" Grid.Column="3" Classes="modern" Click="ShowClassic"/>
+        </Grid>
+      </Border>
+      <Grid Grid.Row="1" RowDefinitions="52,*" Margin="24,16,24,16" RowSpacing="12">
+        <Grid ColumnDefinitions="*,Auto">
+          <StackPanel>
+            <TextBlock x:Name="PageTitle" FontSize="26" FontWeight="SemiBold"/>
+            <TextBlock x:Name="PageSubtitle" FontSize="14" Classes="muted"/>
+          </StackPanel>
+          <TextBlock x:Name="Clock" Grid.Column="1" VerticalAlignment="Center" Classes="muted"/>
+        </Grid>
+        <ContentControl x:Name="PageContent" Grid.Row="1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+      </Grid>
+      <Border Grid.Row="2" Background="{DynamicResource ModernSurface}" Padding="16,8">
+        <UniformGrid x:Name="Navigation" Rows="1" Columns="6"/>
+      </Border>
+    </Grid>
+    <Border x:Name="DialogLayer" IsVisible="False" Background="#9907131A" Padding="24">
+      <Border Width="620" MaxHeight="548" Padding="24" CornerRadius="20"
+              Background="{DynamicResource ModernSurface}" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <ContentControl x:Name="DialogContent" HorizontalContentAlignment="Stretch"/>
+      </Border>
+    </Border>
+  </Panel>
+  </ThemeVariantScope>
+</UserControl>

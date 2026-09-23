@@ -3,6 +3,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
 using System.Globalization;
+using System.ComponentModel.DataAnnotations;
 using PoolControl.Helper;
 
 namespace PoolControl.ViewModels;
@@ -10,6 +11,10 @@ namespace PoolControl.ViewModels;
 [JsonObject(MemberSerialization.OptIn)]
 public class Distance : MeasurementModelBase
 {
+    // GPIOs are opened at startup. Keep using and closing those pins until restart.
+    [JsonIgnore]
+    public (int Trigger, int Echo)? OpenedPins { get; internal set; }
+
     /// <summary>
     /// This Model will be used to hold the data for a Distance of a Water Box, and then it will be calculated to liters
     /// </summary>
@@ -92,6 +97,7 @@ public class Distance : MeasurementModelBase
 
     [Reactive]
     [JsonProperty]
+    [Range(1, 100, ErrorMessage = "NumberOfMeasurements must be between 1 and 100.")]
     public int NumberOfMeasurements { get; set; }
 
     [JsonIgnore]

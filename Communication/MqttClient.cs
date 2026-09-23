@@ -3,7 +3,6 @@ using MQTTnet.Client;
 using Serilog;
 using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,7 +14,6 @@ namespace PoolControl.Communication;
 public class PoolMqttClient : IPoolMqttClient
 {
     private const string Reason = "SHUTDOWN";
-    private const string Win = "win";
 
     private static PoolMqttClient? _instance;
     private static readonly object Padlock = new object();
@@ -45,7 +43,7 @@ public class PoolMqttClient : IPoolMqttClient
 
     protected ILogger Logger { get; init; }
 
-    public PoolMqttClient(ILogger? logger = null)
+    private PoolMqttClient(ILogger? logger = null)
     {
         Logger = logger?.ForContext<PoolMqttClient>() ?? Log.Logger?.ForContext<PoolMqttClient>() ?? throw new ArgumentNullException(nameof(logger));
         _ = InitializeAsync(_cancellationTokenSource.Token);
@@ -167,10 +165,7 @@ public class PoolMqttClient : IPoolMqttClient
             return;
         }
 
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            topic = Win + topic;
-        }
+        topic = MqttTopic.ForCurrentPlatform(topic);
 
         await _mqttClient.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic(topic).Build(), cancellationToken).ConfigureAwait(false);
         Logger.Information("# Subscribed topic={Topic}", topic);
@@ -184,10 +179,7 @@ public class PoolMqttClient : IPoolMqttClient
             return;
         }
 
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            topic = Win + topic;
-        }
+        topic = MqttTopic.ForCurrentPlatform(topic);
 
         await _mqttClient.UnsubscribeAsync(topic, cancellationToken).ConfigureAwait(false);
         Logger.Information("# Unsubscribed topic={Topic}", topic);
@@ -266,10 +258,7 @@ public class PoolMqttClient : IPoolMqttClient
             return;
         }
 
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            topic = Win + topic;
-        }
+        topic = MqttTopic.ForCurrentPlatform(topic);
 
         var message = new MqttApplicationMessageBuilder()
             .WithTopic(topic)

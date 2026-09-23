@@ -4,6 +4,7 @@ using System;
 using Newtonsoft.Json;
 using PoolControl.Helper;
 using PoolControl.Time;
+using System.ComponentModel.DataAnnotations;
 
 namespace PoolControl.ViewModels;
 
@@ -52,6 +53,7 @@ public class FilterPump : PumpModel
 
     public void Recalculate()
     {
+        if (!IsStarted) return;
         if (PoolTemperature != null)
         {
             var secondsToAdd = (int)Math.Min(Max, Math.Max(StandardFilterRunTime * 60, StandardFilterRunTime * 60 + Factor * (PoolTemperature.Value + Diff)));
@@ -65,6 +67,12 @@ public class FilterPump : PumpModel
 
         NextStart = StartTriggerMorning.TriggerTime.CompareTo(StartTriggerNoon.TriggerTime) < 1 ? StartTriggerMorning.TriggerTime : StartTriggerNoon.TriggerTime;
         NextEnd = EndTriggerMorning.TriggerTime.CompareTo(EndTriggerNoon.TriggerTime) < 1 ? EndTriggerMorning.TriggerTime : EndTriggerNoon.TriggerTime;
+    }
+
+    protected override void OnStarted()
+    {
+        base.OnStarted();
+        Recalculate();
     }
 
     public override void RecalculateThings()
@@ -97,18 +105,22 @@ public class FilterPump : PumpModel
 
     [Reactive]
     [JsonProperty]
+    [Range(1, 1440, ErrorMessage = "StandardFilterRunTime must be between 1 and 1440 minutes.")]
     public int StandardFilterRunTime { get; set; }
 
     [Reactive]
     [JsonProperty]
+    [DailyTime]
     public TimeSpan StartMorning { get; set; }
 
     [Reactive]
     [JsonProperty]
+    [DailyTime]
     public TimeSpan StartNoon { get; set; }
 
     [Reactive]
     [JsonProperty]
+    [DailyTime]
     public TimeSpan FilterOff { get; set; }
 
     [Reactive]

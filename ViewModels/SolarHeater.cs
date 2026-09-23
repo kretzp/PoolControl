@@ -4,6 +4,7 @@ using System;
 using Newtonsoft.Json;
 using PoolControl.Helper;
 using PoolControl.Time;
+using System.ComponentModel.DataAnnotations;
 
 namespace PoolControl.ViewModels;
 
@@ -87,10 +88,17 @@ public class SolarHeater : PumpModel
 
     public void RecalculateSolarHeatingCleaning()
     {
+        if (!IsStarted) return;
         StartTrigger(TurnOnTrigger, SolarHeaterCleaningTime);
         StartTrigger(TurnOffTrigger, SolarHeaterCleaningTime.Add(new TimeSpan(0, 0, SolarHeaterCleaningDuration)));
         NextStart = TurnOnTrigger.TriggerTime;
         NextEnd = TurnOffTrigger.TriggerTime;
+    }
+
+    protected override void OnStarted()
+    {
+        base.OnStarted();
+        RecalculateSolarHeatingCleaning();
     }
 
     public override void RecalculateThings()
@@ -120,6 +128,7 @@ public class SolarHeater : PumpModel
 
     [Reactive]
     [JsonProperty]
+    [DailyTime]
     public TimeSpan SolarHeaterCleaningTime { get; set; }
 
     [Reactive]
@@ -136,6 +145,7 @@ public class SolarHeater : PumpModel
 
     [Reactive]
     [JsonProperty]
+    [Range(1, 86400, ErrorMessage = "SolarHeaterCleaningDuration must be between 1 and 86400 seconds.")]
     public int SolarHeaterCleaningDuration { get; set; }
 
     [Reactive]
