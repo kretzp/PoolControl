@@ -14,7 +14,7 @@ bekannte Paket-Sicherheitsprobleme treffen.
 
 ## Ausführung
 
-Voraussetzungen: .NET-10-SDK, für `EzoCommand` zusätzlich .NET-8-Runtime,
+Voraussetzungen: .NET-10-SDK,
 wiederherstellbare NuGet-Pakete; die UI-Prüfung wird auf Windows mit
 Avalonia.Headless und Skia durchgeführt.
 
